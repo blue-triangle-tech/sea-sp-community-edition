@@ -1,0 +1,20 @@
+.toggle-handle {
+    position: relative;
+    margin: 0 auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 100%;
+    width: 0;
+    border-width: 0 1px;
+    background-color: white !important;
+}
+
+.card {
+    margin-top: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+}
+
+.form-check {
+    padding-left: 0px !important;
+}

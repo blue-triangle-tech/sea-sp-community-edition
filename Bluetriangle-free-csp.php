@@ -1,0 +1,478 @@
+<?php
+/**
+ * Plugin Name: Sea SP Community Edition 
+ * Plugin URI: http://www.bluetriangle.com/wordpress-integration
+ * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
+ * Version: 1.0
+ * Author: Julian Wilkison-Duran, Trish Brumett, Art By - Rachel Grant, and Dorthy Sysling
+ * Author URI: http://www.bluetriangle.com
+ */
+
+defined( 'ABSPATH' ) or die( 'Direct access to this plugin is prohibited.' );
+
+require_once( 'src/controllers/ViewFunctions.php' );
+require_once( 'src/controllers/Ajax.php' );
+
+register_activation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_install' );
+function Blue_Triangle_Automated_Free_CSP_install() {
+    $directives = [
+        "default-src"=>[
+            "fileType"=>"any",
+            "type"=>"Fetch",
+            "desc"=>"Serves as a fallback for the other fetch directives.",
+            "options"=>true,
+        ],
+        "child-src" =>[
+            "fileType" =>"nested-webworker",
+            "type"=>"Fetch",
+            "desc"=>"Defines the valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe.
+            Instead of child-src, if you want to regulate nested browsing contexts and workers, you should use the frame-src and worker-src directives, respectively.",
+            "options"=>true,
+        ],
+        "connect-src"=>[
+            "fileType"=>"script",
+            "type"=>"Fetch",
+            "desc"=>"Restricts the URLs which can be loaded using script interfaces",
+            "options"=>true,
+        ],
+        "font-src"=>[
+            "fileType"=>"font",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for fonts loaded using @font-face.",
+            "options"=>true,
+        ],
+        "frame-src"=>[
+            "fileType"=>"iframe",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for nested browsing contexts loading using elements such as frame and iframe.",
+            "options"=>true,
+        ],
+        "img-src"=>[
+            "fileType"=>"image",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources of images and favicons.",
+            "options"=>true,
+        ],
+        "manifest-src"=>[
+            "fileType"=>"manifest",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources of application manifest files.",
+            "options"=>true,
+        ],
+        "media-src"=>[
+            "fileType"=>"media",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for loading media using the audio , video and track elements.",
+            "options"=>true,
+        ],
+        "object-src"=>[
+            "fileType"=>"object",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for the object, embed, and applet elements.
+            Elements controlled by object-src are perhaps coincidentally considered legacy HTML elements and are not receiving new standardized features (such as the security attributes sandbox or allow for iframe). Therefore it is recommended to restrict this fetch-directive (e.g., explicitly set object-src 'none' if possible).",
+            "options"=>true,
+            "subDirective"=>[
+                "plugin-types"=>[
+                    "fileType"=>"plugin",
+                    "type"=>"Document",
+                    "desc"=>"Restricts the set of plugins that can be embedded into a document by limiting the types of resources which can be loaded.To disallow all plugins, the object-src directive should be set to 'none' which will disallow plugins. The plugin-types directive is only used if you are allowing plugins with object-src at all.",
+                    "options"=>false,
+                ],
+            ],
+        ],
+        "prefetch-src"=>[
+            "fileType"=>"any",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources to be prefetched or prerendered.",
+            "options"=>true,
+        ],
+        "script-src"=>[
+            "fileType"=>"js",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for JavaScript.",
+            "options"=>true,
+        ],
+        "script-src-elem"=>[
+            "fileType"=>"js",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for JavaScript script elements.",
+            "options"=>true,
+        ],
+        "script-src-attr"=>[
+            "fileType"=>"js",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for JavaScript inline event handlers.",
+            "options"=>true,
+        ],
+        "style-src"=>[
+            "fileType"=>"css",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for stylesheets.",
+            "options"=>true,
+        ],
+        "style-src-elem"=>[
+            "fileType"=>"css",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for stylesheets style elements and link elements with rel='stylesheet'.",
+            "options"=>true,
+        ],
+        "style-src-attr"=>[
+            "fileType"=>"css",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for inline styles applied to individual DOM elements.",
+            "options"=>true,
+        ],
+        "worker-src"=>[
+            "fileType"=>"worker",
+            "type"=>"Fetch",
+            "desc"=>"Specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts.",
+            "options"=>true,
+        ],
+        "base-uri"=>[
+            "fileType"=>"base-file",
+            "type"=>"Document",
+            "desc"=>"Restricts the URLs which can be used in a document's base element.",
+            "options"=>true,
+        ],
+        "form-action"=>[
+            "fileType"=>"plugin",
+            "type"=>"Navigation",
+            "desc"=>"Restricts the URLs which can be used as the target of a form submissions from a given context.",
+            "options"=>true,
+        ],
+        "frame-ancestors"=>[
+            "fileType"=>"parents",
+            "type"=>"Navigation",
+            "desc"=>"Specifies valid parents that may embed a page using frame, iframe, object, embed, or applet.",
+            "options"=>true,
+        ],
+        "navigate-to"=>[
+            "fileType"=>"URL",
+            "type"=>"Navigation",
+            "desc"=>"Restricts the URLs to which a document can initiate navigation by any means, including form (if form-action is not specified), a, window.location, window.open, etc.",
+            "options"=>true,
+        ],
+        "block-all-mixed-content"=>[
+            "fileType"=>"asset",
+            "type"=>"Other",
+            "desc"=>"Prevents loading any assets using HTTP when the page is loaded using HTTPS.",
+            "options"=>false,
+            "values"=>[]
+        ],
+        'upgrade-insecure-requests'=>[
+            "fileType"=>"XXS Sink",
+            "type"=>"Other",
+            "desc"=>"Instructs user agents to treat all of a site's insecure URLs (those served over HTTP) as though they have been replaced with secure URLs (those served over HTTPS). This directive is intended for web sites with large numbers of insecure legacy URLs that need to be rewritten.",
+            "options"=>false,
+            "values"=>[]
+        ],
+        "sandbox"=>[
+            "fileType"=>"sandbox",
+            "type"=>"Document",
+            "desc"=>"Enables a sandbox for the requested resource similar to the iframe sandbox attribute.",
+            "options"=>false,
+            "values"=>[
+                "allow-downloads-without-user-activation"=>[
+                    "desc"=>"Allows for downloads to occur without a gesture from the user.",
+                ],
+                "allow-forms"=>[
+                    "desc"=>"Allows the page to submit forms. If this keyword is not used, this operation is not allowed.",
+                ],
+                "allow-modals"=>[
+                    "desc"=>"Allows the page to open modal windows.",
+                ],
+                "allow-orientation-lock"=>[
+                    "desc"=>"Allows the page to disable the ability to lock the screen orientation.",
+                ],
+                "allow-pointer-lock"=>[
+                    "desc"=>"Allows the page to use the Pointer Lock API.",
+                ],
+                "allow-popups"=>[
+                    "desc"=>"Allows popups (like from window.open, target='_blank', showModalDialog). If this keyword is not used, that functionality will silently fail.",
+                ],
+                "allow-popups-to-escape-sandbox"=>[
+                    "desc"=>"Allows a sandboxed document to open new windows without forcing the sandboxing flags upon them. This will allow, for example, a third-party advertisement to be safely sandboxed without forcing the same restrictions upon a landing page.
+                    ",
+                ],
+                "allow-presentation"=>[
+                    "desc"=>"Allows embedders to have control over whether an iframe can start a presentation session.",
+                ],
+
+                "allow-same-origin"=>[
+                    "desc"=>"Allows the content to be treated as being from its normal origin. If this keyword is not used, the embedded content is treated as being from a unique origin.",
+                ],
+                "allow-scripts"=>[
+                    "desc"=>"Allows the page to run scripts (but not create pop-up windows). If this keyword is not used, this operation is not allowed.",
+                ],
+                "allow-storage-access-by-user-activation "=>[
+                    "desc"=>"Lets the resource request access to the parent's storage capabilities with the Storage Access API.",
+                ],
+                "allow-top-navigation"=>[
+                    "desc"=>"Allows the page to navigate (load) content to the top-level browsing context. If this keyword is not used, this operation is not allowed.",
+                ],
+                "allow-top-navigation-by-user-activation"=>[
+                    "desc"=>"Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture."
+                ],
+            ]
+        ],
+
+    ];
+    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Directives', $directives);
+
+    $directiveOptions = [
+
+        "host-source"=>[
+            "http:"=>[
+                "desc"=>"A scheme such as http: or https:.",
+            ],
+            "https:"=>[
+                "desc"=>"A scheme such as http: or https:.",
+            ],
+        ],
+        "scheme-source"=>[
+            "data:"=>[
+                "desc"=>"You can also specify data schemes (not recommended).
+                data: Allows data: URIs to be used as a content source. This is insecure; an attacker can also inject arbitrary data: URIs. Use this sparingly and definitely not for scripts.",
+            ],
+            "mediastream:"=>[
+                "desc"=>"mediastream: Allows mediastream: URIs to be used as a content source.",
+            ],
+            "blob:"=>[
+                "desc"=>"blob: Allows blob: URIs to be used as a content source.",
+            ],
+            "filesystem:"=>[
+                "desc"=>"filesystem: Allows filesystem: URIs to be used as a content source.",
+            ],
+        ],
+        "other"=>[
+            "'self'"=>[
+                "desc"=>"Refers to the origin from which the protected document is being served, including the same URL scheme and port number. You must include the single quotes. Some browsers specifically exclude blob and filesystem from source directives. Sites needing to allow these content types can specify them using the Data attribute.",
+            ],
+            "'unsafe-eval'"=>[
+                "desc"=>"Allows the use of eval() and similar methods for creating code from strings. You must include the single quotes.",
+            ],
+            "'unsafe-hashes'"=>[
+                "desc"=>"Allows enabling specific inline event handlers. If you only need to allow inline event handlers and not inline script elements or javascript: URLs, this is a safer method than using the unsafe-inline expression.",
+            ],
+            "'unsafe-inline'"=>[
+                "desc"=>"Allows the use of inline resources, such as inline script elements, javascript: URLs, inline event handlers, and inline style elements. The single quotes are required.",
+            ],
+            "'none'"=>[
+                "desc"=>"Refers to the empty set; that is, no URLs match. The single quotes are required.",
+            ],
+            "'nonce-base64-value'"=>[
+                "desc"=>"An allow-list for specific inline scripts using a cryptographic nonce (number used once). The server must generate a unique nonce value each time it transmits a policy. It is critical to provide an unguessable nonce, as bypassing a resource’s policy is otherwise trivial. See unsafe inline script for an example. Specifying nonce makes a modern browser ignore 'unsafe-inline' which could still be set for older browsers without nonce support.",
+            ],
+            "'strict-dynamic'"=>[
+                "desc"=>"The strict-dynamic source expression specifies that the trust explicitly given to a script present in the markup, by accompanying it with a nonce or a hash, shall be propagated to all the scripts loaded by that root script. At the same time, any allow-list or source expressions such as 'self' or 'unsafe-inline' are ignored. See script-src for an example.",
+            ],
+        ],
+        
+       
+    ];
+    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options', $directiveOptions);
+
+    $Blue_Triangle_Automated_CSP_Free_Errors = [
+        "csp"=>[
+            "default-src"=>[
+                "options"=>["'self'"],
+            ],
+            "child-src" =>[
+                "options"=>[],
+            ],
+            "connect-src"=>[
+                "options"=>[],
+            ],
+            "font-src"=>[
+                "options"=>[],
+            ],
+            "frame-src"=>[
+                "options"=>[],
+            ],
+            "img-src"=>[
+                "options"=>[],
+            ],
+            "manifest-src"=>[
+                "options"=>[],
+            ],
+            "media-src"=>[
+                "options"=>[],
+            ],
+            "object-src"=>[
+                "options"=>[],
+            ],
+            "prefetch-src"=>[
+                "options"=>[],
+            ],
+            "script-src"=>[
+                "options"=>[],
+            ],
+            "script-src-elem"=>[
+                "options"=>[],
+            ],
+            "script-src-attr"=>[
+                "options"=>[],
+            ],
+            "style-src"=>[
+                "options"=>[],
+            ],
+            "style-src-elem"=>[
+                "options"=>[],
+            ],
+            "style-src-attr"=>[
+                "options"=>[],
+            ],
+            "worker-src"=>[
+                "options"=>[],
+            ],
+            "base-uri"=>[
+                "options"=>[],
+            ],
+            "form-action"=>[
+                "options"=>[],
+            ],
+            "frame-ancestors"=>[
+                "options"=>[],
+            ],
+            "navigate-to"=>[
+                "options"=>[],
+            ],
+        ]
+    ];
+    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Errors', $Blue_Triangle_Automated_CSP_Free_Errors );
+
+    $Blue_Triangle_Automated_CSP_Free_Report_Mode = "true";
+    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode', $Blue_Triangle_Automated_CSP_Free_Report_Mode );
+
+    $Blue_Triangle_Automated_CSP_Free_CSP = "Content-Security-Policy-Report-Only: default-src 'self'";
+    add_site_option( 'Blue_Triangle_Automated_CSP_Free_CSP', $Blue_Triangle_Automated_CSP_Free_CSP );
+}
+
+register_deactivation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
+function Blue_Triangle_Automated_Free_CSP_deactivate() {
+    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
+    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
+    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Errors');
+    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode');
+    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_CSP');
+}
+
+add_action( 'send_headers', 'Blue_Triangle_Automated_CSP_Free_Inject_CSP' );
+function Blue_Triangle_Automated_CSP_Free_Inject_CSP() {
+    $BTAC_CSP =get_site_option('Blue_Triangle_Automated_CSP_Free_CSP');
+
+    header($BTAC_CSP,TRUE);
+}
+
+add_action('wp_head', 'Blue_Triangle_Automated_CSP_Free_Inject_Tag');
+function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
+    $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Nonce");
+    $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
+
+    $errorCollector = '
+    <script>
+    var adminURL= "'.$adminURL.'";
+    var _BTT_CSP_FREE_ERROR = [];
+    window.addEventListener("securitypolicyviolation",function(e){
+        _BTT_CSP_FREE_ERROR.push(
+            {
+                domain: e.blockedURI,   
+                sourceFile: e.sourceFile,
+                referrer: e.referrer,
+                documentURI: e.documentURI,
+                violatedDirective: e.violatedDirective,
+                "type":"csp",
+            }
+        );
+    });
+
+    setTimeout(function(){ 
+        (function($) {
+            jQuery.ajax({
+                type : "post",
+                dataType : "json",
+                url : adminURL,
+                data : {action:"Blue_Triangle_Automated_CSP_Free_Send_CSP",BTT_CSP_FREE_ERROR:JSON.stringify(_BTT_CSP_FREE_ERROR)},
+                success: function(response) {
+                },
+                error: function(XHR, TEXT, Error){
+        
+                },
+            });
+        })( jQuery );
+    
+    }, 5000);
+    
+    
+    </script>
+    ';
+    echo $errorCollector;
+}
+
+function Blue_Triangle_Automated_CSP_Free_themes_page() {
+
+    $page_title = "Blue Triangle Free Automated CSP";
+    $menu_title = "Blue Triangle Free CSP"; 
+    $capability = apply_filters("Blue_Triangle_Automated_CSP_Free_options_capability", "edit_theme_options");
+    $menu_slug = "blue-triangle-free-csp";
+    $svg = "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIxOC4xMDE3IiB2aWV3Qm94PSIwIDAgMjAgMTguMTAxNyI+PHRpdGxlPkJULWF2YXRhci13cDwvdGl0bGU+PHBvbHlnb24gcG9pbnRzPSIxMy43ODkgMTQuODQ1IDUuMjMzIDAgOS4xNzcgMTIuOTIyIDUuNTYzIDEzLjg4MiA3LjUgMTAuNTA4IDYuNDE1IDYuOTU1IDAgMTguMTAyIDEzLjc4OSAxNC44NDUiIGZpbGw9IiNlZWUiLz48cG9seWdvbiBwb2ludHM9IjE1LjIwMiAxNS40NTcgNC4wMDEgMTguMTAyIDIwIDE4LjEwMiAxMC4wMDEgMC43MjMgOC4zNTUgMy41ODEgMTUuMjAyIDE1LjQ1NyIgZmlsbD0iI2VlZSIvPjwvc3ZnPg==";
+    $icon_url = "data:image/svg+xml;base64," . $svg;
+    $space = "Blue_Triangle_Automated_CSP_Free";
+    $page = add_menu_page( __($page_title,$space), __($menu_title,$space), $capability, $menu_slug, "Blue_Triangle_Automated_CSP_Free_Dashboard", $icon_url);
+
+    $tabs = apply_filters("Blue_Triangle_Automated_CSP_menu_tabs", array(
+        'general-settings' => [__("General Settings", $space),"Blue_Triangle_Automated_CSP_Free_General_Page"],
+        'csp-violations' => [__("Current Violations", $space),"Blue_Triangle_Automated_CSP_Free_Violations"],
+        'directive-settings' => [__("Directive Settings", $space),"Blue_Triangle_Automated_CSP_Free_Directives_Page"],
+        'help-center' => [__("Help Center", $space),"Blue_Triangle_Automated_CSP_Free_Help_Center"],
+    ));
+
+    foreach ( $tabs as $key => $settings ) {
+        $title = $settings[0];
+        $functionName = $settings[1];
+        $subMenuSlug = $menu_slug ."-".$key;
+        add_submenu_page( 'blue-triangle-free-csp', __('Blue Triangle Menu', 'Blue_Triangle_Automated_CSP_Free') . ' - ' . $title, $title, $capability, $subMenuSlug, $functionName );
+
+    }
+
+}
+add_action( 'admin_menu', 'Blue_Triangle_Automated_CSP_Free_themes_page');
+
+function Blue_Triangle_Automated_CSP_Free_Build_CSP(){
+    $Blue_Triangle_Automated_CSP_Free_Errors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');
+    $Blue_Triangle_Automated_CSP_Free_Report_Mode = get_site_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
+    $CSP = ($Blue_Triangle_Automated_CSP_Free_Report_Mode=="true")?
+    "Content-Security-Policy-Report-Only: ":"Content-Security-Policy: ";
+
+    foreach($Blue_Triangle_Automated_CSP_Free_Errors["csp"] as $directive=>$directiveInfo){
+        
+        $directiveOptions = $directiveInfo["options"];
+        $directiveDomains = $directiveInfo["domains"];
+        if(empty($directiveOptions) && empty($directiveDomains)){
+            continue;
+        }
+        $CSP .=$directive." ";
+
+        if(!empty($directiveOptions)){
+            foreach($directiveOptions as $optIndex=>$opt){
+                $opt = stripslashes($opt);
+                $CSP .=$opt." ";
+            }
+        }
+        if(!empty($directiveDomains)){
+            foreach($directiveDomains as $domain=>$domainInfo){
+                $approvedForSubDomains = ($domainInfo["subDomain"]=="true")?true:false;
+                $approved = ($domainInfo["approved"]=="true")?true:false;
+                if($approvedForSubDomains){
+                    $CSP .="*.".$domain." ";
+                }
+                if($approved){
+                    $CSP .=$domain." ";
+                }
+            }
+        }
+        $CSP .="; ";
+    }
+    
+    update_option( 'Blue_Triangle_Automated_CSP_Free_CSP', $CSP);
+}
