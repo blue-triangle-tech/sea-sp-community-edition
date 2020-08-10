@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== SeaSP Community Edition ===
 Contributors: Julian Wilkison-Duran, Trish Brumett, Art By - Rachel Grant, and Dorthy Sysling
 Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
