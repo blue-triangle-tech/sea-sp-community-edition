@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: Julian Wilkison-Duran, Trish Brumett, Art By - Rachel Grant, and Dorthy Sysling
-Donate link: http://example.com/
+Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.4
