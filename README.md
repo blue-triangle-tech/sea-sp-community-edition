@@ -26,7 +26,7 @@ After this process you might still see CSP violations regarding inline scripts, 
 To allow these ths type of content in the community version you must navigate to the Directive Settings page, find the offending directive and toggle the appropriate option.
 For convenience, each option has a tool tip explaining what it allows in your CSP.
 
-##Walk Through 
+## Walk Through 
 A walk through video can be found on You Tube [here](https://youtu.be/XdJNh6LEKJw)
 
 ## Contributing
