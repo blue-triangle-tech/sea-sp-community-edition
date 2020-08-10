@@ -1,22 +1,29 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card bg-dark text-white">
-                <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/Blue-Triangle-Avatar-Logo-blue-500x500.png" >
-                <div class="card-img-overlay">
-                    <h4 class="card-title">Blue Triangle Automated CSP Free</h4>
-                    <p class="card-text">A fully automated CSP for a busy secure world.</p>
-                    <p class="card-text">Version 1.0</p>
-                </div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-dark text-white">
+            <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/seaSPIcon.png">
+            <div class="card-img-overlay" style="top: 80px;left: 50px;background-color: rgb(45 33 33 / 46%);width: 215px;height: 160px;">
+                <h6 class="card-title">SeaSP - Community Edition</h6>
+                <p class="card-text">Automated CSP Manger</p>
+                <p class="card-text">Version 1.0 <br>Powered By: <a href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
             </div>
         </div>
-        <div class="col-md-9">
-            <h3> Check out our paid version</h3>
-
+    </div>
+    <div class="col-md-9">
+        <div class="card bg-dark text-white">
+            <img src="<?=$pluginDirectory?>img/seaSPBanner.png" class="card-img" alt="Upgrade your Arrr'senal to protect your booty! Upgrade Your SeaSP today!" style="height: 275px;">
+            <div class="card-img-overlay" style="
+            top: 180px;
+            color: #ffffff;
+            background-color: rgb(45 33 33 / 46%);
+            ">
+                <h5 class="card-title">SeaSP protects your hard earned riches.</h5>
+                <h4 class="card-text">Upgrade your Arrr'senal to protect your booty!<a href="https://www.bluetriangle.com/blue-triangles-csp-wordpress-plugin-seasp/" class="btn btn-warning">Upgrade Your SeaSP today!</a></h4>
+            </div>
         </div>
     </div>
-    <hr>
-
+</div>
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <h3>Blogs:</h3>

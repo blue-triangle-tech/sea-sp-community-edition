@@ -1,19 +1,32 @@
 <div class="row">
     <div class="col-md-3">
         <div class="card bg-dark text-white">
-            <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/Blue-Triangle-Avatar-Logo-blue-500x500.png" >
-            <div class="card-img-overlay">
-                <h4 class="card-title">Sea SP-Community Edition</h4>
-                <p class="card-text">A fully automated CSP for a busy secure world.</p>
-                <p class="card-text">Version 1.0</p>
+            <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/seaSPIcon.png">
+            <div class="card-img-overlay" style="top: 80px;left: 50px;background-color: rgb(45 33 33 / 46%);width: 215px;height: 160px;">
+                <h6 class="card-title">SeaSP - Community Edition</h6>
+                <p class="card-text">Automated CSP Manger</p>
+                <p class="card-text">Version 1.0 <br>Powered By: <a href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
             </div>
         </div>
     </div>
     <div class="col-md-9">
-        <h3> Check out our paid version</h3>
-
+        <div class="card bg-dark text-white">
+            <img src="<?=$pluginDirectory?>img/seaSPBanner.png" class="card-img" alt="Upgrade your Arrr'senal to protect your booty! Upgrade Your SeaSP today!" style="height: 275px;">
+            <div class="card-img-overlay" style="
+            top: 180px;
+            color: #ffffff;
+            background-color: rgb(45 33 33 / 46%);
+            ">
+                <h5 class="card-title">SeaSP protects your hard earned riches.</h5>
+                <h4 class="card-text">Upgrade your Arrr'senal to protect your booty!<a href="https://www.bluetriangle.com/blue-triangles-csp-wordpress-plugin-seasp/" class="btn btn-warning">Upgrade Your SeaSP today!</a></h4>
+            </div>
+        </div>
     </div>
 </div>
+
+<h3>Walk Through</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XdJNh6LEKJw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 <h3>Sea SP-Community Edition </h3>
 
 <p>Sea SP-Community Edition is an automated CSP manger that first installs a strict non-blocking CSP to collect violation data. <br>
@@ -45,6 +58,7 @@ Once domain and directive settings are done being configured the CSP can then be
 
 <h3>Contributing</h3>
 <p>Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.</p>
+<p>The project can be found on github <a href="https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/">SeaSP-Community-Edition</a>
 
 <h3>License</h3>
 <p><a href="https://choosealicense.com/licenses/gpl-3.0/">GNU General Public License v3.0</a></p>

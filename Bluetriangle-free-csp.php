@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Sea SP Community Edition 
- * Plugin URI: http://www.bluetriangle.com/wordpress-integration
+ * Plugin URI: https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/
  * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
  * Version: 1.0
  * Author: Julian Wilkison-Duran, Trish Brumett, Art By - Rachel Grant, and Dorthy Sysling
@@ -411,8 +411,8 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
 
 function Blue_Triangle_Automated_CSP_Free_themes_page() {
 
-    $page_title = "Blue Triangle Free Automated CSP";
-    $menu_title = "Blue Triangle Free CSP"; 
+    $page_title = "Blue Triangle SeaSP - Community Edition";
+    $menu_title = "Blue Triangle SeaSP"; 
     $capability = apply_filters("Blue_Triangle_Automated_CSP_Free_options_capability", "edit_theme_options");
     $menu_slug = "blue-triangle-free-csp";
     $svg = "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIxOC4xMDE3IiB2aWV3Qm94PSIwIDAgMjAgMTguMTAxNyI+PHRpdGxlPkJULWF2YXRhci13cDwvdGl0bGU+PHBvbHlnb24gcG9pbnRzPSIxMy43ODkgMTQuODQ1IDUuMjMzIDAgOS4xNzcgMTIuOTIyIDUuNTYzIDEzLjg4MiA3LjUgMTAuNTA4IDYuNDE1IDYuOTU1IDAgMTguMTAyIDEzLjc4OSAxNC44NDUiIGZpbGw9IiNlZWUiLz48cG9seWdvbiBwb2ludHM9IjE1LjIwMiAxNS40NTcgNC4wMDEgMTguMTAyIDIwIDE4LjEwMiAxMC4wMDEgMC43MjMgOC4zNTUgMy41ODEgMTUuMjAyIDE1LjQ1NyIgZmlsbD0iI2VlZSIvPjwvc3ZnPg==";

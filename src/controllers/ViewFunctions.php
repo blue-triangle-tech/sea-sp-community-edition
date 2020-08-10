@@ -4,6 +4,7 @@ function Blue_Triangle_Automated_CSP_Free_Dashboard(){
     $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'btt-auto-csp-free/';
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_js', $pluginDirectory . 'bootstrap/bootstrap.bundle.min.js', array( 'jquery' ), "1.0", false );
     wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_bootstrap_theme',  $pluginDirectory. 'bootstrap/bootstrap.min.css' );
+    wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_btt_css',  $pluginDirectory. 'css/btt.css' );
     require_once(  ABSPATH . 'wp-content/plugins/btt-auto-csp-free/src/views/dashboard-view.php' );
 }
 
