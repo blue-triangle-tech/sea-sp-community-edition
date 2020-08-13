@@ -77,7 +77,7 @@ This project has been tested on WordPress up to version 5.4 on both single and m
 The project can be found on [github](https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/)
 This project is sponsored by [Blue Triangle](www.bluetriangle.com)
 
-##third party Libraries 
+## third party Libraries 
 We use [Boostrap](https://getbootstrap.com/) for the UI of our plugin to make the interface clean and simple.
 Bootstraps license can be found [here](https://github.com/twbs/bootstrap/blob/main/LICENSE)
 
