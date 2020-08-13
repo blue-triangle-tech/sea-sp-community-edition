@@ -41,7 +41,7 @@ Once domain and directive settings are done being configured the CSP can then be
 <ul>
 <li>Download and unzip the contents into the plugins folder of your WordPress instance.</li>
 <li>In the Admin Dashboard of WordPress click on the Plugins menu item on teh left side.</li>
-<li>3Find Blue Triangle Free CSP in the list of plugins and click activate.</li>
+<li>Find Blue Triangle Free CSP in the list of plugins and click activate.</li>
 </ul>
 <h3> Usage</h3>
 <p>Once installed a strict non-blocking CSP is implemented on your site visit each page of your site to collect CSP violations for each of those pages.<br>

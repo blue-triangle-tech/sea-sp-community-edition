@@ -3,7 +3,7 @@ Contributors: bluetriangle
 Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.2
 Stable tag: 4.3
 License: GPLv3 
@@ -37,11 +37,13 @@ The CSP violations them selves are not stored only the violating domains the dir
 # = Is there a tutorial? =
 A walk though of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
 
+# = How does the plugin collect CSP violations? =
+the plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site. 
+
 ## == Screenshots ==
-1. SeaSP Dashboard contains blogs and webinars to keep up to date with teh latest Blue Triangle CSP news and updates 
-2. General settings page is where you preview and activate a blocking CSP
-3. Current Violations page is where you review all the domains that have violated your CSP to add them to the policy for the given directive 
-4. Directive Settings page is where you set source settings for each directive of your policy 
+
+1. Current Violations page is where you review all the domains that have violated your CSP to add them to the policy for the given directive 
+2. Directive Settings page is where you set source settings for each directive of your policy 
 
 ## == Changelog ==
  
@@ -67,6 +69,7 @@ For convenience, each option has a tool tip explaining what it allows in your CS
 
 ## == Walk Through ==
 A walk through video can be found on You Tube [here](https://youtu.be/XdJNh6LEKJw)
+https://youtu.be/XdJNh6LEKJw
 
 ## == Contributing ==
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -74,6 +77,11 @@ This project has been tested on WordPress up to version 5.4 on both single and m
 The project can be found on [github](https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/)
 This project is sponsored by [Blue Triangle](www.bluetriangle.com)
 
+##third party Libraries 
+We use [Boostrap](https://getbootstrap.com/) for the UI of our plugin to make the interface clean and simple.
+Bootstraps license can be found [here](https://github.com/twbs/bootstrap/blob/main/LICENSE)
+
+We use [bootstrap toggle](https://www.bootstraptoggle.com/) because simple check boxes can be confusing and we wanted our CSP mangers UI to feel easy. This code was developed for The New York Times by [Min Hur](https://github.com/minhur) and is licensed under [MIT](https://opensource.org/licenses/MIT)
 
 ## == License ==
 [GNU](https://choosealicense.com/licenses/gpl-3.0/)

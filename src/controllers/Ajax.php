@@ -34,13 +34,17 @@ function Blue_Triangle_Automated_CSP_Free_Approve(){
         wp_send_json("no isSubdomain sent",400);
         exit;
     }
-
-    $BTT_CSP_FREE_DOMAIN= $_REQUEST['BTT_CSP_FREE_DOMAIN'];
-    $BTT_CSP_FREE_DIRECTIVE = $_REQUEST['BTT_CSP_FREE_DIRECTIVE'];
-    $BTT_CSP_FREE_VALUE = $_REQUEST['BTT_CSP_FREE_VALUE'];
-    $approvalType = ($_REQUEST['BTT_CSP_FREE_IS_SUB']=="true")?"subDomain":"approved";
-
     $Blue_Triangle_Automated_CSP_Free_Errors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');
+    $Blue_Triangle_Automated_CSP_Free_Directives = get_site_option('Blue_Triangle_Automated_CSP_Free_Directives');
+    
+    if(in_array($_REQUEST['BTT_CSP_FREE_DIRECTIVE'],$Blue_Triangle_Automated_CSP_Free_Directives)){
+        $BTT_CSP_FREE_DIRECTIVE = $_REQUEST['BTT_CSP_FREE_DIRECTIVE'];
+    }
+    $BTT_CSP_FREE_DOMAIN= sanitize_text_field($_REQUEST['BTT_CSP_FREE_DOMAIN']);
+    $BTT_CSP_FREE_VALUE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_VALUE']);
+    $approvalType = (sanitize_text_field($_REQUEST['BTT_CSP_FREE_IS_SUB'])=="true")?"subDomain":"approved";
+
+    
     $Blue_Triangle_Automated_CSP_Free_Errors["csp"][$BTT_CSP_FREE_DIRECTIVE]["domains"][$BTT_CSP_FREE_DOMAIN][$approvalType]= $BTT_CSP_FREE_VALUE;
     
     update_option( 'Blue_Triangle_Automated_CSP_Free_Errors', $Blue_Triangle_Automated_CSP_Free_Errors);
@@ -66,9 +70,9 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
         exit;
     }
    
-    $BTT_CSP_FREE_OPT_TOG = $_REQUEST['BTT_CSP_FREE_DIRECTIVE_OPTION_TOGGLE'];
-    $BTT_CSP_FREE_DIRECTIVE = $_REQUEST['BTT_CSP_FREE_DIRECTIVE'];
-    $BTT_CSP_FREE_VALUE = $_REQUEST['BTT_CSP_FREE_DIRECTIVE_OPTION'];
+    $BTT_CSP_FREE_OPT_TOG = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE_OPTION_TOGGLE']);
+    $BTT_CSP_FREE_DIRECTIVE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE']);
+    $BTT_CSP_FREE_VALUE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE_OPTION']);
    
     $Blue_Triangle_Automated_CSP_Free_Errors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');
     if($BTT_CSP_FREE_OPT_TOG =="true"){
@@ -102,9 +106,8 @@ function Blue_Triangle_Automated_CSP_Free_Send_CSP(){
         wp_send_json("no data sent",400);
         exit;
     }
-    $BTT_CSP_FREE_ERROR = $_REQUEST['BTT_CSP_FREE_ERROR'];
-    $incomingErrors = stripslashes ($BTT_CSP_FREE_ERROR);
-    $incomingErrors = json_decode($incomingErrors,true);
+
+    $incomingErrors = json_decode(stripslashes ($_REQUEST['BTT_CSP_FREE_ERROR']),true);
     $errorType = "";
     $directives = get_site_option('Blue_Triangle_Automated_CSP_Free_Directives');
     $existingErrors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');

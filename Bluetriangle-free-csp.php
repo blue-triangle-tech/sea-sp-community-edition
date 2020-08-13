@@ -9,7 +9,7 @@
  */
 
 defined( 'ABSPATH' ) or die( 'Direct access to this plugin is prohibited.' );
-
+define('SEASP_COMMUNITY_PLUGIN_DIR', \plugin_dir_path(__FILE__));
 require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 

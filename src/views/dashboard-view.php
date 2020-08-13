@@ -30,7 +30,7 @@
         </div>
         <div class="col-md-3">
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="<?=$pluginDirectory?>img/blog/blog-01.png" alt="What Kinds of Hacking Can a Content Security Policy Stop?">
+                <img class="card-img-top" src="<?=$pluginDirectory?>img/blog-images/blog-01.png" alt="What Kinds of Hacking Can a Content Security Policy Stop?">
                 <div class="card-body">
                     <h5 class="card-title">What Kinds of Hacking Can a Content Security Policy Stop?</h5>
                     <p class="card-text">Myths and legends surround and sometimes obscure what a content security policy (CSP) is and how it can protect your website. The power of a CSP is noteworthy, but it is not an end-all...</p>
@@ -40,7 +40,7 @@
         </div>
         <div class="col-md-3">
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="<?=$pluginDirectory?>img/blog/blog-02.png" alt="How to find out if a Site has a Content Security Policy (CSP) deployed">
+                <img class="card-img-top" src="<?=$pluginDirectory?>img/blog-images/blog-02.png" alt="How to find out if a Site has a Content Security Policy (CSP) deployed">
                 <div class="card-body">
                     <h5 class="card-title">How to find out if a Site has a Content Security Policy (CSP) deployed</h5>
                     <p class="card-text">How to Find Out If a Site Has a Content Security Policy (CSP) Deployed</p>
@@ -50,7 +50,7 @@
         </div>
         <div class="col-md-3">
             <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="<?=$pluginDirectory?>img/blog/blog-03.png" alt="Legal and Operational Risks of Piggyback Tags, Part 1: What the Heck Are They and Why Should I Care?">
+            <img class="card-img-top" src="<?=$pluginDirectory?>img/blog-images/blog-03.png" alt="Legal and Operational Risks of Piggyback Tags, Part 1: What the Heck Are They and Why Should I Care?">
                 <div class="card-body">
                     <h5 class="card-title">Legal and Operational Risks of Piggyback Tags, Part 1: What the Heck Are They and Why Should I Care?</h5>
                     <p class="card-text">What Are Tags? Every business website has “Tags” – they are the pixel or code mechanisms that facilitate the collection and sharing of data between your website and the services you rely...</p>
