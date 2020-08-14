@@ -8,7 +8,7 @@ function Blue_Triangle_Automated_CSP_Free_Csp_Mode(){
         wp_send_json("no mode sent",400);
         exit;
     }
-    $BTT_CSP_FREE_CSP_MODE= $_REQUEST['BTT_CSP_FREE_CSP_MODE'];
+    $BTT_CSP_FREE_CSP_MODE= sanitize_text_field($_REQUEST['BTT_CSP_FREE_CSP_MODE']);
     update_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode', $BTT_CSP_FREE_CSP_MODE);
     Blue_Triangle_Automated_CSP_Free_Build_CSP();
 }
@@ -35,11 +35,8 @@ function Blue_Triangle_Automated_CSP_Free_Approve(){
         exit;
     }
     $Blue_Triangle_Automated_CSP_Free_Errors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');
-    $Blue_Triangle_Automated_CSP_Free_Directives = get_site_option('Blue_Triangle_Automated_CSP_Free_Directives');
-    
-    if(in_array($_REQUEST['BTT_CSP_FREE_DIRECTIVE'],$Blue_Triangle_Automated_CSP_Free_Directives)){
-        $BTT_CSP_FREE_DIRECTIVE = $_REQUEST['BTT_CSP_FREE_DIRECTIVE'];
-    }
+
+    $BTT_CSP_FREE_DIRECTIVE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE']);
     $BTT_CSP_FREE_DOMAIN= sanitize_text_field($_REQUEST['BTT_CSP_FREE_DOMAIN']);
     $BTT_CSP_FREE_VALUE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_VALUE']);
     $approvalType = (sanitize_text_field($_REQUEST['BTT_CSP_FREE_IS_SUB'])=="true")?"subDomain":"approved";
