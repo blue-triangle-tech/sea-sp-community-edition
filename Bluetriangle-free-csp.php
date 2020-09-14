@@ -386,7 +386,7 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
         );
     });
 
-    setTimeout(function(){ 
+    window.addEventListener("load", function(e){ 
         (function($) {
             jQuery.ajax({
                 type : "post",
@@ -401,7 +401,7 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
             });
         })( jQuery );
     
-    }, 5000);
+    });
     
     
     </script>
