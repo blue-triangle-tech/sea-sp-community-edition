@@ -26,6 +26,20 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
+            <p>Thank you for securing your site with Blue Triangle's SeaSP Content Security Policy Manager. </p>
+            <p>This Content Security Policy or CSP protects your site from hackers by adding an additional layer of security.</p>
+            <p>This layer helps keep you and your customers safe by detecting and mitigating certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks.</p>
+            <p>It is a tedious task to implement this Content Security Policy(CSP) manually so Blue Triangle automated the process and made it into three easy to follow steps</p>
+            <h4>Capture</h4>
+            <p>We use a report ony version of a CSP to capture violation data necessary to build your CSP</p>
+            <h4>Create</h4>
+            <p>We create easy to read reports with definitions to help you make decisions about what content you allow on your site</p>
+            <h4>Automate</h4>
+            <p>Blue Triangle's SeaSP automatically generates a CSP from these reports and continually updates itself to keep your site safe</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <h3>Blogs:</h3>
         </div>
         <div class="col-md-3">
