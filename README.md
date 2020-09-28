@@ -11,13 +11,13 @@ License URI: https://choosealicense.com/licenses/gpl-3.0/
  
 ## == Description ==
 
-Sea SP-Community Edition is an automated Content Security Policy manger that first installs a strict non-blocking CSP to collect violation data. 
-Once violation data is collected it is stored in the WordPress database as a php object in the plugin options schema.
-Sea SP-Community Edition then allows you to look through each of the violations and approve domains for each directive that has been violated.
-One can choose to either approve the base domain or subdomains or both.
-Other features include the ability to set sources of content for each directive of the CSP such as only allowing HTTP or HTTPS domains or Allowing inline scripts only for style sources.
-The UI gives the user tips on what each directive does and how it should be used to protect their site. 
-Once domain and directive settings are done being configured the CSP can then be turned to blocking mode to protect the site 
+Sea SP-Community Edition is an automated Content Security Policy manger that first installs a strict Sea SP-Community Edition is an automated Content Security Policy manger. A Content Security Policy (CSP) is a browser security standard that controls what domains, subdomains, and types of resources a browser can load on a given web page. It is implemented via an HTTP header, but a CSP can also be placed on a web page using a <meta> tag. CSPs are compatible with most modern desktop and mobile browsers, including Chrome, Firefox, Internet Explorer, Edge, Opera, and Safari. CSP’s are used to detect and prevent certain types of attacks including form jacking and cross-site scripting, browser hijacking and ad injection, as well as unauthorized piggyback tags.
+
+The Wordpress SeaSP Community Edition was created to help quickly document what domains your site is using, so you can categorize and filter out any unwanted domains. First SeaSP installs a strict non-blocking CSP to collect violation data. The violation data is stored in the Wordpress database as a php option within the plugin options schema.
+
+Using the SeaSP Community Edition plugin, the violations can approved by domains and categorized by directives (CSS, fonts, images, JS, etc.). Base domains and subdomains can also be approved. The SeaSP UI helps users by explaining what each directive does, and how they can be used to create a CSP. 
+
+Once the domain and directive settings are configured as needed, the CSP can be updated to blocking mode. Once the CSP is put into blocking mode, the site is protected from any unrecognized code. Helping you secure your site and protect your bounty. 
 
 ## == Installation ==
 
