@@ -54,6 +54,11 @@ the plugin installs a small javascript in the head of your site that defines a v
 * All CSP terminology has been defined with tool tips 
 * Users can set source settings for each of the directives of the CSP 
 
+# = 1.1 =
+* fixed a bug where we misnamed a folder and cause bootstrap and other UI files to break
+* added a navigation menu to the top of the plugin for ease of use 
+* after activation the plugin now directs to the landing page for more instructions 
+
 ## == Upgrade Notice ==
 * This is the first iteration 
 
