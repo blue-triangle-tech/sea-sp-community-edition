@@ -32,6 +32,24 @@ function Blue_Triangle_Automated_CSP_Free_Violations(){
 }
 
 function Blue_Triangle_Automated_CSP_Free_Directives_Page(){
+    $directiveOptions = get_site_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
+    if(!isset($directiveOptions["host-source"]["wss:"])){
+        $directiveOptions["host-source"]["wss:"]= [
+            "desc"=>"Web sockets scheme.",
+        ];
+        update_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options', $directiveOptions);
+    }
+    if(!isset($directiveOptions["other"]["'wasm-eval'"])){
+        $directiveOptions["other"]["'wasm-eval'"]=[
+            "desc"=>"Currently 'unsafe-eval' allows WebAssembly and all of the other things that fall under 'unsafe-eval'. The goal for 'wasm-eval' is to allow WebAssembly without allowing JS eval().Basically, 'unsafe-eval' implies 'wasm-eval', but 'wasm-eval' does not imply 'unsafe-eval'.",
+        ];
+        update_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options', $directiveOptions);
+    }
+    if(isset($directiveOptions["other"]["'nonce-base64-value'"])){
+        unset($directiveOptions["other"]["'nonce-base64-value'"]);
+        update_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options', $directiveOptions);
+    }
+    
     $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_directives_js', $pluginDirectory . 'js/directives-page.js', array( 'jquery' ), "1.0", false );
     wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_btt_css',  $pluginDirectory. 'css/btt.css' );

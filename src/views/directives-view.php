@@ -23,7 +23,31 @@ $directiveCardMarkUp='
 var adminURL= "'.$adminURL.'";
 var CSP_Directives = '.json_encode($directives).'
 </script>
-
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">SeaSP</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp' ).'">Dashboard </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-general-settings' ).'">General Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-csp-violations' ).'">Current Violations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-directive-settings' ).'">Directive Settings<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-help-center' ).'">Help/Support</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 <div class="row">
     <div class="col-md-3">
         <div class="card bg-dark text-white">
