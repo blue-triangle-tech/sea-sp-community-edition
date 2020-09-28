@@ -228,6 +228,9 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             "https:"=>[
                 "desc"=>"A scheme such as http: or https:.",
             ],
+            "wss:"=>[
+                "desc"=>"Web sockets scheme.",
+            ],
         ],
         "scheme-source"=>[
             "data:"=>[
@@ -251,6 +254,9 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             "'unsafe-eval'"=>[
                 "desc"=>"Allows the use of eval() and similar methods for creating code from strings. You must include the single quotes.",
             ],
+            "'wasm-eval'"=>[
+                "desc"=>"Currently 'unsafe-eval' allows WebAssembly and all of the other things that fall under 'unsafe-eval'. The goal for 'wasm-eval' is to allow WebAssembly without allowing JS eval().Basically, 'unsafe-eval' implies 'wasm-eval', but 'wasm-eval' does not imply 'unsafe-eval'.",
+            ],
             "'unsafe-hashes'"=>[
                 "desc"=>"Allows enabling specific inline event handlers. If you only need to allow inline event handlers and not inline script elements or javascript: URLs, this is a safer method than using the unsafe-inline expression.",
             ],
@@ -260,9 +266,9 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             "'none'"=>[
                 "desc"=>"Refers to the empty set; that is, no URLs match. The single quotes are required.",
             ],
-            "'nonce-base64-value'"=>[
-                "desc"=>"An allow-list for specific inline scripts using a cryptographic nonce (number used once). The server must generate a unique nonce value each time it transmits a policy. It is critical to provide an unguessable nonce, as bypassing a resource’s policy is otherwise trivial. See unsafe inline script for an example. Specifying nonce makes a modern browser ignore 'unsafe-inline' which could still be set for older browsers without nonce support.",
-            ],
+            // "'nonce-base64-value'"=>[
+            //     "desc"=>"An allow-list for specific inline scripts using a cryptographic nonce (number used once). The server must generate a unique nonce value each time it transmits a policy. It is critical to provide an unguessable nonce, as bypassing a resource’s policy is otherwise trivial. See unsafe inline script for an example. Specifying nonce makes a modern browser ignore 'unsafe-inline' which could still be set for older browsers without nonce support.",
+            // ],
             "'strict-dynamic'"=>[
                 "desc"=>"The strict-dynamic source expression specifies that the trust explicitly given to a script present in the markup, by accompanying it with a nonce or a hash, shall be propagated to all the scripts loaded by that root script. At the same time, any allow-list or source expressions such as 'self' or 'unsafe-inline' are ignored. See script-src for an example.",
             ],
@@ -346,7 +352,15 @@ function Blue_Triangle_Automated_Free_CSP_install() {
 
     $Blue_Triangle_Automated_CSP_Free_CSP = "Content-Security-Policy-Report-Only: default-src 'self'";
     add_site_option( 'Blue_Triangle_Automated_CSP_Free_CSP', $Blue_Triangle_Automated_CSP_Free_CSP );
+
 }
+
+function Blue_Triangle_Automated_Free_CSP_Install_Redirect( $plugin ) {
+    if( $plugin == plugin_basename( __FILE__ ) ) {
+        exit( wp_redirect( admin_url( 'admin.php?page=blue-triangle-free-csp' ) ) );
+    }
+}
+add_action( 'activated_plugin', 'Blue_Triangle_Automated_Free_CSP_Install_Redirect' );
 
 register_deactivation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
 function Blue_Triangle_Automated_Free_CSP_deactivate() {

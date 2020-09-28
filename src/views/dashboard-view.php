@@ -1,3 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">SeaSP</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp' )?>">Dashboard <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-general-settings' )?>">General Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-csp-violations' )?>">Current Violations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-directive-settings' )?>">Directive Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-help-center' )?>">Help/Support</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
 <div class="row">
     <div class="col-md-3">
         <div class="card bg-dark text-white">
@@ -26,16 +52,59 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <p>Thank you for securing your site with Blue Triangle's SeaSP Content Security Policy Manager. </p>
-            <p>This Content Security Policy or CSP protects your site from hackers by adding an additional layer of security.</p>
-            <p>This layer helps keep you and your customers safe by detecting and mitigating certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks.</p>
-            <p>It is a tedious task to implement this Content Security Policy(CSP) manually so Blue Triangle automated the process and made it into three easy to follow steps</p>
-            <h4>Capture</h4>
-            <p>We use a report ony version of a CSP to capture violation data necessary to build your CSP</p>
-            <h4>Create</h4>
-            <p>We create easy to read reports with definitions to help you make decisions about what content you allow on your site</p>
-            <h4>Automate</h4>
-            <p>Blue Triangle's SeaSP automatically generates a CSP from these reports and continually updates itself to keep your site safe</p>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Thank you for securing your site with Blue Triangle's SeaSP Content Security Policy Manager. </h5>
+                <h6 class="card-subtitle mb-2 text-muted">This Content Security Policy or CSP protects your site from hackers by adding an additional layer of security.</h6>
+                <p class="card-text">This layer helps keep you and your customers safe by detecting and mitigating certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks.</p>
+                <p class="card-text">It is a tedious task to implement this Content Security Policy(CSP) manually so Blue Triangle automated the process and made it into three easy to follow steps</p>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card" style="align-items: center;">
+                <img class="card-img-top" style="height: 150px; width: 120px;" src="<?=$pluginDirectory?>img/Fish-net.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Step 1: Capture</h5>
+                    <p class="card-text">We use a report ony version of a CSP to capture violation data necessary to build your CSP</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Visit each page of your site to collect violations</li>
+                    <li class="list-group-item">Violations are automatically captured by a non blocking CSP</li>
+                    <li class="list-group-item">This means your site still works while we help you build up your security</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" style="align-items: center;">
+                <img class="card-img-top" style="height: 150px; width: 120px;" src="<?=$pluginDirectory?>img/Ink-and-quill.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Step 2: Create</h5>
+                    <p class="card-text">We create easy to read reports with definitions to help you make decisions about what content you allow on your site</p>
+                    <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-csp-violations" class="card-link">View your violation report here.</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">After collecting policy violations each one is compiled into a report of domains to be approved</li>
+                    <li class="list-group-item">You can whitelist only the base domain or base domain and subdomains</li>
+                    <li class="list-group-item">Each domain is only approved for the directive it violated</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" style="align-items: center;">
+                <img class="card-img-top" style="height: 150px; width: 120px;" src="<?=$pluginDirectory?>img/Parrot.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Step 3: Automate</h5>
+                    <p class="card-text">Blue Triangle's SeaSP automatically generates a CSP from these reports and continually updates itself to keep your site safe</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Your sites CSP is automatically generated each time you approve a domain or modify a directive</li>
+                    <li class="list-group-item">Once you are satisfied with your security policy  <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-general-settings" class="card-link">General Settings </a>turn on blocking mode and you are all set to be secure</li>
+                    <li class="list-group-item">SeaSP content security policy manager continuously watches your site for violations to your policy</li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="row">
