@@ -1,73 +1,78 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">SeaSP</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp' )?>">Dashboard <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-general-settings' )?>">General Settings</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-csp-violations' )?>">Current Violations</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-directive-settings' )?>">Directive Settings</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-help-center' )?>">Help/Support</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
+<div class="container-fluid">
+  <div class="row mb-3 mt-3">
+      <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">SeaSP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp' )?>">Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-general-settings' )?>">General Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-csp-violations' )?>">Current Violations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-directive-settings' )?>">Directive Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=admin_url( 'admin.php?page=blue-triangle-free-csp-help-center' )?>">Help/Support</a>
+            </li>
+            </ul>
+        </div>
+        </nav>
+</div>
+    </div>
+</div>
+<div class="container-fluid">
 <div class="row">
     <div class="col-md-3">
         <div class="card bg-dark text-white">
             <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/seaSPIcon.png">
-            <div class="card-img-overlay" style="top: 80px;left: 50px;background-color: rgb(45 33 33 / 46%);width: 215px;height: 160px;">
+            <div class="card-img-overlay"style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                 <h6 class="card-title">SeaSP - Community Edition</h6>
                 <p class="card-text">Automated CSP Manger</p>
                 <p class="card-text">Version 1.0 <br>Powered By: <a href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
             </div>
         </div>
     </div>
-    <div class="col-md-9">
-        <div class="card bg-dark text-white">
-            <img src="<?=$pluginDirectory?>img/seaSPBanner.png" class="card-img" alt="Upgrade your Arrr'senal to protect your booty! Upgrade Your SeaSP today!" style="height: 275px;">
-            <div class="card-img-overlay" style="
-            top: 180px;
-            color: #ffffff;
-            background-color: rgb(45 33 33 / 46%);
-            ">
-                <h5 class="card-title">SeaSP protects your hard earned riches.</h5>
-                <h4 class="card-text">Upgrade your Arrr'senal to protect your booty!<a href="https://www.bluetriangle.com/blue-triangles-csp-wordpress-plugin-seasp/" class="btn btn-warning">Upgrade Your SeaSP today!</a></h4>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
+    <div class="col-md-6">
+        <div class="">
+                <!--<h4 class="card-text">Upgrade your Arrr'senal to protect your booty!<a href="https://www.bluetriangle.com/blue-triangles-csp-wordpress-plugin-seasp/" class="btn btn-warning">Upgrade Your SeaSP today!</a></h4>-->
+                <div class="card-body">
+                    <h3 class="mt-3">Dashboard</h3>
                 <h5 class="card-title">Thank you for securing your site with Blue Triangle's SeaSP Content Security Policy Manager. </h5>
-                <h6 class="card-subtitle mb-2 text-muted">This Content Security Policy or CSP protects your site from hackers by adding an additional layer of security.</h6>
+                <p class="card-subtitle mb-2 text-muted">This Content Security Policy or CSP protects your site from hackers by adding an additional layer of security.</h3>
                 <p class="card-text">This layer helps keep you and your customers safe by detecting and mitigating certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks.</p>
                 <p class="card-text">It is a tedious task to implement this Content Security Policy(CSP) manually so Blue Triangle automated the process and made it into three easy to follow steps</p>
             </div>
         </div>
-        </div>
     </div>
-    <div class="row">
+    <div class="col-md-3">
+        <div style="background: #efefef; padding: 20px; width: 350px; height: 100%;" class="text-center">
+        <img style="width: 100px; height: auto; float: left; margin-right: 10px;" src="<?=$pluginDirectory?>img/starfish.png">
+            <h5 class="text-left mt-2">We would love your feedback!</h5>
+
+            <p class="mt-5">We're working to grow SeaSP and we would love feedback.</p>
+            <p>Have a suggestion? <a href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="pink-text">We're all ears!</a></p>
+              <p>If you like SeaSP, please leave us a review:</p><a href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="btn btn-warning">Leave a Review</a>
+          </div>
+      </div>
+</div>
+<div class="container-fluid">
+<div class="row mt-4 mb-4">
         <div class="col-sm-4">
-            <div class="card" style="align-items: center;">
-                <img class="card-img-top" style="height: 150px; width: 120px;" src="<?=$pluginDirectory?>img/Fish-net.png" alt="Card image cap">
+            <div class="card three-steps">
+                <div class="d-flex flex-row card-head">
+                    <img class="card-img-top" style="height: 50px; width: 55px; float: left;" src="<?=$pluginDirectory?>img/Fish-net.png" alt="Card image cap">
+                    <p class="card-title" style="float: left; display: inline;">Step 1: Capture</p>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Step 1: Capture</h5>
                     <p class="card-text">We use a report ony version of a CSP to capture violation data necessary to build your CSP</p>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -78,10 +83,12 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="card" style="align-items: center;">
-                <img class="card-img-top" style="height: 150px; width: 120px;" src="<?=$pluginDirectory?>img/Ink-and-quill.png" alt="Card image cap">
+            <div class="card three-steps">
+                <div class="d-flex flex-row card-head">
+                    <img class="card-img-top" style="height: 50px; width: 30px; float: left;" src="<?=$pluginDirectory?>img/Ink-and-quill.png" alt="Card image cap">
+                    <p class="card-title" style="float: left; display: inline;">Step 2: Create</p>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Step 2: Create</h5>
                     <p class="card-text">We create easy to read reports with definitions to help you make decisions about what content you allow on your site</p>
                     <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-csp-violations" class="card-link">View your violation report here.</a>
                 </div>
@@ -93,10 +100,12 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="card" style="align-items: center;">
-                <img class="card-img-top" style="height: 150px; width: 120px;" src="<?=$pluginDirectory?>img/Parrot.png" alt="Card image cap">
+            <div class="card three-steps">
+                <div class="d-flex flex-row card-head">
+                    <img class="card-img-top" style="height: 50px; width: 30px; float: left;" src="<?=$pluginDirectory?>img/Parrot.png" alt="Card image cap">
+                    <p class="card-title" style="float: left; display: inline;">Step 3: Automate</p>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Step 3: Automate</h5>
                     <p class="card-text">Blue Triangle's SeaSP automatically generates a CSP from these reports and continually updates itself to keep your site safe</p>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -152,7 +161,11 @@
             </div>
         </div>
     </div>
-    <div class="row"><h3>Webinars:</h3></div>
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <h3>Webinars:</h3>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-3">
             <div class="card" style="width: 18rem;">
