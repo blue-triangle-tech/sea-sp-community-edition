@@ -5,7 +5,7 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.5
 Requires PHP: 7.2
-Stable tag: 4.3
+Stable tag: 1.2
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -40,7 +40,7 @@ The CSP violations themselves are not stored only the violating domains the dire
 A walk though of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
 
 # = How does the plugin collect CSP violations? =
-the plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site. 
+The plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site. 
 
 ## == Screenshots ==
 
@@ -58,6 +58,11 @@ the plugin installs a small javascript in the head of your site that defines a v
 * fixed a bug where we misnamed a folder and cause bootstrap and other UI files to break
 * added a navigation menu to the top of the plugin for ease of use 
 * after activation the plugin now directs to the landing page for more instructions 
+
+# = 1.2 =
+* Fixed broken images
+* Cleaned up UI - spacing issues
+* Edited text in the top for clearer instructions on how to use the plugin
 
 ## == Upgrade Notice ==
 * This is the first iteration 
