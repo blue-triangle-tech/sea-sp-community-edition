@@ -2,10 +2,10 @@
 if ( !current_user_can( 'manage_options' ) )  {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 }
-$directives = get_site_option('Blue_Triangle_Automated_CSP_Free_Directives');
-$directiveOptions = get_site_option('Blue_Triangle_Automated_CSP_Free_Directive_Options');
-$reportMode = get_site_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
-$Blue_Triangle_Automated_CSP_Free_Errors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');
+$directives = get_option('Blue_Triangle_Automated_CSP_Free_Directives');
+$directiveOptions = get_option('Blue_Triangle_Automated_CSP_Free_Directive_Options');
+$reportMode = get_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
+$Blue_Triangle_Automated_CSP_Free_Errors = get_option('Blue_Triangle_Automated_CSP_Free_Errors');
 $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Directive_Nonce");
 $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
 $plusSVG = '
@@ -62,7 +62,7 @@ var CSP_Directives = '.json_encode($directives).'
                 <div class="card-img-overlay" style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                     <h6 class="card-title">SeaSP - Community Edition</h6>
                     <p class="card-text">Automated CSP Manger</p>
-                    <p class="card-text">Version 1.0 <br>Powered By: <a target="_blank" href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
+                    <p class="card-text">Version '.$versionNumber.' <br>Powered By: <a target="_blank" href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
                 </div>
             </div>
         </div>

@@ -217,7 +217,7 @@ function Blue_Triangle_Automated_Free_CSP_install() {
         ],
 
     ];
-    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Directives', $directives);
+    add_option( 'Blue_Triangle_Automated_CSP_Free_Directives', $directives);
 
     $directiveOptions = [
 
@@ -276,7 +276,7 @@ function Blue_Triangle_Automated_Free_CSP_install() {
         
        
     ];
-    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options', $directiveOptions);
+    add_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options', $directiveOptions);
 
     $Blue_Triangle_Automated_CSP_Free_Errors = [
         "csp"=>[
@@ -345,13 +345,16 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             ],
         ]
     ];
-    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Errors', $Blue_Triangle_Automated_CSP_Free_Errors );
+    add_option( 'Blue_Triangle_Automated_CSP_Free_Errors', $Blue_Triangle_Automated_CSP_Free_Errors );
 
     $Blue_Triangle_Automated_CSP_Free_Report_Mode = "true";
-    add_site_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode', $Blue_Triangle_Automated_CSP_Free_Report_Mode );
+    add_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode', $Blue_Triangle_Automated_CSP_Free_Report_Mode );
 
     $Blue_Triangle_Automated_CSP_Free_CSP = "Content-Security-Policy-Report-Only: default-src 'self'";
-    add_site_option( 'Blue_Triangle_Automated_CSP_Free_CSP', $Blue_Triangle_Automated_CSP_Free_CSP );
+    add_option( 'Blue_Triangle_Automated_CSP_Free_CSP', $Blue_Triangle_Automated_CSP_Free_CSP );
+
+    $Blue_Triangle_Automated_CSP_Free_Version = "1.3";
+    add_option( 'Blue_Triangle_Automated_CSP_Free_Version', $Blue_Triangle_Automated_CSP_Free_Version );
 
 }
 
@@ -364,16 +367,17 @@ add_action( 'activated_plugin', 'Blue_Triangle_Automated_Free_CSP_Install_Redire
 
 register_deactivation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
 function Blue_Triangle_Automated_Free_CSP_deactivate() {
-    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
-    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
-    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Errors');
-    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode');
-    delete_site_option( 'Blue_Triangle_Automated_CSP_Free_CSP');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Errors');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_CSP');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Version');
 }
 
 add_action( 'send_headers', 'Blue_Triangle_Automated_CSP_Free_Inject_CSP' );
 function Blue_Triangle_Automated_CSP_Free_Inject_CSP() {
-    $BTAC_CSP =get_site_option('Blue_Triangle_Automated_CSP_Free_CSP');
+    $BTAC_CSP =get_option('Blue_Triangle_Automated_CSP_Free_CSP');
 
     header($BTAC_CSP,TRUE);
 }
@@ -453,8 +457,8 @@ function Blue_Triangle_Automated_CSP_Free_themes_page() {
 add_action( 'admin_menu', 'Blue_Triangle_Automated_CSP_Free_themes_page');
 
 function Blue_Triangle_Automated_CSP_Free_Build_CSP(){
-    $Blue_Triangle_Automated_CSP_Free_Errors = get_site_option('Blue_Triangle_Automated_CSP_Free_Errors');
-    $Blue_Triangle_Automated_CSP_Free_Report_Mode = get_site_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
+    $Blue_Triangle_Automated_CSP_Free_Errors = get_option('Blue_Triangle_Automated_CSP_Free_Errors');
+    $Blue_Triangle_Automated_CSP_Free_Report_Mode = get_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
     $CSP = ($Blue_Triangle_Automated_CSP_Free_Report_Mode=="true")?
     "Content-Security-Policy-Report-Only: ":"Content-Security-Policy: ";
 

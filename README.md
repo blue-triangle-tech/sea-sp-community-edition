@@ -4,8 +4,8 @@ Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.5
-Requires PHP: 7.2
-Stable tag: 1.2
+Requires PHP: 7.0
+Stable tag: 1.3
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -63,6 +63,10 @@ The plugin installs a small javascript in the head of your site that defines a v
 * Fixed broken images
 * Cleaned up UI - spacing issues
 * Edited text in the top for clearer instructions on how to use the plugin
+
+# = 1.3 =
+* Fixed problem with saving CSP data on a multi-site wordpress install
+* fixed incorrect version label on SeaSP plugin pages 
 
 ## == Upgrade Notice ==
 * This is the first iteration 
