@@ -37,7 +37,7 @@
             <div class="card-img-overlay"style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                 <h6 class="card-title">SeaSP - Community Edition</h6>
                 <p class="card-text">Automated CSP Manger</p>
-                <p class="card-text">Version 1.0 <br>Powered By: <a href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
+                <p class="card-text">Version <?=$versionNumber?> <br>Powered By: <a href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
             </div>
         </div>
     </div>

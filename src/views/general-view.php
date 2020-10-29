@@ -2,8 +2,8 @@
 if ( !current_user_can( 'manage_options' ) )  {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 }
-$CSP = get_site_option('Blue_Triangle_Automated_CSP_Free_CSP');
-$reportmode = get_site_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
+$CSP = get_option('Blue_Triangle_Automated_CSP_Free_CSP');
+$reportmode = get_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
 $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Approve_Nonce");
 $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
 $cspActiveValue = ($reportmode =="true")?"":"checked";
@@ -50,7 +50,7 @@ var adminURL= "'.$adminURL.'";
               <div class="card-img-overlay" style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                   <h6 class="card-title">SeaSP - Community Edition</h6>
                   <p class="card-text">Automated CSP Manger</p>
-                  <p class="card-text">Version 1.0 <br>Powered By: <a target="_blank" href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
+                  <p class="card-text">Version '.$versionNumber.'<br>Powered By: <a target="_blank" href="https://www.bluetriangle.com" class="text-warning">Blue Triangle</a></p>
               </div>
           </div>
       </div>
