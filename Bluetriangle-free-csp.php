@@ -26,17 +26,9 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
     } else {
         //run in single site context
         Blue_Triangle_Automated_CSP_Free_Build_Options();
-    }
-}
-
-function Blue_Triangle_Automated_Free_CSP_Install_Redirect( $plugin, $network_wide ) {
-
-    if ( !is_multisite() && !$network_wide && $plugin == plugin_basename( __FILE__ ) ) { 
         exit( wp_redirect( admin_url( 'admin.php?page=blue-triangle-free-csp' ) ) );
     }
-    
 }
-add_action( 'activated_plugin', 'Blue_Triangle_Automated_Free_CSP_Install_Redirect' );
 
 function Blue_Triangle_Automated_CSP_Free_Build_Options(){
     $directives = [
