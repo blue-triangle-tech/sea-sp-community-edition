@@ -44,8 +44,8 @@ var adminURL= "'.$adminURL.'";
 </div>
 <div class="container-fluid">
   <div class="row">
-      <div class="col-md-3">
-          <div class="card bg-dark text-white">
+      <div class="col-xl-3 col-lg-6 mb-2">
+          <div class="card sea-sp-green text-white">
               <img class="card-img" alt="Blue Triangle Logo" src="'.$pluginDirectory.'img/seaSPIcon.png">
               <div class="card-img-overlay" style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                   <h6 class="card-title">SeaSP - Community Edition</h6>
@@ -54,11 +54,11 @@ var adminURL= "'.$adminURL.'";
               </div>
           </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-xl-6 col-lg-6">
           <h3 class="mt-3">General Settings</h3>
       </div>
-      <div class="col-md-3">
-        <div style="background: #efefef; padding: 20px; width: 350px; height: 100%;" class="text-center">
+      <div class="col-xl-3 col-md-12">
+        <div style="background: #efefef; padding: 20px;height: 100%;" class="text-center">
           <img style="width: 100px; height: auto; float: left; margin-right: 10px;" src="'.$pluginDirectory.'img/starfish.png">
           <h5 class="text-left mt-2">We would love your feedback!</h5>
             <p class="mt-5">We are working to grow SeaSP and we would love feedback.</p>
