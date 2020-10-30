@@ -14,7 +14,31 @@ require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 
 register_activation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_install' );
-function Blue_Triangle_Automated_Free_CSP_install() {
+function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
+    if ( is_multisite() && $network_wide ) { 
+
+        foreach (get_sites(['fields'=>'ids']) as $blog_id) {
+            switch_to_blog($blog_id);
+            Blue_Triangle_Automated_CSP_Free_Build_Options();
+            restore_current_blog();
+        } 
+
+    } else {
+        //run in single site context
+        Blue_Triangle_Automated_CSP_Free_Build_Options();
+    }
+}
+
+function Blue_Triangle_Automated_Free_CSP_Install_Redirect( $plugin, $network_wide ) {
+
+    if ( !is_multisite() && !$network_wide && $plugin == plugin_basename( __FILE__ ) ) { 
+        exit( wp_redirect( admin_url( 'admin.php?page=blue-triangle-free-csp' ) ) );
+    }
+    
+}
+add_action( 'activated_plugin', 'Blue_Triangle_Automated_Free_CSP_Install_Redirect' );
+
+function Blue_Triangle_Automated_CSP_Free_Build_Options(){
     $directives = [
         "default-src"=>[
             "fileType"=>"any",
@@ -357,13 +381,6 @@ function Blue_Triangle_Automated_Free_CSP_install() {
     add_option( 'Blue_Triangle_Automated_CSP_Free_Version', $Blue_Triangle_Automated_CSP_Free_Version );
 
 }
-
-function Blue_Triangle_Automated_Free_CSP_Install_Redirect( $plugin ) {
-    if( $plugin == plugin_basename( __FILE__ ) ) {
-        exit( wp_redirect( admin_url( 'admin.php?page=blue-triangle-free-csp' ) ) );
-    }
-}
-add_action( 'activated_plugin', 'Blue_Triangle_Automated_Free_CSP_Install_Redirect' );
 
 register_deactivation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
 function Blue_Triangle_Automated_Free_CSP_deactivate() {
