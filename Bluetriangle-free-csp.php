@@ -486,7 +486,12 @@ function Blue_Triangle_Automated_Free_CSP_deactivate() {
     $wpdb->query("DROP TABLE `seasp_directive_options`;");
     $wpdb->query("DROP TABLE `seasp_site_settings`;");
     $wpdb->query("DROP TABLE `seasp_sand_box_urls`;");
-    
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Errors');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_CSP');
+    delete_option( 'Blue_Triangle_Automated_CSP_Free_Version');
 }
 
 add_action( 'send_headers', 'Blue_Triangle_Automated_CSP_Free_Inject_CSP' );
