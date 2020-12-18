@@ -14,7 +14,7 @@ require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 
 register_activation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_install' );
-function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
+function Blue_Triangle_Automated_Free_CSP_install() {
     /*************************************************************
     *       site level tables
     **************************************************************/
@@ -111,7 +111,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
             id int(9) NOT NULL AUTO_INCREMENT,
             site_id int(9) NOT NULL,
             setting_name varchar(55) DEFAULT '' NOT NULL,
-            setting_value varchar(55) DEFAULT '' NOT NULL,
+            setting_value LONGTEXT NOT NULL,
             PRIMARY KEY  (id)
             ) $charset_collate;";
         $dbOutput = dbDelta( $sql , true);
@@ -462,6 +462,14 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
         $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
         print_r($report);
     }
+    //verified insert into table 
+    $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
+    $insertStatement .="(%s,'plugin_version','1.4')";
+    $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
+    if($wpdb->last_error !== '') {
+        $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
+        print_r($report);
+    }
 
     Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,"default",false,false);
 
@@ -627,7 +635,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Setting($settingName,$siteID){
     if($wpdb->last_error !== '') {
         print_r($wpdb->last_error);
     }
-    return $results[0]["setting_value"];
+    return (isset($results[0]))?$results[0]["setting_value"]:false;
 }
 
 function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID){
@@ -773,3 +781,24 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
     }
     
 }
+
+//verified update process
+function Blue_Triangle_Automated_CSP_Free_update_db_check() {
+    $siteID = get_current_blog_id();
+    $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
+    if ($pluginVersion == false) {
+        //if there was no previous plugin version
+        delete_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
+        delete_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
+        delete_option( 'Blue_Triangle_Automated_CSP_Free_Errors');
+        delete_option( 'Blue_Triangle_Automated_CSP_Free_Report_Mode');
+        delete_option( 'Blue_Triangle_Automated_CSP_Free_CSP');
+        delete_option( 'Blue_Triangle_Automated_CSP_Free_Version');
+        Blue_Triangle_Automated_Free_CSP_install();
+    }
+    if($pluginVersion !== "1.4"){
+        //if the plugin version does not match do updates 
+
+    }
+}
+add_action( 'plugins_loaded', 'Blue_Triangle_Automated_CSP_Free_update_db_check' );
