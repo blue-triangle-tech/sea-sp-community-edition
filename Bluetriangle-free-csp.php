@@ -20,6 +20,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
     **************************************************************/
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
+        //verified created 
         $table_name = "seasp_violation_log"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -38,6 +39,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         $dbOutput = dbDelta( $sql , true);
 
+        //verified created
         $table_name = "seasp_directive_settings"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -55,7 +57,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
         //     "options"=>false,
 
         // ],
-
+        //verified created
         $table_name = "seasp_sand_box_urls"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -82,7 +84,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
         //         ],
         //     ],
         // ],
-
+        //verified created 
         $table_name = "seasp_allowed_plugins"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -91,19 +93,19 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
             PRIMARY KEY  (id)
             ) $charset_collate;";
         $dbOutput = dbDelta( $sql , true);
-
+        //verified create
         $table_name = "seasp_csp"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
             site_id int(9) NOT NULL,
             csp_url varchar(55) DEFAULT '' NOT NULL,
-            csp varchar(55) DEFAULT '' NOT NULL,
+            csp LONGTEXT NOT NULL,
             blocking varchar(55) DEFAULT '' NOT NULL,
-            version_number int(9) NOT NULL AUTO_INCREMENT,
+            version_number int(9) NOT NULL,
             PRIMARY KEY  (id)
             ) $charset_collate;";
         $dbOutput = dbDelta( $sql , true);
-
+        //verified create
         $table_name = "seasp_site_settings"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -117,6 +119,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
     /**************************************************************
      *      network wide tables 
      **************************************************************/
+        //verified create
         $table_name = "seasp_directives"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -128,7 +131,7 @@ function Blue_Triangle_Automated_Free_CSP_install($network_wide) {
             PRIMARY KEY  (id)
             ) $charset_collate;";
         $dbOutput = dbDelta( $sql , true);
-
+        //verified create
         $table_name = "seasp_directive_options"; 
         $sql = "CREATE TABLE $table_name (
             id int(9) NOT NULL AUTO_INCREMENT,
@@ -259,7 +262,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Option_Data(){
         ]
        
     ];
-
+    //verified inserts to table 
     global $wpdb;
     foreach($directiveOptions as $optionType => $options){
         foreach($options as $optionName => $desc){
@@ -413,7 +416,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Directive_Data(){
         ],
 
     ];
-
+    //verified inserts to table 
     foreach($directives as $directiveName => $directiveData){
         global $wpdb;
 
@@ -422,7 +425,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Directive_Data(){
         $desc = $directiveData['desc'];
         $options = $directiveData['options'];
     
-        $insertStatement = 'insert into `seasp_directives`(`directive_name`,`fileType`,`directive_type`,`directive_desc`,`has_options`) values ';
+        $insertStatement = 'insert into `seasp_directives`(`directive_name`,`file_type`,`directive_type`,`directive_desc`,`has_options`) values ';
         $insertStatement .="(%s,%s,%s,%s,%s)";
         $wpdb->query($wpdb->prepare($insertStatement, [$directiveName,$fileType,$type,$desc,$options]));
         if($wpdb->last_error !== '') {
@@ -434,6 +437,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Directive_Data(){
 
 function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
 
+    //verified insert into table 
     global $wpdb;
     $insertStatement = 'insert into `seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
     $insertStatement .="(%s,'default-src','self','self')";
@@ -442,6 +446,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
         $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;
         print_r($report);
     }
+    //verified insert into table 
     $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
     $insertStatement .="(%s,'error_collection','true')";
     $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
@@ -449,7 +454,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
         $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
         print_r($report);
     }
-
+    //verified insert into table 
     $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
     $insertStatement .="(%s,'nonce_enabled','false')";
     $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
@@ -471,6 +476,7 @@ add_action( 'activated_plugin', 'Blue_Triangle_Automated_CSP_Free_redirect' );
 
 register_deactivation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
 function Blue_Triangle_Automated_Free_CSP_deactivate() {
+    //verified removal of these tables 
     global $wpdb;
     $wpdb->query("DROP TABLE `seasp_violation_log`;");
     $wpdb->query("DROP TABLE `seasp_directive_settings`;");
@@ -479,6 +485,7 @@ function Blue_Triangle_Automated_Free_CSP_deactivate() {
     $wpdb->query("DROP TABLE `seasp_directives`;");
     $wpdb->query("DROP TABLE `seasp_directive_options`;");
     $wpdb->query("DROP TABLE `seasp_site_settings`;");
+    $wpdb->query("DROP TABLE `seasp_sand_box_urls`;");
     
 }
 
@@ -593,7 +600,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID){
     if($wpdb->last_error !== '') {
         print_r($wpdb->last_error);
     }
-    return $results[0];
+    return $results[0]["csp"];
 
 }
 
@@ -615,7 +622,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Setting($settingName,$siteID){
     if($wpdb->last_error !== '') {
         print_r($wpdb->last_error);
     }
-    return $results[0];
+    return $results[0]["setting_value"];
 }
 
 function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID){
@@ -719,10 +726,10 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
     $directives = Blue_Triangle_Automated_CSP_Free_Get_Directives();
    
     $CSP = (!$blocking)? "Content-Security-Policy-Report-Only: ":"Content-Security-Policy: ";
-    $nonce = ($nonce)?wp_create_nonce("Blue_Triangle_Automated_CSP_Free_User_Nonce"):"";
+    $userNonce = ($nonce)?wp_create_nonce("Blue_Triangle_Automated_CSP_Free_User_Nonce"):"";
 
     foreach($directives as $directive=>$directiveInfo){
-        $hasOptions = ($directiveInfo["has_options"]=="true")?true:false;
+        $hasOptions = ($directiveInfo["has_options"]=="1")?true:false;
 
         if(!isset($directiveSettings[$directive]) && !isset($approvedDomains[$directive])){
             continue;
@@ -731,7 +738,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
         if(isset($directiveSettings[$directive])){
             $CSP.= $directiveSettings[$directive]. " ";
             if($nonce && $hasOptions){
-                $CSP.="nonce-".$nonce." ";
+                $CSP.="nonce-".$userNonce." ";
             }
         }
         if(isset($approvedDomains[$directive])){
