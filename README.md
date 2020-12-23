@@ -5,7 +5,7 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.5
 Requires PHP: 7.0
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -68,8 +68,23 @@ The plugin installs a small javascript in the head of your site that defines a v
 * Fixed problem with saving CSP data on a multi-site wordpress install
 * fixed incorrect version label on SeaSP plugin pages 
 
+# = 1.4 =
+* We completely changed the way we save data to the word press database so that our solution is more stable
+* instead of using the options table provided by Wordpress we add the following tables
+*   seasp_violation_log - holds all the csp violations
+*   seasp_directive_settings - holds all the csp directive settings 
+*   seasp_allowed_plugins - this is for future support of object-src 
+*   seasp_csp - this holds the actual CSP for versioning purposes 
+*   seasp_directives - this is a definitions table for all the directives
+*   seasp_directive_options - this is a definitions table for all directive options 
+*   seasp_site_settings - this is a general settings table for things like post load delay 
+*   seasp_sand_box_urls - this is for future support of the sand box directive 
+* Multi-site Wordpress instances are now fully supported with the new database schema
+* Added the ability to change the post load delay to capture more errors after page load 
+* Added the ability to turn on and off error collection independent of placing the CSP in blocking mode
+
 ## == Upgrade Notice ==
-* This is the first iteration 
+* When you install this version you will need to rebuild your CSP
 
 ## == Usage ==
 

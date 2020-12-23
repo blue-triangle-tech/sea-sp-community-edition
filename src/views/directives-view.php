@@ -2,10 +2,13 @@
 if ( !current_user_can( 'manage_options' ) )  {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 }
-$directives = get_option('Blue_Triangle_Automated_CSP_Free_Directives');
-$directiveOptions = get_option('Blue_Triangle_Automated_CSP_Free_Directive_Options');
-$reportMode = get_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
-$Blue_Triangle_Automated_CSP_Free_Errors = get_option('Blue_Triangle_Automated_CSP_Free_Errors');
+$siteID = get_current_blog_id();
+$directives = Blue_Triangle_Automated_CSP_Free_Get_Directives();
+$directiveOptions = Blue_Triangle_Automated_CSP_Free_Get_Directive_Options();
+$cspData = Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID);
+$CSP = $cspData[0];
+$reportMode = $cspData[1];
+$directiveSettings = Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID,true);
 $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Directive_Nonce");
 $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
 $plusSVG = '
@@ -92,11 +95,11 @@ var CSP_Directives = '.json_encode($directives).'
 
 $cardCount = 0;
 foreach($directives as $directive=>$info){
-    if($info["options"] ==false){
+    if($info["has_options"] !=="1"){
         continue;
     }
     $showClass = ($cardCount==0)?"show":'';
-    $currentDirectiveOptions = $Blue_Triangle_Automated_CSP_Free_Errors["csp"][$directive]["options"];
+    $currentDirectiveOptions = (isset($directiveSettings[$directive]))?$directiveSettings[$directive]:[];
     $directiveCardMarkUp.='
         <div class="card mb-2">
             <div class="card-header" id="heading'.$cardCount.'">
@@ -108,7 +111,7 @@ foreach($directives as $directive=>$info){
             </div>
             <div id="collapse'.$cardCount.'" class="collapse '.$showClass.' aria-labelledby="heading'.$cardCount.'" data-parent="#accordion">
                 <div class="card-body">
-                    <p class="card-text">'.$info["desc"].'</p>
+                    <p class="card-text">'.$info["directive_desc"].'</p>
                     <div class="row">
                     ';
                     foreach($directiveOptions as $category=>$directiveOpts){
@@ -120,8 +123,7 @@ foreach($directives as $directive=>$info){
                         ';
 
                         foreach($directiveOpts as $optName=>$optInfo){
-                            $optNameCheck = str_replace("'","\'",$optName);
-                            $optionValue = (in_array($optNameCheck,$currentDirectiveOptions))?"checked":"";
+                            $optionValue = (in_array($optName,$currentDirectiveOptions))?"checked":"";
                             $directiveCardMarkUp.='
                             <div class="form-check mt-2 mb-2">
                             <input type="checkbox" '.$optionValue.' 
@@ -136,7 +138,7 @@ foreach($directives as $directive=>$info){
                             data-offstyle="danger"
                             data-size="small"
                             >
-                            <label class="form-check-label" for="dir-opt-'.$directive.'-'.$optName.'" data-toggle="tooltip" data-placement="right" title="'.$optInfo["desc"].'">
+                            <label class="form-check-label" for="dir-opt-'.$directive.'-'.$optName.'" data-toggle="tooltip" data-placement="right" title="'.$optInfo["option_dec"].'">
                                 '.$optName.'
                             </label>
                             </div>

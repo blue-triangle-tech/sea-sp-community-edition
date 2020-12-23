@@ -2,14 +2,20 @@
 if ( !current_user_can( 'manage_options' ) )  {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 }
-$CSP = get_option('Blue_Triangle_Automated_CSP_Free_CSP');
-$reportmode = get_option('Blue_Triangle_Automated_CSP_Free_Report_Mode');
 $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Approve_Nonce");
 $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
-$cspActiveValue = ($reportmode =="true")?"":"checked";
+$siteID = get_current_blog_id();
+$cspData = Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID);
+$CSP = $cspData[0];
+$reportMode = $cspData[1];
+$cspActiveValue = ($reportMode =="1")?"checked":"";
+$cspCollectionValue = Blue_Triangle_Automated_CSP_Free_Get_Setting("error_collection",$siteID);
+$postLoadDelay = Blue_Triangle_Automated_CSP_Free_Get_Setting("post_load_delay",$siteID);
+$cspCollectionValue = ($cspCollectionValue =="true")?"checked":"";
 $directiveCardMarkUp='
 <script>
 var adminURL= "'.$adminURL.'";
+var postLoadDelay= "'.$postLoadDelay.'";
 </script>
 <div class="container-fluid">
   <div class="row mb-3 mt-3">
@@ -85,6 +91,33 @@ var adminURL= "'.$adminURL.'";
               </label>
           </div>
           <br>
+          <div class="form-check">
+              <input type="checkbox" '.$cspCollectionValue.' 
+              id="cspErrorCollection"
+              class="activate-error-button"
+              data-toggle="toggle"
+              data-on="Error Collection On" 
+              data-off="Error Collection Off" 
+              data-onstyle="success" 
+              data-offstyle="info"
+              data-size="large"
+              >
+              <label class="form-check-label" for="cspActivation" data-toggle="tooltip" data-placement="right" title="To Activate your CSP choose blocking mode. To collect more violation data choose report only.">
+                  Click This toggle to turn on and off CSP Violation Collection
+              </label>
+          </div>
+          <br>
+          <div class="form-group">
+          <label for="postLoadDelay">Post Load Delay (how long to wait after page load to send CSP violations)</label>
+          <select class="form-control" id="postLoadDelay" name="postLoadDelay">
+            <option value="1000">1 sec.</option>
+            <option value="2000">2 sec.</option>
+            <option value="3000">3 sec.</option>
+            <option value="4000">4 sec.</option>
+            <option value="5000">5 sec.</option>
+          </select>
+        </div>
+        <br>
           <div class="form-group">
               <label for="cspOutPut"><h4>Current CSP</h4></label>
               <textarea class="form-control" id="cspOutPut" rows="10">
