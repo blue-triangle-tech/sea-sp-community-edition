@@ -10,6 +10,7 @@
 
 defined( 'ABSPATH' ) or die( 'Direct access to this plugin is prohibited.' );
 define('SEASP_COMMUNITY_PLUGIN_DIR', \plugin_dir_path(__FILE__));
+
 require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 
@@ -100,7 +101,7 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             site_id int(9) NOT NULL,
             csp_url varchar(55) DEFAULT '' NOT NULL,
             csp LONGTEXT NOT NULL,
-            blocking varchar(55) DEFAULT '' NOT NULL,
+            blocking int(9) NOT NULL,
             version_number int(9) NOT NULL,
             PRIMARY KEY  (id)
             ) $charset_collate;";
@@ -440,8 +441,8 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
     //verified insert into table 
     global $wpdb;
     $insertStatement = 'insert into `seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
-    $insertStatement .="(%s,'default-src','self','self')";
-    $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
+    $insertStatement .="(%s,'default-src','self',%s)";
+    $wpdb->query($wpdb->prepare($insertStatement, [$siteID,"'self'"]));
     if($wpdb->last_error !== '') {
         $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;
         print_r($report);
@@ -465,6 +466,14 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
     //verified insert into table 
     $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
     $insertStatement .="(%s,'plugin_version','1.4')";
+    $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
+    if($wpdb->last_error !== '') {
+        $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
+        print_r($report);
+    }
+    //verified insert into table 
+    $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
+    $insertStatement .="(%s,'post_load_delay','2000')";
     $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
     if($wpdb->last_error !== '') {
         $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
@@ -510,6 +519,7 @@ function Blue_Triangle_Automated_CSP_Free_Inject_CSP() {
         $BTAC_CSP = Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,"default",true,true);
     }else{
         $BTAC_CSP = Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID);
+        $BTAC_CSP = $BTAC_CSP[0];
     }
     
     header($BTAC_CSP,TRUE);
@@ -524,6 +534,7 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
     if($errorCollectionEnabled !== "true"){
         echo '';
     }
+    $postLoadDelay = Blue_Triangle_Automated_CSP_Free_Get_Setting("post_load_delay",$siteID);
     $errorCollector = '
     <script>
     var adminURL= "'.$adminURL.'";
@@ -543,22 +554,22 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
 
     window.addEventListener("load", function(e){ 
         (function($) {
-            jQuery.ajax({
-                type : "post",
-                dataType : "json",
-                url : adminURL,
-                data : {action:"Blue_Triangle_Automated_CSP_Free_Send_CSP",BTT_CSP_FREE_ERROR:JSON.stringify(_BTT_CSP_FREE_ERROR)},
-                success: function(response) {
-                },
-                error: function(XHR, TEXT, Error){
-        
-                },
-            });
+            setTimeout(function() {
+                console.log(_BTT_CSP_FREE_ERROR);
+                jQuery.ajax({
+                    type : "post",
+                    dataType : "json",
+                    url : adminURL,
+                    data : {action:"Blue_Triangle_Automated_CSP_Free_Send_CSP",BTT_CSP_FREE_ERROR:JSON.stringify(_BTT_CSP_FREE_ERROR)},
+                    success: function(response) {
+                    },
+                    error: function(XHR, TEXT, Error){
+            
+                    },
+                });
+            }, '.$postLoadDelay.');
         })( jQuery );
-    
     });
-    
-    
     </script>
     ';
     echo $errorCollector;
@@ -598,7 +609,8 @@ function Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID){
     global $wpdb;
     $selectStatement = $wpdb->prepare("
     SELECT 
-    csp
+    csp,
+    blocking
     FROM   seasp_csp
     WHERE  version_number = (SELECT MAX(version_number) FROM seasp_csp WHERE site_id = %s)
     AND site_id = %s AND csp_url = 'default' ;
@@ -613,7 +625,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID){
     if($wpdb->last_error !== '') {
         print_r($wpdb->last_error);
     }
-    return $results[0]["csp"];
+    return [$results[0]["csp"],$results[0]["blocking"]];
 
 }
 
@@ -638,7 +650,28 @@ function Blue_Triangle_Automated_CSP_Free_Get_Setting($settingName,$siteID){
     return (isset($results[0]))?$results[0]["setting_value"]:false;
 }
 
-function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID){
+function Blue_Triangle_Automated_CSP_Free_Update_Setting($SettingName,$settingValue,$siteID){
+    global $wpdb;
+    $updateStatement = $wpdb->prepare("  
+    UPDATE seasp_site_settings
+    SET setting_value = %s
+    WHERE  setting_name = %s
+    AND site_id = %s;
+    ",[
+        $settingValue,
+        $SettingName,
+        $siteID
+        ]
+    );
+    //execute the query
+    $wpdb->query($updateStatement);
+    if($wpdb->last_error !== '') {
+       return false;
+    }
+    return true;
+}
+
+function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID,$asArray){
 
     global $wpdb;
     $selectStatement = $wpdb->prepare("
@@ -650,33 +683,58 @@ function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID){
         $siteID,
         ]
     );
+    $results = $wpdb->get_results($selectStatement,ARRAY_A);
+    if($wpdb->last_error !== '') {
+        print_r($wpdb->last_error);
+    }
+    $directiveSettings = [];
+    if($asArray){
+        foreach($results as $recordNumber => $recordData){
+            $directiveSettings[$recordData["directive_name"]][$recordData["option_name"]]=$recordData["option_value"];
+        }
+    }else{
+        foreach($results as $recordNumber => $recordData){
+            if(isset($directiveSettings[$recordData["directive_name"]])){
+                $directiveSettings[$recordData["directive_name"]].=$recordData["option_value"]." ";
+            }else{
+                $directiveSettings[$recordData["directive_name"]]=$recordData["option_value"]." ";
+            }
+        }
+    }
+
+    return $directiveSettings;
+}
+
+function Blue_Triangle_Automated_CSP_Free_Get_Violations($siteID,$approved){
+
+    $whereStatement = ($approved)?"WHERE site_id = %s AND approved = 'true'":"WHERE site_id = %s";
+    global $wpdb;
+    $selectStatement = $wpdb->prepare("
+    SELECT 
+    *
+    FROM seasp_violation_log
+    ".$whereStatement,[
+        $siteID,
+        ]
+    );
 
     //execute the query
     $results = $wpdb->get_results($selectStatement,ARRAY_A);
     if($wpdb->last_error !== '') {
         print_r($wpdb->last_error);
     }
-    $directiveSettings = [];
-    foreach($results as $recordNumber => $recordData){
-        if(isset($directiveSettings[$recordData["directive_name"]])){
-            $directiveSettings[$recordData["directive_name"]].=$recordData["option_value"]." ";
-        }else{
-            $directiveSettings[$recordData["directive_name"]]=$recordData["option_value"]." ";
-        }
-    }
-    return $directiveSettings;
-
+    return $results;
 }
 
-function Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID){
+function Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID,$approved){
 
+    $whereStatement = ($approved)?"WHERE site_id = %s AND approved = 'true'":"WHERE site_id = %s";
     global $wpdb;
     $selectStatement = $wpdb->prepare("
     SELECT 
     *
     FROM seasp_violation_log
-    WHERE site_id = %s AND approved = 'true'
-    ",[
+    ".$whereStatement,[
         $siteID,
         ]
     );
@@ -708,7 +766,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID){
 function Blue_Triangle_Automated_CSP_Free_Get_Directives(){
 
     global $wpdb;
-    $selectStatement = $wpdb->prepare("
+    $selectStatement = "
     SELECT 
     directive_name,
     file_type,
@@ -716,9 +774,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Directives(){
     directive_desc,
     has_options
     FROM seasp_directives
-    ",[
-        ]
-    );
+    ";
 
     //execute the query
     $results = $wpdb->get_results($selectStatement,ARRAY_A);
@@ -733,10 +789,58 @@ function Blue_Triangle_Automated_CSP_Free_Get_Directives(){
 
 }
 
+function Blue_Triangle_Automated_CSP_Free_Get_Directive_Options(){
+    global $wpdb;
+    $selectStatement = "
+    SELECT 
+    option_type,
+    option_name,
+    option_dec,
+    option_directive
+    FROM seasp_directive_options
+    WHERE option_type <> 'sandbox'
+    ";
+
+    //execute the query
+    $results = $wpdb->get_results($selectStatement,ARRAY_A);
+    if($wpdb->last_error !== '') {
+        print_r($wpdb->last_error);
+    }
+    $options = [];
+    foreach ($results as $recordNumber=>$data){
+        $options[$data["option_type"]][$data["option_name"]]= $data;
+    }
+    return $options;
+}
+
+function Blue_Triangle_Automated_CSP_Free_Get_Latest_Version_Number($siteID){
+    global $wpdb;
+    $selectStatement = $wpdb->prepare("
+    SELECT 
+    version_number
+    FROM   seasp_csp
+    WHERE  version_number = (SELECT MAX(version_number) FROM seasp_csp WHERE site_id = %s)
+    AND site_id = %s AND csp_url = 'default' ;
+    ",[
+        $siteID,
+        $siteID
+        ]
+    );
+
+    //execute the query
+    $results = $wpdb->get_results($selectStatement,ARRAY_A);
+    if($wpdb->last_error !== '') {
+        print_r($wpdb->last_error);
+    }
+    return $results[0]["version_number"];
+}
+
 function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonce){
-    $directiveSettings = Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID);
-    $approvedDomains = Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID);
+    $directiveSettings = Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID,false);
+    $approvedDomains = Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID,true);
     $directives = Blue_Triangle_Automated_CSP_Free_Get_Directives();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Latest_Version_Number($siteID);
+    $newVersionNumber = (int)$versionNumber +1;
    
     $CSP = (!$blocking)? "Content-Security-Policy-Report-Only: ":"Content-Security-Policy: ";
     $userNonce = ($nonce)?wp_create_nonce("Blue_Triangle_Automated_CSP_Free_User_Nonce"):"";
@@ -757,22 +861,23 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
         if(isset($approvedDomains[$directive])){
             $CSP.= $approvedDomains[$directive]. " ";
         }
-        $CSP.=";";
+        $CSP = trim($CSP);
+        $CSP.="; ";
     }
 
     if($nonce){
         return $CSP;
     }else{
         global $wpdb;
-        $insertStatement = 'insert into `seasp_csp`(`site_id`,`csp_url`,`csp`,`blocking`) values ';
-        $insertStatement .="(%s,%s,%s,'false')";
+        $insertStatement = 'insert into `seasp_csp`(`site_id`,`csp_url`,`csp`,`blocking`,`version_number`) values ';
+        $insertStatement .="(%s,%s,%s,%d,%d)";
         $wpdb->query($wpdb->prepare($insertStatement, 
         [
             $siteID,
             $url,
             $CSP,
-            $blocking
-        
+            $blocking,
+            $newVersionNumber
         ]));
         if($wpdb->last_error !== '') {
             $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;

@@ -2,8 +2,9 @@
 if ( !current_user_can( 'manage_options' ) )  {
     wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 }
-$directives = get_option('Blue_Triangle_Automated_CSP_Free_Directives');
-$Blue_Triangle_Automated_CSP_Free_Errors = get_option('Blue_Triangle_Automated_CSP_Free_Errors');
+$directives = Blue_Triangle_Automated_CSP_Free_Get_Directives();
+$siteID = get_current_blog_id();
+$Blue_Triangle_Automated_CSP_Free_Errors = Blue_Triangle_Automated_CSP_Free_Get_Violations($siteID,false);
 $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Approve_Nonce");
 $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
 ?>
@@ -90,46 +91,42 @@ var CSP_Directives = '.json_encode($directives).'
 <tbody>
 ';
 
-foreach($Blue_Triangle_Automated_CSP_Free_Errors["csp"] as $directive =>$directiveData){
-    $domainData = (isset($directiveData["domains"]))?
-    $directiveData["domains"]:[];
-    foreach($domainData as $domain => $violationData){
-
-        
-        $subDomainsEnabled = ($violationData["subDomain"]=="true")?"checked":"";
-        $domainsEnabled = ($violationData["approved"]=="true")?"checked":"";
-        $tableMarkUp .='<tr>';
-        $tableMarkUp .='<td>'.$domain."</td>";
-        $tableMarkUp .='<td><input type="checkbox" '.$domainsEnabled.' 
-        class="approve-domain-toggle"
-        id="domain-tog-'.str_replace (".","",$domain).'-'.$directive.'"
-        data-domain="'.$domain.'" 
-        data-directive="'.$directive.'" 
-        data-toggle="toggle"
-        data-on="Approved" 
-        data-off="Blocked" 
-        data-onstyle="success" 
-        data-offstyle="danger"
-        data-size="small"
-        ></td>';
-        $tableMarkUp .='<td><input type="checkbox" '.$subDomainsEnabled.' 
-        class="approve-sub-domain-toggle"
-        id="subdomain-tog-'.str_replace (".","",$domain).'-'.$directive.'"
-        data-domain="'.$domain.'" 
-        data-directive="'.$directive.'" 
-        data-toggle="toggle"
-        data-on="Enabled" 
-        data-off="Disabled" 
-        data-onstyle="success" 
-        data-offstyle="danger"
-        data-size="small"
-        ></td>';
-        $tableMarkUp .='<td>'.date('m/d/Y', $violationData["reportEpoch"])."</td>";
-        $tableMarkUp .='<td><button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="Directive Insights" data-content="'.$directives[$directive]["desc"].'">'.$directive.'</button></td>';
-        $tableMarkUp .='<td>'.$violationData["extension"]."</td>";
-        $tableMarkUp .='<td>'.$violationData["fileName"]."</td>";
-        $tableMarkUp .='</tr>';
-    }
+foreach($Blue_Triangle_Automated_CSP_Free_Errors as $index =>$directiveData){        
+  $subDomainsEnabled = ($directiveData["subdomain"]=="true")?"checked":"";
+  $domainsEnabled = ($directiveData["approved"]=="true")?"checked":"";
+  $domain = $directiveData["domain"];
+  $directive = $directiveData["violating_directive"];
+  $tableMarkUp .='<tr>';
+  $tableMarkUp .='<td>'.$domain."</td>";
+  $tableMarkUp .='<td><input type="checkbox" '.$domainsEnabled.' 
+  class="approve-domain-toggle"
+  id="domain-tog-'.str_replace (".","",$domain).'-'.$directive.'"
+  data-domain="'.$domain.'" 
+  data-directive="'.$directive.'" 
+  data-toggle="toggle"
+  data-on="Approved" 
+  data-off="Blocked" 
+  data-onstyle="success" 
+  data-offstyle="danger"
+  data-size="small"
+  ></td>';
+  $tableMarkUp .='<td><input type="checkbox" '.$subDomainsEnabled.' 
+  class="approve-sub-domain-toggle"
+  id="subdomain-tog-'.str_replace (".","",$domain).'-'.$directive.'"
+  data-domain="'.$domain.'" 
+  data-directive="'.$directive.'" 
+  data-toggle="toggle"
+  data-on="Enabled" 
+  data-off="Disabled" 
+  data-onstyle="success" 
+  data-offstyle="danger"
+  data-size="small"
+  ></td>';
+  $tableMarkUp .='<td>'.date('m/d/Y', $directiveData["report_epoch"])."</td>";
+  $tableMarkUp .='<td><button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="Directive Insights" data-content="'.$directives[$directive]["directive_desc"].'">'.$directive.'</button></td>';
+  $tableMarkUp .='<td>'.$directiveData["extension"]."</td>";
+  $tableMarkUp .='<td>'.$directiveData["violating_file"]."</td>";
+  $tableMarkUp .='</tr>';
     
 }
 $tableMarkUp .='</tbody>';
