@@ -41,8 +41,8 @@ $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
 </div>
 <div class="container-fluid">
   <div class="row mb-4">
-      <div class="col-md-3">
-          <div class="card bg-dark text-white">
+      <div class="col-xl-3 col-lg-6 mb-2">
+          <div class="card sea-sp-green text-white">
               <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/seaSPIcon.png">
               <div class="card-img-overlay" style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                   <h6 class="card-title">SeaSP - Community Edition</h6>
@@ -51,19 +51,19 @@ $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
               </div>
           </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-xl-6 col-lg-6">
             <h3 class="mt-3">Current Violations</h3>
             <p>Below you will find a list of domains that have violated directives in your content security policy. Review each domain carefully to make sure it A). belongs on your site B). it is allowed to serve up the type of content of the directive it has violated</p>
             <p><b>Example:  </b><i>www.bogus.com violated script-src directive</i></p><p>Ask your self does www.bogus.com belong on my site and if so does it need to put javascript on my site if you answered yes the approve the domain.</p>
             <p>The next question you must answer is does subdomain.bogus.com need to serve up javascript if yes toggle subdomain. </p>   
       </div>
-      <div class="col-md-3">
-        <div style="background: #efefef; padding: 20px; width: 350px; height: 100%;" class="text-center">
+      <div class="col-xl-3 col-md-12">
+        <div style="background: #efefef; padding: 20px; height: 100%;" class="text-center">
         <img style="width: 100px; height: auto; float: left; margin-right: 10px;" src="<?=$pluginDirectory?>img/starfish.png">
             <h5 class="text-left mt-2">We would love your feedback!</h5>
 
             <p class="mt-5">We're working to grow SeaSP and we would love feedback.</p>
-            <p>Have a suggestion? <a target="_blank" href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="pink-text">We're all ears!</a></p>
+            <p>Have a suggestion? <a target="_blank" href="https://wordpress.org/support/plugin/sea-sp-community-edition/" class="pink-text">We're all ears!</a></p>
               <p>If you like SeaSP, please leave us a review:</p><a target="_blank" href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="btn btn-warning">Leave a Review</a>
           </div>
       </div>

@@ -31,8 +31,8 @@
 </div>
 <div class="container-fluid">
 <div class="row">
-    <div class="col-md-3">
-        <div class="card bg-dark text-white">
+    <div class="col-xl-3 col-lg-6 mb-2">
+        <div class="card sea-sp-green text-white">
             <img class="card-img" alt="Blue Triangle Logo" src="<?=$pluginDirectory?>img/seaSPIcon.png">
             <div class="card-img-overlay"style="top: auto; position: absolute; bottom: 0; right: 0; background-color: rgb(45 33 33 / 46%);height: 160px;">
                 <h6 class="card-title">SeaSP - Community Edition</h6>
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-xl-6 col-lg-6">
         <div class="">
                 <!--<h4 class="card-text">Upgrade your Arrr'senal to protect your booty!<a href="https://www.bluetriangle.com/blue-triangles-csp-wordpress-plugin-seasp/" class="btn btn-warning">Upgrade Your SeaSP today!</a></h4>-->
                 <div class="card-body">
@@ -53,20 +53,20 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div style="background: #efefef; padding: 20px; width: 350px; height: 100%;" class="text-center">
+    <div class="col-xl-3 col-md-12">
+        <div style="background: #efefef; padding: 20px; height: 100%;" class="text-center">
         <img style="width: 100px; height: auto; float: left; margin-right: 10px;" src="<?=$pluginDirectory?>img/starfish.png">
             <h5 class="text-left mt-2">We would love your feedback!</h5>
 
             <p class="mt-5">We're working to grow SeaSP and we would love feedback.</p>
-            <p>Have a suggestion? <a href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="pink-text">We're all ears!</a></p>
-              <p>If you like SeaSP, please leave us a review:</p><a href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="btn btn-warning">Leave a Review</a>
+            <p>Have a suggestion? <a target="_blank" href="https://wordpress.org/support/plugin/sea-sp-community-edition/" class="pink-text">We're all ears!</a></p>
+              <p>If you like SeaSP, please leave us a review:</p><a target="_blank" href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="btn btn-warning">Leave a Review</a>
           </div>
       </div>
 </div>
 <div class="container-fluid">
 <div class="row mt-4 mb-4">
-        <div class="col-sm-4">
+        <div class="col-lg-4 col-md-6">
             <div class="card three-steps">
                 <div class="d-flex flex-row card-head">
                     <img class="card-img-top" style="height: 50px; width: 55px; float: left;" src="<?=$pluginDirectory?>img/Fish-net.png" alt="Card image cap">
@@ -82,7 +82,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4 col-md-6">
             <div class="card three-steps">
                 <div class="d-flex flex-row card-head">
                     <img class="card-img-top" style="height: 50px; width: 30px; float: left;" src="<?=$pluginDirectory?>img/Ink-and-quill.png" alt="Card image cap">
@@ -99,7 +99,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4 col-md-6">
             <div class="card three-steps">
                 <div class="d-flex flex-row card-head">
                     <img class="card-img-top" style="height: 50px; width: 30px; float: left;" src="<?=$pluginDirectory?>img/Parrot.png" alt="Card image cap">
@@ -120,8 +120,8 @@
         <div class="col-md-12">
             <h3>Blogs:</h3>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card">
                 <img class="card-img-top" src="<?=$pluginDirectory?>img/blog-images/blog-01.png" alt="What Kinds of Hacking Can a Content Security Policy Stop?">
                 <div class="card-body">
                     <h5 class="card-title">What Kinds of Hacking Can a Content Security Policy Stop?</h5>
@@ -130,8 +130,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card">
                 <img class="card-img-top" src="<?=$pluginDirectory?>img/blog-images/blog-02.png" alt="How to find out if a Site has a Content Security Policy (CSP) deployed">
                 <div class="card-body">
                     <h5 class="card-title">How to find out if a Site has a Content Security Policy (CSP) deployed</h5>
@@ -140,8 +140,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
+            <div class="card">
             <img class="card-img-top" src="<?=$pluginDirectory?>img/blog-images/blog-03.png" alt="Legal and Operational Risks of Piggyback Tags, Part 1: What the Heck Are They and Why Should I Care?">
                 <div class="card-body">
                     <h5 class="card-title">Legal and Operational Risks of Piggyback Tags, Part 1: What the Heck Are They and Why Should I Care?</h5>
@@ -150,8 +150,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
+            <div class="card" >
                 <img class="card-img-top" src="<?=$pluginDirectory?>img/BT-blog.png" alt="View More Blue Triangle Blogs">
                 <div class="card-body">
                     <h5 class="card-title">More Blogs</h5>
@@ -167,8 +167,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
+            <div class="card" >
                 <img class="card-img-top" src="<?=$pluginDirectory?>img/webinar/web-01.png" alt="Unlocking the Myths and Mysteries of Content Security Policies (CSPs)">
                 <div class="card-body">
                     <h5 class="card-title">Unlocking the Myths and Mysteries of Content Security Policies </h5>
@@ -177,8 +177,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
+            <div class="card">
                 <img class="card-img-top" src="<?=$pluginDirectory?>img/webinar/web-02.png" alt="Defend Your Site Against Cross Site Scripting and Other Supply Chain Attacks During COVID-19 Featuring F5">
                 <div class="card-body">
                     <h5 class="card-title">Defend Your Site Against Cross Site Scripting and Other Supply Chain Attacks During COVID-19 Featuring F5</h5>
@@ -187,8 +187,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
+            <div class="card">
             <img class="card-img-top" src="<?=$pluginDirectory?>img/webinar/web-03.png" alt="Office Hours with Blue Triangle: Coffee and Content Security Policies">
                 <div class="card-body">
                     <h5 class="card-title">Office Hours with Blue Triangle: Coffee and Content Security Policies</h5>
@@ -197,8 +197,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
+            <div class="card">
                 <img class="card-img-top" src="<?=$pluginDirectory?>img/BT-Webinars.png" alt="View More Blue Triangle Webinars">
                 <div class="card-body">
                     <h5 class="card-title">More Webinars</h5>
