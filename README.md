@@ -22,10 +22,11 @@ Once the domain and directive settings are configured as needed, the CSP can be 
 ## == Installation ==
 
 1. Download and unzip the contents into the plugins folder of your WordPress instance.
-2. In the Admin Dashboard of WordPress click on the Plugins menu item on the left side.
-3. Find SeaSP - Community Edition in the list of plugins and click activate. 
-4. After activation there will be a new admin menu item with a white triangle that says SeaSP
-5. Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
+2. Rename the SeaSP-Community-Edition to sea-sp-community-edition (IMPORTANT IF INSTALLING FROM GITHUB REPO)
+3. In the Admin Dashboard of WordPress click on the Plugins menu item on the left side.
+4. Find SeaSP - Community Edition in the list of plugins and click activate. 
+5. After activation there will be a new admin menu item with a white triangle that says SeaSP
+6. Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
 
 ## == Frequently Asked Questions ==
 # = What data does SeaSP collect? =
