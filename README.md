@@ -3,9 +3,9 @@ Contributors: bluetriangle
 Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 7.0
-Stable tag: 1.4
+Stable tag: 1.4.1
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -22,7 +22,7 @@ Once the domain and directive settings are configured as needed, the CSP can be 
 ## == Installation ==
 
 1. Download and unzip the contents into the plugins folder of your WordPress instance.
-2. Rename the SeaSP-Community-Edition to sea-sp-community-edition (IMPORTANT IF INSTALLING FROM GITHUB REPO)
+2. (IMPORTANT IF INSTALLING FROM GITHUB REPO) Rename the folder from SeaSP-Community-Edition to sea-sp-community-edition 
 3. In the Admin Dashboard of WordPress click on the Plugins menu item on the left side.
 4. Find SeaSP - Community Edition in the list of plugins and click activate. 
 5. After activation there will be a new admin menu item with a white triangle that says SeaSP
@@ -84,6 +84,10 @@ The plugin installs a small javascript in the head of your site that defines a v
 * Added the ability to change the post load delay to capture more errors after page load 
 * Added the ability to turn on and off error collection independent of placing the CSP in blocking mode
 
+# = 1.4.1 =
+* This update is a hotfix for a problem observed on a Safari Browser where directives did not fall back on default-src directive for https: setting
+* To remedy this when ever a directive setting is changed https is automatically selected for you 
+
 ## == Upgrade Notice ==
 * When you install this version you will need to rebuild your CSP
 
@@ -106,7 +110,7 @@ https://youtu.be/XdJNh6LEKJw
 
 ## == Contributing ==
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-This project has been tested on WordPress up to version 5.4 on both single and multi-site instances.
+This project has been tested on WordPress up to version 5.6 on both single and multi-site instances.
 The project can be found on [github](https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/)
 This project is sponsored by [Blue Triangle](www.bluetriangle.com)
 

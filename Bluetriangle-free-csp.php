@@ -3,7 +3,7 @@
  * Plugin Name: Sea SP Community Edition 
  * Plugin URI: https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/
  * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
- * Version: 1.4
+ * Version: 1.4.1
  * Author: Julian Wilkison-Duran, Trish Brumett, Art By - Rachel Grant, and Dorothy Sysling
  * Author URI: http://www.bluetriangle.com
  */
