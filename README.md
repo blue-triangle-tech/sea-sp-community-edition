@@ -5,19 +5,24 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.6
 Requires PHP: 7.0
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
+## == Important Notice ==
+
+(IMPORTANT IF INSTALLING FROM GITHUB REPO) Rename the folder from SeaSP-Community-Edition to sea-sp-community-edition 
+
 ## == Description ==
 
-Sea SP-Community Edition is an automated Content Security Policy manger that first installs a strict Sea SP-Community Edition is an automated Content Security Policy manger. A Content Security Policy (CSP) is a browser security standard that controls what domains, subdomains, and types of resources a browser can load on a given web page. It is implemented via an HTTP header, but a CSP can also be placed on a web page using a <meta> tag. CSPs are compatible with most modern desktop and mobile browsers, including Chrome, Firefox, Internet Explorer, Edge, Opera, and Safari. CSP’s are used to detect and prevent certain types of attacks including form jacking and cross-site scripting, browser hijacking and ad injection, as well as unauthorized piggyback tags.
+SeaSP-Community Edition WordPress plugin is an automated **Content Security Policy Manager**. SeaSP allows you to create, configure, and deploy a Content Security Policy for your site.
 
-The Wordpress SeaSP Community Edition was created to help quickly document what domains your site is using, so you can categorize and filter out any unwanted domains. First SeaSP installs a strict non-blocking CSP to collect violation data. The violation data is stored in the Wordpress database as a php option within the plugin options schema.
+The WordPress SeaSP-Community Edition plugin catalogs the domains your site is using. Categorize and filter out unwanted domains. Add a layer of WordPress security site from magecart and other cross-scripting hacks to keep your WordPress site safe.
 
-Using the SeaSP Community Edition plugin, the violations can approved by domains and categorized by directives (CSS, fonts, images, JS, etc.). Base domains and subdomains can also be approved. The SeaSP UI helps users by explaining what each directive does, and how they can be used to create a CSP. 
+SeaSP installs a strict non-blocking CSP to collect violation data and provide a violation report. Violation data flows into the WordPress database as a PHP option within the plugin options schema. Violations can be approved by domains and categorized by directives (CSS, fonts, images, JS, etc.). You can also approve base domains and subdomains. The SeaSP UI helps users by explaining what each directive does, and how to use them to create a CSP.
 
-Once the domain and directive settings are configured as needed, the CSP can be updated to blocking mode. Once the CSP is put into blocking mode, the site is protected from any unrecognized code. Helping you secure your site and protect your bounty. 
+After configuring the domain and directive settings switch the CSP to blocking mode. Once the CSP goes into blocking mode, the site's protected from any unrecognized code. SeaSP-Community Edition helps secure your site.
+
 
 ## == Installation ==
 
@@ -29,19 +34,31 @@ Once the domain and directive settings are configured as needed, the CSP can be 
 6. Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
 
 ## == Frequently Asked Questions ==
-# = What data does SeaSP collect? =
+
+### What  is a Content Security Policy? =
  
-SeaSP collects content security policy violations from the console 
+A Content Security Policy (CSP) is a browser security standard that controls the domains, subdomains, and types of resources a browser can load on a given web page. CSPs go into a special Content Security Policy header, or it can go on a web page using a meta tag. CSPs are compatible with all modern desktop and mobile browsers, including Chrome, Firefox, Internet Explorer, Edge, and Safari. CSPs detect and prevent certain types of attacks including form jacking and cross-site scripting, browser hijacking and ad injection, as well as unauthorized piggyback tags. 
 
-# = Where is this data stored? =
+SeaSP is an extra layer of security that protects your WordPress site from spammers by blocking unauthorized scripts.
 
-The CSP violations themselves are not stored only the violating domains the directives they violated. Those are stored as a php object in the plugin options schema.
+### What's next after my WordPress installation?
 
-# = Is there a tutorial? =
+Once the plugins installed a strict non-blocking CSP is on your site. Visit each page of your site to collect CSP violations for individual pages. The Current Violations page of the plugin collects domains that violate CSP directives.
+
+Review domains and click the toggle to approve the domain and include it in the CSP. Check for misspellings of common domains like adobee.com instead of adobe.com. This is a common way hackers inject content into your site.
+
+To allow subdomains to serve content, click the include subdomains toggle. To learn more about the violated directives click the blue Directive button.
+
+After this process, you might still see CSP violations for inline scripts, inline styles, blobs, or data. To allow this type of content navigate to the Directive Settings page and toggle the appropriate options (connect src, media src, child src, object src, frame ancestors, unsafe inline, etc.) Each option has a tooltip explaining what the directive allows in your CSP.
+
+User our CSP reports to see what content is loading on your site. 
+
+### Is there a tutorial? =
+
 A walk though of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
 
-# = How does the plugin collect CSP violations? =
-The plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site. 
+### How does the plugin collect CSP violations? =
+The plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site.  
 
 ## == Screenshots ==
 
@@ -87,6 +104,9 @@ The plugin installs a small javascript in the head of your site that defines a v
 # = 1.4.1 =
 * This update is a hotfix for a problem observed on a Safari Browser where directives did not fall back on default-src directive for https: setting
 * To remedy this when ever a directive setting is changed https is automatically selected for you 
+
+# = 1.4.2 =
+* This update is to clarify copy and images on the WordPress.org SeaSP Plugin page.
 
 ## == Upgrade Notice ==
 * When you install this version you will need to rebuild your CSP
