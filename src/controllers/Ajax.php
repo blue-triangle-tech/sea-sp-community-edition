@@ -18,6 +18,52 @@ function Blue_Triangle_Automated_CSP_Free_Csp_Mode(){
     wp_send_json($CSP,200);
 }
 
+add_action("wp_ajax_Blue_Triangle_Automated_CSP_Free_Csp_Usage_Update", "Blue_Triangle_Automated_CSP_Free_Csp_Usage_Update");
+function Blue_Triangle_Automated_CSP_Free_Csp_Usage_Update(){
+    if ( !wp_verify_nonce( $_REQUEST['nonce'], "Blue_Triangle_Automated_CSP_Free_Usage_Nonce")) {
+        exit("No naughty business please");
+    }  
+    if(!isset($_REQUEST['BTT_CSP_USAGE_MODE'])){
+        wp_send_json("no mode sent",400);
+        exit;
+    }
+
+    $siteID = get_current_blog_id();
+    $BTT_CSP_USAGE_MODE= sanitize_text_field($_REQUEST['BTT_CSP_USAGE_MODE']);
+    Blue_Triangle_Automated_CSP_Free_Update_Setting("usage_collection",$BTT_CSP_USAGE_MODE,$siteID);
+    $response='';
+    if($BTT_CSP_USAGE_MODE == "true"){
+        global $wp_version;
+        $isMultisite = (is_multisite())?"true":"false";
+        $isDebug = (WP_DEBUG ==1)?"true":"false";
+        $body = [
+            "wp_version" => $wp_version,
+            "wp_debug" => $isDebug,
+            "wp_multi_site" => $isMultisite,
+            "site_url" => $_SERVER['SERVER_NAME'],
+            "createTime"=> time()
+        
+        ];
+        $url = 'https://ks.bluetriangle.com/usages';
+        $headers = array( 
+                'Content-type' => 'application/json',
+                'X-BTT-JWT'=>'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InNlYXNwZmVlZGJhY2siLCJlbWFpbCI6IlNlYVNQQGJsdWV0cmlhbmdsZS5jb20iLCJjcmVhdGVUaW1lIjoxNjE2MDkzNzYyLCJsYXN0VmlzaXQiOjE2MTYwOTM3NjIsInN1cGVydXNlciI6MCwic3RhdHVzIjoxNjE4Njg1NzYyLCJjb21wYW55SUQiOjEsInByaXZpbGVnZSI6InVzYWdlIn0.lzSVkRVN61OUEshAKrKPRVveWKILQSyfw-KntzKmc3M',
+                );
+       
+        $payLoad = array(
+            'method' => 'POST',
+            'timeout' => 60,
+            'httpversion' => '1.0',
+            'blocking' => true,
+            'headers' => $headers,
+            'body' =>  json_encode($body)
+            );
+        
+        $response = wp_remote_post($url, $payLoad);
+    }
+    wp_send_json("Usage Collection Set to ".$BTT_CSP_USAGE_MODE." ".json_encode($response),200);
+}
+
 add_action("wp_ajax_Blue_Triangle_Automated_CSP_Free_Csp_Delay", "Blue_Triangle_Automated_CSP_Free_Csp_Delay");
 function Blue_Triangle_Automated_CSP_Free_Csp_Delay(){
     if ( !wp_verify_nonce( $_REQUEST['nonce'], "Blue_Triangle_Automated_CSP_Free_Approve_Nonce")) {
@@ -211,13 +257,25 @@ function Blue_Triangle_Automated_CSP_Free_Send_CSP(){
                 $domain = $errorData["domain"];
             break;
         }
+        
         $domainParts = explode("/",$domain);
         $domain = $domainParts[2];
         $domainParts = explode(".",$domain);
         if(count($domainParts)==1){
             $domain = $domainParts[0];
         }else{
-            $domain = $domainParts[count($domainParts)-2].".".$domainParts[count($domainParts)-1];   
+            $domain = '';
+            foreach($domainParts as $partIndex => $part){
+                if($partIndex == 0){
+                    continue;
+                }
+                if($partIndex+1 == count($domainParts)){
+                    $domain.= $part;
+                }else{
+                    $domain.= $part.".";
+                }
+                
+            }
         }
              
         if($domain == "."){

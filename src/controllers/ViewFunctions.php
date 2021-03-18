@@ -1,7 +1,8 @@
 <?php
 
 function Blue_Triangle_Automated_CSP_Free_Dashboard(){
-    $versionNumber = get_option( 'Blue_Triangle_Automated_CSP_Free_Version');
+    $siteID = get_current_blog_id();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_js', $pluginDirectory . 'bootstrap/bootstrap.bundle.min.js', array( 'jquery' ), "1.0", false );
     wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_bootstrap_theme',  $pluginDirectory. 'bootstrap/bootstrap.min.css' );
@@ -10,7 +11,8 @@ function Blue_Triangle_Automated_CSP_Free_Dashboard(){
 }
 
 function Blue_Triangle_Automated_CSP_Free_General_Page(){
-    $versionNumber = get_option( 'Blue_Triangle_Automated_CSP_Free_Version');
+    $siteID = get_current_blog_id();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_js', $pluginDirectory . 'bootstrap/bootstrap.bundle.min.js', array( 'jquery' ), "1.0", false );
     wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_bootstrap_theme',  $pluginDirectory. 'bootstrap/bootstrap.min.css' );
@@ -22,7 +24,8 @@ function Blue_Triangle_Automated_CSP_Free_General_Page(){
 }
 
 function Blue_Triangle_Automated_CSP_Free_Violations(){
-    $versionNumber = get_option( 'Blue_Triangle_Automated_CSP_Free_Version');
+    $siteID = get_current_blog_id();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_approval_js', $pluginDirectory . 'js/approval-page.js', array( 'jquery' ), "1.0", false );
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_js', $pluginDirectory . 'bootstrap/bootstrap.bundle.min.js', array( 'jquery' ), "1.0", false );
@@ -35,7 +38,8 @@ function Blue_Triangle_Automated_CSP_Free_Violations(){
 }
 
 function Blue_Triangle_Automated_CSP_Free_Directives_Page(){
-    $versionNumber = get_option( 'Blue_Triangle_Automated_CSP_Free_Version');
+    $siteID = get_current_blog_id();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     $directiveOptions = get_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
     if(!isset($directiveOptions["host-source"]["wss:"])){
         $directiveOptions["host-source"]["wss:"]= [
@@ -65,10 +69,24 @@ function Blue_Triangle_Automated_CSP_Free_Directives_Page(){
 }
 
 function Blue_Triangle_Automated_CSP_Free_Help_Center(){
-    $versionNumber = get_option( 'Blue_Triangle_Automated_CSP_Free_Version');
+    $siteID = get_current_blog_id();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
     wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_js', $pluginDirectory . 'bootstrap/bootstrap.bundle.min.js', array( 'jquery' ), "1.0", false );
     wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_bootstrap_theme',  $pluginDirectory. 'bootstrap/bootstrap.min.css' );
     wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_btt_css',  $pluginDirectory. 'css/btt.css' );
     require_once(  SEASP_COMMUNITY_PLUGIN_DIR.'src/views/help-view.php' );
+}
+
+function Blue_Triangle_Automated_CSP_Free_Usage_Page(){
+    $siteID = get_current_blog_id();
+    $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
+    $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
+    wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_js', $pluginDirectory . 'bootstrap/bootstrap.bundle.min.js', array( 'jquery' ), "1.0", false );
+    wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_bootstrap_theme',  $pluginDirectory. 'bootstrap/bootstrap.min.css' );
+    wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_usage_js', $pluginDirectory . 'js/usage-page.js', array( 'jquery' ), "1.0", false );
+    wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_bootstrap_toggle_js', $pluginDirectory . 'bootstrap/bootstrap-toggle.min.js', array( 'jquery' ), "1.0", false );
+    wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_btt_css',  $pluginDirectory. 'css/btt.css' );
+    wp_enqueue_style( 'Blue_Triangle_Automated_CSP_free_bootstrap_toggle',  $pluginDirectory. 'bootstrap/bootstrap-toggle.min.css' );
+    require_once(  SEASP_COMMUNITY_PLUGIN_DIR.'src/views/usage-view.php' );
 }

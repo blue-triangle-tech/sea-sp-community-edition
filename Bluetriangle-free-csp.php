@@ -3,7 +3,7 @@
  * Plugin Name: Sea SP Community Edition 
  * Plugin URI: https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/
  * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
- * Version: 1.4.2
+ * Version: 1.5.0
  * Author: Julian Wilkison-Duran, Trish Brumett, Art By - Rachel Grant, and Dorothy Sysling
  * Author URI: http://www.bluetriangle.com
  */
@@ -465,7 +465,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
     }
     //verified insert into table 
     $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
-    $insertStatement .="(%s,'plugin_version','1.4.2')";
+    $insertStatement .="(%s,'plugin_version','1.5.0')";
     $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
     if($wpdb->last_error !== '') {
         $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
@@ -479,7 +479,14 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
         $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
         print_r($report);
     }
-
+    //verified insert into table 
+    $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
+    $insertStatement .="(%s,'usage_collection','false')";
+    $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
+    if($wpdb->last_error !== '') {
+        $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
+        print_r($report);
+    }
     Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,"default",false,false);
 
 }
@@ -589,6 +596,7 @@ function Blue_Triangle_Automated_CSP_Free_themes_page() {
         'general-settings' => [__("General Settings", $space),"Blue_Triangle_Automated_CSP_Free_General_Page"],
         'csp-violations' => [__("Current Violations", $space),"Blue_Triangle_Automated_CSP_Free_Violations"],
         'directive-settings' => [__("Directive Settings", $space),"Blue_Triangle_Automated_CSP_Free_Directives_Page"],
+        'usage-settings' => [__("Usage Data Settings", $space),"Blue_Triangle_Automated_CSP_Free_Usage_Page"],
         'help-center' => [__("Help Center", $space),"Blue_Triangle_Automated_CSP_Free_Help_Center"],
     ));
 
@@ -886,12 +894,108 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
     
 }
 
+function Blue_Triangle_Automated_CSP_Free_Violations_Notice(){
+    global $pagenow;
+    $siteID = get_current_blog_id();
+    $errorCollectionEnabled = Blue_Triangle_Automated_CSP_Free_Get_Setting("error_collection",$siteID);
+    $usageCollectionEnabled = Blue_Triangle_Automated_CSP_Free_Get_Setting("usage_collection",$siteID);
+    $Blue_Triangle_Automated_CSP_Free_Errors = Blue_Triangle_Automated_CSP_Free_Get_Violations($siteID,false);
+    $CSP_Blocking = Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID);
+    $blocking = $CSP_Blocking[1];
+    $unapprovedCount = 0;
+    foreach($Blue_Triangle_Automated_CSP_Free_Errors as $index =>$directiveData){        
+        if($directiveData["approved"]!="true"){
+            $unapprovedCount ++;
+        }
+    }
+
+    if($unapprovedCount>0 || $errorCollectionEnabled !== "true" || $blocking == "0" || $usageCollectionEnabled == "false"){
+        echo '
+        <div class="notice notice-warning is-dismissible"> 
+            <p><strong>SeaSP Insights</strong></p>
+        ';
+        if($unapprovedCount>0){
+            echo '
+            <p>You have '.$unapprovedCount .' domains to review <a href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-csp-violations' ).'">click here</a> to review them now</p>
+            ';
+        }
+        if($blocking == "0"){
+            echo '
+            <p>Your CSP is currently in report only mode <a href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-general-settings' ).'">click here</a> to enable your CSP</p>
+            ';
+        }
+        if($errorCollectionEnabled == "true"){
+            echo '
+            <p>Your SeaSP is currently collecting violations data to change this <a href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-general-settings' ).'">click here</a> </p>
+            ';
+        }
+        if($usageCollectionEnabled == "false"){
+            echo '
+            <p>Please help support this plugin by turning on usage reporting <a href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-usage-settings' ).'">click here to learn more</a> </p>
+            ';
+        }
+            
+        echo '
+        </div>
+        ';
+    }
+        
+    
+}
+add_action('admin_notices', 'Blue_Triangle_Automated_CSP_Free_Violations_Notice');
+
+function Blue_Triangle_Automated_CSP_Free_Cron_Activate() {
+
+    if( !wp_next_scheduled( 'Blue_Triangle_Automated_CSP_Free_Cron_Update' ) ) {  
+       wp_schedule_event( time(), 'daily' , 'Blue_Triangle_Automated_CSP_Free_Cron_Update' );  
+    }
+}
+register_activation_hook( __FILE__, 'Blue_Triangle_Automated_CSP_Free_Cron_Activate' );
+
+function Blue_Triangle_Automated_CSP_Free_Cron_Job(){
+    $siteID = get_current_blog_id();
+    $usageCollectionEnabled = Blue_Triangle_Automated_CSP_Free_Get_Setting("usage_collection",$siteID);
+    if($usageCollectionEnabled == "true"){
+        global $wp_version;
+        $isMultisite = (is_multisite())?"true":"false";
+        $isDebug = (WP_DEBUG ==1)?"true":"false";
+        $body = [
+            "wp_version" => $wp_version,
+            "wp_debug" => $isDebug,
+            "wp_multi_site" => $isMultisite,
+            "site_url" => $_SERVER['SERVER_NAME'],
+            "createTime"=> time()
+        
+        ];
+        $url = 'https://ks.bluetriangle.com/usages';
+        $headers = array( 
+                'Content-type' => 'application/json',
+                'X-BTT-JWT'=>'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InNlYXNwZmVlZGJhY2siLCJlbWFpbCI6IlNlYVNQQGJsdWV0cmlhbmdsZS5jb20iLCJjcmVhdGVUaW1lIjoxNjE2MDkzNzYyLCJsYXN0VmlzaXQiOjE2MTYwOTM3NjIsInN1cGVydXNlciI6MCwic3RhdHVzIjoxNjE4Njg1NzYyLCJjb21wYW55SUQiOjEsInByaXZpbGVnZSI6InVzYWdlIn0.lzSVkRVN61OUEshAKrKPRVveWKILQSyfw-KntzKmc3M',
+                );
+       
+        $payLoad = array(
+            'method' => 'POST',
+            'timeout' => 60,
+            'httpversion' => '1.0',
+            'blocking' => true,
+            'headers' => $headers,
+            'body' =>  json_encode($body)
+            );
+        
+        $response = wp_remote_post($url, $payLoad);
+
+    }
+}
+add_action( 'Blue_Triangle_Automated_CSP_Free_Cron_Update', 'Blue_Triangle_Automated_CSP_Free_Cron_Job');
+
 //verified update process
 function Blue_Triangle_Automated_CSP_Free_update_db_check() {
     $siteID = get_current_blog_id();
     $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
+    $siteID = get_current_blog_id();
+    
     if ($pluginVersion == false) {
-        //if there was no previous plugin version
+        //if there was no previous plugin version update schema to current version 
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Errors');
@@ -900,9 +1004,16 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Version');
         Blue_Triangle_Automated_Free_CSP_install();
     }
-    if($pluginVersion !== "1.4"){
-        //if the plugin version does not match do updates 
-
+    if($pluginVersion !== "1.5"){
+        Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.5",$siteID);
+        global $wpdb;
+        $insertStatement = 'insert into `seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
+        $insertStatement .="(%s,'usage_collection','false')";
+        $wpdb->query($wpdb->prepare($insertStatement, [$siteID]));
+        if($wpdb->last_error !== '') {
+            $report = $wpdb->last_error .' failed to insert into `seasp_site_settings`' ;
+            print_r($report);
+        }
     }
 }
 add_action( 'plugins_loaded', 'Blue_Triangle_Automated_CSP_Free_update_db_check' );

@@ -3,17 +3,14 @@ Contributors: bluetriangle
 Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.4.2
+Stable tag: 1.5.0
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
-## == Important Notice ==
-
-(IMPORTANT IF INSTALLING FROM GITHUB REPO) Rename the folder from SeaSP-Community-Edition to sea-sp-community-edition 
-
 ## == Description ==
+
 
 SeaSP-Community Edition WordPress plugin is an automated **Content Security Policy Manager**. SeaSP allows you to create, configure, and deploy a Content Security Policy for your site.
 
@@ -34,7 +31,6 @@ After configuring the domain and directive settings switch the CSP to blocking m
 6. Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
 
 ## == Frequently Asked Questions ==
-
 ### What  is a Content Security Policy? =
  
 A Content Security Policy (CSP) is a browser security standard that controls the domains, subdomains, and types of resources a browser can load on a given web page. CSPs go into a special Content Security Policy header, or it can go on a web page using a meta tag. CSPs are compatible with all modern desktop and mobile browsers, including Chrome, Firefox, Internet Explorer, Edge, and Safari. CSPs detect and prevent certain types of attacks including form jacking and cross-site scripting, browser hijacking and ad injection, as well as unauthorized piggyback tags. 
@@ -58,7 +54,7 @@ User our CSP reports to see what content is loading on your site.
 A walk though of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
 
 ### How does the plugin collect CSP violations? =
-The plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site.  
+The plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site. 
 
 ## == Screenshots ==
 
@@ -108,7 +104,15 @@ The plugin installs a small javascript in the head of your site that defines a v
 # = 1.4.2 =
 * This update is to clarify copy and images on the WordPress.org SeaSP Plugin page.
 
-## == Upgrade Notice ==
+# = 1.5.0 =
+* Added an admin notice to alert how many unapproved domains are left to approve 
+* Added admin notice to inform user that the CSP in in report only mode 
+* added admin notice to inform user SeaSP is collecting violation data 
+* fixed a bug where domains like  google.co.in were not getting added correctly 
+* began usage tracking to see how many people are using the plugin
+* fixed a bug were version number was not showing up on the plugin pages 
+
+## == Upgrade Notice for 1.4==
 * When you install this version you will need to rebuild your CSP
 
 ## == Usage ==
@@ -142,3 +146,12 @@ We use [bootstrap toggle](https://www.bootstraptoggle.com/) because simple check
 
 ## == License ==
 [GNU](https://choosealicense.com/licenses/gpl-3.0/)
+
+## == Opt In usage data collection ==
+
+As of version 1.5 users will be able to opt in to data collection to help us determine how many people are using our plugin and what features we should be working on in future version this can be managed in the new usage data settings page. we collect 4 pieces of data.
+1. wordpress version
+2. wordpress debug mode 
+3. wordpress multisite 
+4. the base url that the plugin is on ex; www.bluetriangle.com
+this data is only accessible to the Blue Triangle organization and will be used to determine our user base and feature design 
