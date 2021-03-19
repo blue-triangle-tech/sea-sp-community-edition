@@ -49,6 +49,9 @@ var CSP_Directives = '.json_encode($directives).'
                 <a class="nav-link active" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-directive-settings' ).'">Directive Settings<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-usage-settings' ).'">Usage Data Settings</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="'.admin_url( 'admin.php?page=blue-triangle-free-csp-help-center' ).'">Help/Support</a>
             </li>
             </ul>
