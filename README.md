@@ -118,6 +118,8 @@ The plugin installs a small javascript in the head of your site that defines a v
 * created a new table to manage subdomains 
 * made a subdomain manager so that users can choose which sub domains to add to a directive
 * fixed a bug that would not let you set *.mydomain.com with out having mydomain.com
+* fixed a wordpress 5.7.1 jQuery load issue
+* improved error collection by placing the collection code in the footer
 
 
 ## == Upgrade Notice for 1.4==

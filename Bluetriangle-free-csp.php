@@ -562,6 +562,9 @@ function Blue_Triangle_Automated_CSP_Free_Inject_CSP() {
 
 add_action('wp_head', 'Blue_Triangle_Automated_CSP_Free_Inject_Tag');
 function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
+    $pluginDirectory = plugin_dir_url( "Bluetriangle-free-csp.php" ) .'sea-sp-community-edition/';
+    wp_enqueue_script( 'Blue_Triangle_Automated_CSP_free_collector_js', $pluginDirectory . 'js/collector.js', array( 'jquery' ), "1.0", false );
+
     $nonce = wp_create_nonce("Blue_Triangle_Automated_CSP_Free_Nonce");
     $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
     $siteID = get_current_blog_id();
@@ -572,6 +575,7 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
     $postLoadDelay = Blue_Triangle_Automated_CSP_Free_Get_Setting("post_load_delay",$siteID);
     $errorCollector = '
     <script>
+    var BTT_CSP_postLoadDelay = ' . $postLoadDelay . ';
     var adminURL= "'.$adminURL.'";
     var _BTT_CSP_FREE_ERROR = [];
     window.addEventListener("securitypolicyviolation",function(e){
@@ -585,24 +589,6 @@ function Blue_Triangle_Automated_CSP_Free_Inject_Tag() {
                 "type":"csp",
             }
         );
-    });
-
-    window.addEventListener("load", function(e){ 
-        (function($) {
-            setTimeout(function() {
-                jQuery.ajax({
-                    type : "post",
-                    dataType : "json",
-                    url : adminURL,
-                    data : {action:"Blue_Triangle_Automated_CSP_Free_Send_CSP",BTT_CSP_FREE_ERROR:JSON.stringify(_BTT_CSP_FREE_ERROR)},
-                    success: function(response) {
-                    },
-                    error: function(XHR, TEXT, Error){
-            
-                    },
-                });
-            }, '.$postLoadDelay.');
-        })( jQuery );
     });
     </script>
     ';
