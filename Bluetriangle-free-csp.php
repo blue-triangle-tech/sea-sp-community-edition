@@ -1081,7 +1081,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         
         $charset_collate = $wpdb->get_charset_collate();
         //verified created 
-        $sql = "CREATE TABLE" . $wpdb->prefix."seasp_subdomain_log (
+        $sql = "CREATE TABLE " . $wpdb->prefix."seasp_subdomain_log (
             id int(9) NOT NULL AUTO_INCREMENT,
             site_id int(9) NOT NULL,
             report_epoch int(13) NOT NULL,
@@ -1094,6 +1094,23 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         $dbOutput = dbDelta( $sql , true);
+
+        $sql = "ALTER TABLE `seasp_allowed_plugins` RENAME TO `".$wpdb->prefix."seasp_allowed_plugins`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_csp` RENAME TO `".$wpdb->prefix."seasp_csp`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_directives` RENAME TO `".$wpdb->prefix."seasp_directives`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_directive_options` RENAME TO `".$wpdb->prefix."seasp_directive_options`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_sand_box_urls` RENAME TO `".$wpdb->prefix."seasp_sand_box_urls`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_site_settings` RENAME TO `".$wpdb->prefix."seasp_site_settings`";
+        dbDelta($sql , true);
+        $sql = "ALTER TABLE `seasp_violation_log` RENAME TO `".$wpdb->prefix."seasp_violation_log`";
+        dbDelta($sql , true);
     }
 }
 add_action( 'plugins_loaded', 'Blue_Triangle_Automated_CSP_Free_update_db_check' );
