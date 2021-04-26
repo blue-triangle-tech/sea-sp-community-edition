@@ -1,4 +1,135 @@
 <?php
+add_action("wp_ajax_Blue_Triangle_Automated_CSP_Free_Approve_SUBDOMAIN", "Blue_Triangle_Automated_CSP_Free_Approve_SUBDOMAIN");
+function Blue_Triangle_Automated_CSP_Free_Approve_SUBDOMAIN(){
+    if ( !wp_verify_nonce( $_REQUEST['nonce'], "Blue_Triangle_Automated_CSP_Free_Approve_Nonce")) {
+        exit("No naughty business please");
+    }  
+    if(!isset($_REQUEST['BTT_CSP_FREE_DOMAIN'])){
+        wp_send_json("no domain sent",400);
+        exit;
+    }
+    if(!isset($_REQUEST['BTT_CSP_FREE_DIRECTIVE'])){
+        wp_send_json("no directive sent",400);
+        exit;
+    }
+    if(!isset($_REQUEST['BTT_CSP_FREE_VALUE'])){
+        wp_send_json("no subdomain sent",400);
+        exit;
+    }
+    if(!isset($_REQUEST['BTT_CSP_FREE_SUB_DOMAIN'])){
+        wp_send_json("no isSubdomain sent",400);
+        exit;
+    }
+
+
+    $BTT_CSP_FREE_DIRECTIVE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE']);
+    $BTT_CSP_FREE_DOMAIN= sanitize_text_field($_REQUEST['BTT_CSP_FREE_DOMAIN']);
+    $BTT_CSP_FREE_VALUE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_VALUE']);
+    $BTT_CSP_FREE_SUB_DOMAIN = sanitize_text_field($_REQUEST['BTT_CSP_FREE_SUB_DOMAIN']);
+    $siteID = get_current_blog_id();
+}
+
+add_action("wp_ajax_Blue_Triangle_Automated_CSP_Free_SUBDOMAIN_TABLE", "Blue_Triangle_Automated_CSP_Free_SUBDOMAIN_TABLE");
+function Blue_Triangle_Automated_CSP_Free_SUBDOMAIN_TABLE(){
+    if ( !wp_verify_nonce( $_REQUEST['nonce'], "Blue_Triangle_Automated_CSP_Free_Approve_Nonce")) {
+        exit("No naughty business please");
+    }  
+    if(!isset($_REQUEST['BTT_CSP_FREE_DOMAIN'])){
+        wp_send_json("no domain sent",400);
+        exit;
+    }
+    if(!isset($_REQUEST['BTT_CSP_FREE_DIRECTIVE'])){
+        wp_send_json("no directive sent",400);
+        exit;
+    }
+    if(!isset($_REQUEST['BTT_CSP_FREE_STAR_DOT'])){
+        wp_send_json("no star dot sent",400);
+        exit;
+    }
+    $BTT_CSP_FREE_DIRECTIVE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE']);
+    $BTT_CSP_FREE_DOMAIN= sanitize_text_field($_REQUEST['BTT_CSP_FREE_DOMAIN']);
+    $BTT_CSP_FREE_STAR_DOT= sanitize_text_field($_REQUEST['BTT_CSP_FREE_STAR_DOT']);
+    $siteID = get_current_blog_id();
+
+    global $wpdb;
+    $userTablePrefix = $wpdb->prefix;
+    $selectStatement = $wpdb->prepare("
+    SELECT 
+    subdomain_name,
+    approved
+    FROM ".$userTablePrefix."seasp_subdomain_log
+    WHERE site_id = %s AND domain = %s AND violating_directive = %s
+    ",[
+        $siteID,
+        $BTT_CSP_FREE_DOMAIN,
+        $BTT_CSP_FREE_DIRECTIVE
+    ]);
+
+    //execute the query
+    $results = $wpdb->get_results($selectStatement,ARRAY_A);
+    if($wpdb->last_error !== '') {
+        print_r($wpdb->last_error);
+    }
+    if(empty($results)){
+        wp_send_json("There is no subdomains for this domain.",200);
+    }
+    $tableMarkup ='
+    <label class="">
+    <input type="checkbox" '.$BTT_CSP_FREE_STAR_DOT.' 
+    class="approve-star-dot-toggle"
+    id="subdomain-tog-'.str_replace (".","",$BTT_CSP_FREE_DOMAIN).'-'.$BTT_CSP_FREE_DIRECTIVE.'"
+    data-domain="'.$BTT_CSP_FREE_DOMAIN.'" 
+    data-directive="'.$BTT_CSP_FREE_DIRECTIVE.'" 
+    data-toggle="toggle"
+    data-on="Enabled" 
+    data-off="Disabled" 
+    data-onstyle="success" 
+    data-offstyle="danger"
+    data-size="small"
+    >
+    Click this toggle to add *.'.$BTT_CSP_FREE_DOMAIN.' to '.$BTT_CSP_FREE_DIRECTIVE.' directive.
+    </label>
+    <table class="table table-striped table-dark">
+    <thead>
+    <tr>
+        <th scope="col">Subdomain</td>
+        <th scope="col">Status</td>
+    </tr>
+    </thead>
+    <tbody>
+    ';
+    foreach($results as $recordData){
+        $subdomain = $recordData["subdomain_name"];
+        $subdomainEnabled = ($recordData["approved"]=="true")?"checked":"";
+        $tableMarkup .='
+        <tr>
+            <td>'.$subdomain.'.'.$BTT_CSP_FREE_DOMAIN.'</td>
+            <td>
+            <input type="checkbox" '.$subdomainEnabled.' 
+            class="approve-sub-domain-toggle"
+            id="domain-tog-'.str_replace (".","",$BTT_CSP_FREE_DOMAIN).'-'.$BTT_CSP_FREE_DIRECTIVE.'"
+            data-domain="'.$BTT_CSP_FREE_DOMAIN.'" 
+            data-subdomain="'.$subdomain.'" 
+            data-directive="'.$BTT_CSP_FREE_DIRECTIVE.'" 
+            data-toggle="toggle"
+            data-on="Approved" 
+            data-off="Blocked" 
+            data-onstyle="success" 
+            data-offstyle="danger"
+            data-size="small"
+            >
+            </td>
+        </tr>
+        ';
+    }
+    $tableMarkup .='
+    <tbody>
+    </table>
+    ';
+
+    wp_send_json($tableMarkup,200);
+}
+
 add_action("wp_ajax_Blue_Triangle_Automated_CSP_Free_Csp_Mode", "Blue_Triangle_Automated_CSP_Free_Csp_Mode");
 function Blue_Triangle_Automated_CSP_Free_Csp_Mode(){
     if ( !wp_verify_nonce( $_REQUEST['nonce'], "Blue_Triangle_Automated_CSP_Free_Approve_Nonce")) {
@@ -119,7 +250,6 @@ function Blue_Triangle_Automated_CSP_Free_Approve(){
         wp_send_json("no isSubdomain sent",400);
         exit;
     }
-    $Blue_Triangle_Automated_CSP_Free_Errors = get_option('Blue_Triangle_Automated_CSP_Free_Errors');
 
     $BTT_CSP_FREE_DIRECTIVE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_DIRECTIVE']);
     $BTT_CSP_FREE_DOMAIN= sanitize_text_field($_REQUEST['BTT_CSP_FREE_DOMAIN']);
@@ -130,8 +260,9 @@ function Blue_Triangle_Automated_CSP_Free_Approve(){
     $reportMode = ($cspData[1]=="0")?false:true;
 
     global $wpdb;
+    $userTablePrefix = $wpdb->prefix;
     $updateStatement = $wpdb->prepare("  
-    UPDATE seasp_violation_log
+    UPDATE ".$userTablePrefix."seasp_violation_log
     SET ".$approvalType." = %s
     WHERE  violating_directive = %s
     AND domain = %s
@@ -177,11 +308,12 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
     $BTT_CSP_FREE_OPT_NAME = str_replace("'","",$BTT_CSP_FREE_VALUE);
     $siteID = get_current_blog_id();
     global $wpdb;
+    $userTablePrefix = $wpdb->prefix;
     $cspData = Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID);
     $reportMode = ($cspData[1]=="0")?false:true;
     if($BTT_CSP_FREE_OPT_TOG == "true"){
         //insert into db
-        $insertStatement = 'insert into `seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
+        $insertStatement = 'insert into `'.$userTablePrefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
         $insertStatement .="(%s,%s,%s,%s)";
         $wpdb->query($wpdb->prepare($insertStatement, [
             $siteID,
@@ -196,7 +328,7 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
     }else{
         //remove from db
         $delteStatement = $wpdb->prepare("  
-        DELETE FROM seasp_directive_settings 
+        DELETE FROM '.$userTablePrefix.'seasp_directive_settings 
         WHERE site_id = %s 
         AND directive_name = %s
         AND option_value = %s;
@@ -253,70 +385,93 @@ function Blue_Triangle_Automated_CSP_Free_Send_CSP(){
             case "data":
                 $domain = $errorData["documentURI"];
                 break;
+            case "eval":
+                $domain = $errorData["sourceFile"];
+                break;
             default:
                 $domain = $errorData["domain"];
             break;
         }
         
-        $domainParts = explode("/",$domain);
-        $domain = $domainParts[2];
-        $domainParts = explode(".",$domain);
-        if(count($domainParts)==1){
-            $domain = $domainParts[0];
-        }else{
-            $domain = '';
-            foreach($domainParts as $partIndex => $part){
-                if($partIndex == 0){
-                    continue;
-                }
-                if($partIndex+1 == count($domainParts)){
-                    $domain.= $part;
-                }else{
-                    $domain.= $part.".";
-                }
-                
-            }
-        }
-             
-        if($domain == "."){
-            $foobar="baz";
-        }
+        $domainSplit = parse_url($domain);
+        $scheme = $domainSplit['scheme'];//http ,https
+        $host = $domainSplit['host'];//domain.com
+        $path = $domainSplit['path'];//ex: /wordpress/
+        //$host = "as.dg.foobar.com";
+        $domain = Blue_Triangle_Automated_CSP_Free_extract_domain($host);
+        $subdomains = Blue_Triangle_Automated_CSP_Free_extract_subdomains($host);
+        $existingSubdomains = Blue_Triangle_Automated_CSP_Free_Get_subdomains_from_domain($siteID,$domain);
         $current_time = new DateTime();
         $timeStamp = $current_time->format('U');
-        if($errorData["violatedDirective"] =="connect-src"){
-            $foobar="baz";
-        }
-        if($errorData["violatedDirective"] =="worker-src"){
-            $foobar="baz";
-        }
-        if(strpos($existingErrors[$errorData["violatedDirective"]],$domain)!==false){
-            continue;
-        }
-        if(in_array($domain, $dataAdded[$errorData["violatedDirective"]])){
-            continue;
-        }
         $siteID = get_current_blog_id();
         global $wpdb;
-        $insertStatement = 'insert into `seasp_violation_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`extension`,`referrer`,`violating_file`,`approved`,`subdomain`) values ';
-        $insertStatement .="(%d,%d,%s,%s,%s,%s,%s,%s,%s)";
-        $wpdb->query($wpdb->prepare($insertStatement, [
-            $siteID,
-            $timeStamp,
-            $errorData["violatedDirective"],
-            $domain,
-            $extension,
-            $errorData["referrer"],
-            $errorData["sourceFile"],
-            "false",
-            "false"
-        ]));
-        $dataAdded[$errorData["violatedDirective"]][]=$domain;
-
-        if($wpdb->last_error !== '') {
-            $report = $wpdb->last_error .' failed to insert into `seasp_violation_log`' ;
-            wp_send_json(($report),500);
-            exit;
+        $userTablePrefix = $wpdb->prefix;
+        if(
+            strpos($existingErrors[$errorData["violatedDirective"]],$domain)===false &&
+            !in_array($domain, $dataAdded[$errorData["violatedDirective"]])
+            ){
+                $insertStatement = 'insert into `'.$userTablePrefix.'seasp_violation_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`extension`,`referrer`,`violating_file`,`approved`,`subdomain`) values ';
+                $insertStatement .="(%d,%d,%s,%s,%s,%s,%s,%s,%s)";
+                $wpdb->query($wpdb->prepare($insertStatement, [
+                    $siteID,
+                    $timeStamp,
+                    $errorData["violatedDirective"],
+                    $domain,
+                    $extension,
+                    $errorData["referrer"],
+                    $errorData["sourceFile"],
+                    "false",
+                    "false"
+                ]));
+                $dataAdded[$errorData["violatedDirective"]][]=$domain;
+        
+                if($wpdb->last_error !== '') {
+                    $report = $wpdb->last_error .' failed to insert into `seasp_violation_log`' ;
+                    wp_send_json(($report),500);
+                    exit;
+                }
         }
+
+        if($subdomains !=="" && $subdomains !=="www"){
+
+            if(
+                !empty($existingSubdomains[$errorData["violatedDirective"]]) && 
+                in_array($subdomains,$existingSubdomains[$errorData["violatedDirective"]])
+                ){
+                continue;
+            }
+            $insertStatement = 'insert into `'.$userTablePrefix.'seasp_subdomain_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`subdomain_name`,`approved`) values ';
+            $insertStatement .="(%d,%d,%s,%s,%s,%s)";
+            $wpdb->query($wpdb->prepare($insertStatement, [
+                $siteID,
+                $timeStamp,
+                $errorData["violatedDirective"],
+                $domain,
+                $subdomains,
+                "false"
+            ]));
+        }
+
     }
     
+}
+
+function Blue_Triangle_Automated_CSP_Free_extract_domain($domain)
+{
+    if(preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i", $domain, $matches))
+    {
+        return $matches['domain'];
+    } else {
+        return $domain;
+    }
+}
+
+function Blue_Triangle_Automated_CSP_Free_extract_subdomains($domain)
+{
+    $subdomains = $domain;
+    $domain = Blue_Triangle_Automated_CSP_Free_extract_domain($subdomains);
+
+    $subdomains = rtrim(strstr($subdomains, $domain, true), '.');
+
+    return $subdomains;
 }

@@ -83,11 +83,11 @@ var CSP_Directives = '.json_encode($directives).'
 <thead>
 <tr>
     <th scope="col">Domain</th>
-    <th scope="col">Approved</th>
-    <th scope="col">Include Subdomains</th>
-    <th scope="col">Date Reported</th>
+    <th scope="col">Status</th>
+    <th scope="col">Subdomains</th>
+    <th scope="col">Reported</th>
     <th scope="col">Directive</th>
-    <th scope="col">File Type</th>
+    <th scope="col">Type</th>
     <th scope="col">File Name</th>
 </tr>
 </thead>
@@ -113,18 +113,9 @@ foreach($Blue_Triangle_Automated_CSP_Free_Errors as $index =>$directiveData){
   data-offstyle="danger"
   data-size="small"
   ></td>';
-  $tableMarkUp .='<td><input type="checkbox" '.$subDomainsEnabled.' 
-  class="approve-sub-domain-toggle"
-  id="subdomain-tog-'.str_replace (".","",$domain).'-'.$directive.'"
-  data-domain="'.$domain.'" 
-  data-directive="'.$directive.'" 
-  data-toggle="toggle"
-  data-on="Enabled" 
-  data-off="Disabled" 
-  data-onstyle="success" 
-  data-offstyle="danger"
-  data-size="small"
-  ></td>';
+  $tableMarkUp .='<td>
+  <button id="subdomain-manage-'.str_replace (".","",$domain).'-'.$directive.'" data-toggle="modal" data-target="#subDomainModal" data-stardot="'.$subDomainsEnabled.'" data-domain="'.$domain.'" data-directive="'.$directive.'" class="btn btn-primary btn-sm managSubDomainButton">Manage</button>
+  </td>';
   $tableMarkUp .='<td>'.date('m/d/Y', $directiveData["report_epoch"])."</td>";
   $tableMarkUp .='<td><button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="Directive Insights" data-content="'.$directives[$directive]["directive_desc"].'">'.$directive.'</button></td>';
   $tableMarkUp .='<td>'.$directiveData["extension"]."</td>";
@@ -134,7 +125,28 @@ foreach($Blue_Triangle_Automated_CSP_Free_Errors as $index =>$directiveData){
 }
 $tableMarkUp .='</tbody>';
 $tableMarkUp .='</table>';
-echo $tableMarkUp;
+
+$modalMarkup = '
+<div class="modal fade" id="subDomainModal" tabindex="-1" role="dialog" aria-labelledby="subDomainModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="exampleModalLabel">Manage subdomains for <span class="font-weight-bold" id="domainLabel"></span> violating <span class="font-weight-bold" id="directiveLabel"></span> directive</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="subdomainModalBody">
+        Loading...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+';
+echo $tableMarkUp.$modalMarkup;
 ?>
 </div>
 </div>
