@@ -5,7 +5,7 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.5.0
+Stable tag: 1.8.0
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -111,6 +111,15 @@ The plugin installs a small javascript in the head of your site that defines a v
 * fixed a bug where domains like  google.co.in were not getting added correctly 
 * began usage tracking to see how many people are using the plugin
 * fixed a bug were version number was not showing up on the plugin pages 
+
+# = 1.8.0 =
+* fix a bug were tables did not use user defined table prefix
+* implemented the build in php function parse_url to parse violation URL's for domains 
+* created a new table to manage subdomains 
+* made a subdomain manager so that users can choose which sub domains to add to a directive
+* fixed a bug that would not let you set *.mydomain.com with out having mydomain.com
+* fixed a wordpress 5.7.1 jQuery load issue
+* improved error collection by placing the collection code in the footer
 
 ## == Upgrade Notice for 1.4==
 * When you install this version you will need to rebuild your CSP
