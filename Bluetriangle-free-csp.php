@@ -674,6 +674,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Setting($settingName,$siteID){
 }
 
 function Blue_Triangle_Automated_CSP_Free_Update_Setting($SettingName,$settingValue,$siteID){
+    /* Setting Value for Plugin Version must be in MAJOR.MINOR (ex: 1.5) */
     global $wpdb;
     
     $updateStatement = $wpdb->prepare("  
@@ -1055,7 +1056,7 @@ add_action( 'Blue_Triangle_Automated_CSP_Free_Cron_Update', 'Blue_Triangle_Autom
 //verified update process
 function Blue_Triangle_Automated_CSP_Free_update_db_check() {
     $siteID = get_current_blog_id();
-    $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
+    $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID) + 0.0;
     $siteID = get_current_blog_id();
     
     if ($pluginVersion == false) {
@@ -1068,7 +1069,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Version');
         Blue_Triangle_Automated_Free_CSP_install();
     }
-    if($pluginVersion !== "1.5"){
+    if($pluginVersion < 1.5){
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.5",$siteID);
         global $wpdb;
         
@@ -1080,7 +1081,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
             print_r($report);
         }
     }
-    if($pluginVersion !== "1.8"){
+    if($pluginVersion < 1.8){
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.8",$siteID);
         global $wpdb;
         
