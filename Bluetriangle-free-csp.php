@@ -666,8 +666,10 @@ function Blue_Triangle_Automated_CSP_Free_Get_Setting($settingName,$siteID){
     );
 
     //execute the query
-    $results = $wpdb->get_results($selectStatement,ARRAY_A);
-    if($wpdb->last_error !== '') {
+    try {
+        $results = $wpdb->get_results($selectStatement,ARRAY_A);
+    }
+    catch (Exception $e) {
         return "No site prefix";
     }
     return (isset($results[0]))?$results[0]["setting_value"]:false;
