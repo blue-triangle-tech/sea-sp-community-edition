@@ -1056,8 +1056,9 @@ add_action( 'Blue_Triangle_Automated_CSP_Free_Cron_Update', 'Blue_Triangle_Autom
 //verified update process
 function Blue_Triangle_Automated_CSP_Free_update_db_check() {
     $siteID = get_current_blog_id();
-    $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID) + 0.0;
+    $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     $siteID = get_current_blog_id();
+    global $wpdb;
     
     if ($pluginVersion == false) {
         //if there was no previous plugin version update schema to current version 
@@ -1069,9 +1070,15 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Version');
         Blue_Triangle_Automated_Free_CSP_install();
     }
+    if ($pluginVersion == 'No site prefix') {
+        $wpdb->query("ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`");
+    }
+    else {
+        $pluginVersion += 0.0;
+    }
+
     if($pluginVersion < 1.5){
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.5",$siteID);
-        global $wpdb;
         
         $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
         $insertStatement .="(%s,'usage_collection','false')";
@@ -1082,7 +1089,6 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         }
     }
     if($pluginVersion < 1.8){
-        Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.8",$siteID);
         global $wpdb;
         
         $charset_collate = $wpdb->get_charset_collate();
@@ -1108,11 +1114,11 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
             $wpdb->query("ALTER TABLE `seasp_csp` RENAME TO `".$wpdb->prefix."seasp_csp`");
             $wpdb->query("ALTER TABLE `seasp_directives` RENAME TO `".$wpdb->prefix."seasp_directives`");
             $wpdb->query("ALTER TABLE `seasp_directive_options` RENAME TO `".$wpdb->prefix."seasp_directive_options`");
-            $wpdb->query("ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`");
             $wpdb->query("ALTER TABLE `seasp_sand_box_urls` RENAME TO `".$wpdb->prefix."seasp_sand_box_urls`");
-            $wpdb->query("ALTER TABLE `seasp_site_settings` RENAME TO `".$wpdb->prefix."seasp_site_settings`");
             $wpdb->query("ALTER TABLE `seasp_violation_log` RENAME TO `".$wpdb->prefix."seasp_violation_log`");
         }
+        
+        Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.8",$siteID);
     }
 }
 add_action( 'plugins_loaded', 'Blue_Triangle_Automated_CSP_Free_update_db_check' );
