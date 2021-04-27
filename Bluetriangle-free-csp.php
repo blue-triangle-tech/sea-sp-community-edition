@@ -1121,13 +1121,6 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
             $wpdb->query("ALTER TABLE `seasp_sand_box_urls` RENAME TO `".$wpdb->prefix."seasp_sand_box_urls`");
             $wpdb->query("ALTER TABLE `seasp_violation_log` RENAME TO `".$wpdb->prefix."seasp_violation_log`");
         }
-        
-        $usageCollection = Blue_Triangle_Automated_CSP_Free_Get_Setting("usage_collection",$siteID);
-        $sql = $wpdb->prepare('DELETE FROM '.$wpdb->prefix."seasp_site_settings WHERE setting_name = 'usage_collection' AND site_id = %s", [$siteID]);
-        $wpdb->query($sql);
-
-        $sql = "INSERT INTO ".$wpdb->prefix."seasp_site_settings (`site_id`,`setting_name`,`setting_value`) values (%s,'usage_collection', %s)";
-        $wpdb->query($wpdb->prepare($sql, [$siteID, $usageCollection]));
 
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.8",$siteID);
     }
