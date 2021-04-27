@@ -1072,10 +1072,10 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
     }
     if ($pluginVersion == 'No site prefix') {
         $wpdb->query("ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`");
+        $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     }
-    else {
-        $pluginVersion += 0.0;
-    }
+
+    $pluginVersion += 0.0;
 
     if($pluginVersion < 1.5){
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.5",$siteID);
@@ -1089,7 +1089,6 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         }
     }
     if($pluginVersion < 1.8){
-        global $wpdb;
         
         $charset_collate = $wpdb->get_charset_collate();
         //verified created 
