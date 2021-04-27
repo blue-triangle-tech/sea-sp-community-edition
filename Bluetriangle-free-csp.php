@@ -1114,6 +1114,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
             $wpdb->query("ALTER TABLE `seasp_csp` RENAME TO `".$wpdb->prefix."seasp_csp`");
             $wpdb->query("ALTER TABLE `seasp_directives` RENAME TO `".$wpdb->prefix."seasp_directives`");
             $wpdb->query("ALTER TABLE `seasp_directive_options` RENAME TO `".$wpdb->prefix."seasp_directive_options`");
+            $wpdb->query("ALTER TABLE `seasp_site_settings` RENAME TO `".$wpdb->prefix."seasp_site_settings`");
             $wpdb->query("ALTER TABLE `seasp_sand_box_urls` RENAME TO `".$wpdb->prefix."seasp_sand_box_urls`");
             $wpdb->query("ALTER TABLE `seasp_violation_log` RENAME TO `".$wpdb->prefix."seasp_violation_log`");
         }
