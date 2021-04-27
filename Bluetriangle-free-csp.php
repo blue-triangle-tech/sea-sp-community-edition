@@ -1061,6 +1061,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
     global $wpdb;
     
     if ($pluginVersion == false) {
+        print_r("No plugin version!!!");
         //if there was no previous plugin version update schema to current version 
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
         delete_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');
@@ -1071,13 +1072,14 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         Blue_Triangle_Automated_Free_CSP_install();
     }
     if ($pluginVersion == 'No site prefix') {
+        print_r("No site Prefix!!!");
         $wpdb->query("ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`");
         $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     }
 
     $pluginVersion += 0.0;
-
     if($pluginVersion < 1.5){
+        print_r("1.5!!!");
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.5",$siteID);
         
         $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
@@ -1089,6 +1091,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         }
     }
     if($pluginVersion < 1.8){
+        print_r("1.8!!!");
         
         $charset_collate = $wpdb->get_charset_collate();
         //verified created 
@@ -1109,6 +1112,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         $oldTables = $wpdb->query('SHOW TABLES LIKE "seasp_%"');
 
         if ($oldTables != 0) {
+            print_r("Altering " . $oldTables . " tables!!!");
             $wpdb->query("ALTER TABLE `seasp_allowed_plugins` RENAME TO `".$wpdb->prefix."seasp_allowed_plugins`");
             $wpdb->query("ALTER TABLE `seasp_csp` RENAME TO `".$wpdb->prefix."seasp_csp`");
             $wpdb->query("ALTER TABLE `seasp_directives` RENAME TO `".$wpdb->prefix."seasp_directives`");
