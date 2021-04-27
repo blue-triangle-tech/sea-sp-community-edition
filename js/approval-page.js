@@ -55,14 +55,6 @@ jQuery(document).ready(function(){
         var BTT_CSP_FREE_IS_SUB = "true";
         sendApprovalData(BTT_CSP_FREE_DOMAIN, BTT_CSP_FREE_DIRECTIVE, BTT_CSP_FREE_VALUE, BTT_CSP_FREE_IS_SUB);
     });
-    $(document).on("change", ".approve-sub-domain-toggle", function(){
-        var BTT_CSP_FREE_DOMAIN = $(this).attr("data-domain");
-        var BTT_CSP_FREE_SUBDOMAIN = $(this).attr("data-subdomain");
-        var BTT_CSP_FREE_DIRECTIVE = $(this).attr("data-directive");
-        var BTT_CSP_FREE_VALUE = ($(this).prop("checked")==true)?"true":"false";
-        var BTT_CSP_FREE_IS_SUB = "true";
-       
-    });
 
     $(document).on("change", ".approve-domain-toggle", function(){
         var BTT_CSP_FREE_DOMAIN = $(this).attr("data-domain");

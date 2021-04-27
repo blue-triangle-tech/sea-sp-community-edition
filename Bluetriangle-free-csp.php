@@ -903,6 +903,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Latest_Version_Number($siteID){
 function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonce){
     $directiveSettings = Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID,false);
     $approvedDomains = Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID,true);
+    $approvedSubdomains = Blue_Triangle_Automated_CSP_Free_Get_Approved_Subdomains($siteID);
     $directives = Blue_Triangle_Automated_CSP_Free_Get_Directives();
     $versionNumber = Blue_Triangle_Automated_CSP_Free_Get_Latest_Version_Number($siteID);
     $newVersionNumber = (int)$versionNumber +1;
@@ -913,7 +914,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
     foreach($directives as $directive=>$directiveInfo){
         $hasOptions = ($directiveInfo["has_options"]=="1")?true:false;
 
-        if(!isset($directiveSettings[$directive]) && !isset($approvedDomains[$directive])){
+        if(!isset($directiveSettings[$directive]) && !isset($approvedDomains[$directive]) && !isset($approvedSubdomains[$directive])){
             continue;
         }
         $CSP.=$directive." ";
@@ -924,7 +925,11 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
             }
         }
         if(isset($approvedDomains[$directive])){
-            $CSP.= $approvedDomains[$directive]. " ";
+            $CSP.= $approvedDomains[$directive] . " ";
+        }
+
+        if (isset($approvedSubdomains[$directive])) {
+            $CSP .=  $approvedSubdomains[$directive] . " ";
         }
         $CSP = trim($CSP);
         $CSP.="; ";
@@ -1093,24 +1098,54 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        $dbOutput = dbDelta( $sql , true);
+        $dbOutput = dbDelta($sql , true);
 
-        $sql = "ALTER TABLE `seasp_allowed_plugins` RENAME TO `".$wpdb->prefix."seasp_allowed_plugins`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_csp` RENAME TO `".$wpdb->prefix."seasp_csp`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_directives` RENAME TO `".$wpdb->prefix."seasp_directives`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_directive_options` RENAME TO `".$wpdb->prefix."seasp_directive_options`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_sand_box_urls` RENAME TO `".$wpdb->prefix."seasp_sand_box_urls`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_site_settings` RENAME TO `".$wpdb->prefix."seasp_site_settings`";
-        dbDelta($sql , true);
-        $sql = "ALTER TABLE `seasp_violation_log` RENAME TO `".$wpdb->prefix."seasp_violation_log`";
-        dbDelta($sql , true);
+        $oldTables = $wpdb->query('SHOW TABLES LIKE "seasp_%"');
+
+        if ($oldTables != 0) {
+            $wpdb->query("ALTER TABLE `seasp_allowed_plugins` RENAME TO `".$wpdb->prefix."seasp_allowed_plugins`");
+            $wpdb->query("ALTER TABLE `seasp_csp` RENAME TO `".$wpdb->prefix."seasp_csp`");
+            $wpdb->query("ALTER TABLE `seasp_directives` RENAME TO `".$wpdb->prefix."seasp_directives`");
+            $wpdb->query("ALTER TABLE `seasp_directive_options` RENAME TO `".$wpdb->prefix."seasp_directive_options`");
+            $wpdb->query("ALTER TABLE `seasp_directive_settings` RENAME TO `".$wpdb->prefix."seasp_directive_settings`");
+            $wpdb->query("ALTER TABLE `seasp_sand_box_urls` RENAME TO `".$wpdb->prefix."seasp_sand_box_urls`");
+            $wpdb->query("ALTER TABLE `seasp_site_settings` RENAME TO `".$wpdb->prefix."seasp_site_settings`");
+            $wpdb->query("ALTER TABLE `seasp_violation_log` RENAME TO `".$wpdb->prefix."seasp_violation_log`");
+        }
     }
 }
 add_action( 'plugins_loaded', 'Blue_Triangle_Automated_CSP_Free_update_db_check' );
+
+function Blue_Triangle_Automated_CSP_Free_Get_Approved_Subdomains ($siteID) {
+    global $wpdb;
+    
+    $selectStatement = $wpdb->prepare("
+        SELECT 
+        sd.violating_directive, sd.subdomain_name, sd.domain
+        FROM ".$wpdb->prefix."seasp_subdomain_log sd
+        LEFT JOIN ".$wpdb->prefix."seasp_violation_log d
+        ON sd.site_id = d.site_id
+        AND sd.domain = d.domain
+        WHERE sd.site_id = %s
+        AND sd.approved = 'true'
+        AND d.subdomain = 'false'
+        ",
+        [$siteID]
+    );
+
+    //execute the query
+    $results = $wpdb->get_results($selectStatement,ARRAY_A);
+    if($wpdb->last_error !== '') {
+        print_r($wpdb->last_error);
+    }
+    $approvedDomains = [];
+    foreach($results as $recordNumber => $recordData){
+        if(isset($approvedDomains[$recordData["violating_directive"]])){
+            $approvedDomains[$recordData["violating_directive"]] .= $recordData["subdomain_name"] . "." . $recordData["domain"]." ";
+        }
+        else {
+            $approvedDomains[$recordData["violating_directive"]] = $recordData["subdomain_name"] . "." . $recordData["domain"]." ";
+        }
+    }
+    return $approvedDomains;
+}

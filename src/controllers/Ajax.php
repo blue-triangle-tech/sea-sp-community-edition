@@ -27,6 +27,27 @@ function Blue_Triangle_Automated_CSP_Free_Approve_SUBDOMAIN(){
     $BTT_CSP_FREE_VALUE = sanitize_text_field($_REQUEST['BTT_CSP_FREE_VALUE']);
     $BTT_CSP_FREE_SUB_DOMAIN = sanitize_text_field($_REQUEST['BTT_CSP_FREE_SUB_DOMAIN']);
     $siteID = get_current_blog_id();
+    global $wpdb;
+
+    $updateStatement = $wpdb->prepare("  
+    UPDATE ".$wpdb->prefix."seasp_subdomain_log
+    SET approved = %s
+    WHERE violating_directive = %s
+    AND domain = %s
+    AND subdomain_name = %s
+    AND site_id = %s;
+    ",[
+        $BTT_CSP_FREE_VALUE,
+        $BTT_CSP_FREE_DIRECTIVE,
+        $BTT_CSP_FREE_DOMAIN,
+        $BTT_CSP_FREE_SUB_DOMAIN,
+        $siteID
+        ]
+    );
+    //execute the query
+    $wpdb->query($updateStatement);
+
+    Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,"default",Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID)[1],false);
 }
 
 add_action("wp_ajax_Blue_Triangle_Automated_CSP_Free_SUBDOMAIN_TABLE", "Blue_Triangle_Automated_CSP_Free_SUBDOMAIN_TABLE");
@@ -52,12 +73,12 @@ function Blue_Triangle_Automated_CSP_Free_SUBDOMAIN_TABLE(){
     $siteID = get_current_blog_id();
 
     global $wpdb;
-    $userTablePrefix = $wpdb->prefix;
+    
     $selectStatement = $wpdb->prepare("
     SELECT 
     subdomain_name,
     approved
-    FROM ".$userTablePrefix."seasp_subdomain_log
+    FROM ".$wpdb->prefix."seasp_subdomain_log
     WHERE site_id = %s AND domain = %s AND violating_directive = %s
     ",[
         $siteID,
@@ -260,9 +281,9 @@ function Blue_Triangle_Automated_CSP_Free_Approve(){
     $reportMode = ($cspData[1]=="0")?false:true;
 
     global $wpdb;
-    $userTablePrefix = $wpdb->prefix;
+    
     $updateStatement = $wpdb->prepare("  
-    UPDATE ".$userTablePrefix."seasp_violation_log
+    UPDATE ".$wpdb->prefix."seasp_violation_log
     SET ".$approvalType." = %s
     WHERE  violating_directive = %s
     AND domain = %s
@@ -308,12 +329,12 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
     $BTT_CSP_FREE_OPT_NAME = str_replace("'","",$BTT_CSP_FREE_VALUE);
     $siteID = get_current_blog_id();
     global $wpdb;
-    $userTablePrefix = $wpdb->prefix;
+    
     $cspData = Blue_Triangle_Automated_CSP_Free_Get_Latest_CSP($siteID);
     $reportMode = ($cspData[1]=="0")?false:true;
     if($BTT_CSP_FREE_OPT_TOG == "true"){
         //insert into db
-        $insertStatement = 'insert into `'.$userTablePrefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
+        $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
         $insertStatement .="(%s,%s,%s,%s)";
         $wpdb->query($wpdb->prepare($insertStatement, [
             $siteID,
@@ -328,7 +349,7 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
     }else{
         //remove from db
         $delteStatement = $wpdb->prepare("  
-        DELETE FROM '.$userTablePrefix.'seasp_directive_settings 
+        DELETE FROM '.$wpdb->prefix.'seasp_directive_settings 
         WHERE site_id = %s 
         AND directive_name = %s
         AND option_value = %s;
@@ -405,12 +426,12 @@ function Blue_Triangle_Automated_CSP_Free_Send_CSP(){
         $timeStamp = $current_time->format('U');
         $siteID = get_current_blog_id();
         global $wpdb;
-        $userTablePrefix = $wpdb->prefix;
+        
         if(
             strpos($existingErrors[$errorData["violatedDirective"]],$domain)===false &&
             !in_array($domain, $dataAdded[$errorData["violatedDirective"]])
             ){
-                $insertStatement = 'insert into `'.$userTablePrefix.'seasp_violation_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`extension`,`referrer`,`violating_file`,`approved`,`subdomain`) values ';
+                $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_violation_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`extension`,`referrer`,`violating_file`,`approved`,`subdomain`) values ';
                 $insertStatement .="(%d,%d,%s,%s,%s,%s,%s,%s,%s)";
                 $wpdb->query($wpdb->prepare($insertStatement, [
                     $siteID,
@@ -440,7 +461,7 @@ function Blue_Triangle_Automated_CSP_Free_Send_CSP(){
                 ){
                 continue;
             }
-            $insertStatement = 'insert into `'.$userTablePrefix.'seasp_subdomain_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`subdomain_name`,`approved`) values ';
+            $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_subdomain_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`subdomain_name`,`approved`) values ';
             $insertStatement .="(%d,%d,%s,%s,%s,%s)";
             $wpdb->query($wpdb->prepare($insertStatement, [
                 $siteID,
