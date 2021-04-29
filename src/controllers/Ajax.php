@@ -426,39 +426,36 @@ function Blue_Triangle_Automated_CSP_Free_Send_CSP(){
         $timeStamp = $current_time->format('U');
         $siteID = get_current_blog_id();
         global $wpdb;
-        
-        if(
-            strpos($existingErrors[$errorData["violatedDirective"]],$domain)===false &&
-            !in_array($domain, $dataAdded[$errorData["violatedDirective"]])
-            ){
-                $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_violation_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`extension`,`referrer`,`violating_file`,`approved`,`subdomain`) values ';
-                $insertStatement .="(%d,%d,%s,%s,%s,%s,%s,%s,%s)";
-                $wpdb->query($wpdb->prepare($insertStatement, [
-                    $siteID,
-                    $timeStamp,
-                    $errorData["violatedDirective"],
-                    $domain,
-                    $extension,
-                    $errorData["referrer"],
-                    $errorData["sourceFile"],
-                    "false",
-                    "false"
-                ]));
-                $dataAdded[$errorData["violatedDirective"]][]=$domain;
-        
-                if($wpdb->last_error !== '') {
-                    $report = $wpdb->last_error .' failed to insert into `seasp_violation_log`' ;
-                    wp_send_json(($report),500);
-                    exit;
-                }
+        if(in_array($domain, $existingErrors[$errorData["violatedDirective"]]) == false &&
+            !in_array($domain, $dataAdded[$errorData["violatedDirective"]])) {
+
+            $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_violation_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`extension`,`referrer`,`violating_file`,`approved`,`subdomain`) values ';
+            $insertStatement .="(%d,%d,%s,%s,%s,%s,%s,%s,%s)";
+            $wpdb->query($wpdb->prepare($insertStatement, [
+                $siteID,
+                $timeStamp,
+                $errorData["violatedDirective"],
+                $domain,
+                $extension,
+                $errorData["referrer"],
+                $errorData["sourceFile"],
+                "false",
+                "false"
+            ]));
+            $dataAdded[$errorData["violatedDirective"]][]=$domain;
+    
+            if($wpdb->last_error !== '') {
+                $report = $wpdb->last_error .' failed to insert into `seasp_violation_log`' ;
+                wp_send_json(($report),500);
+                exit;
+            }
         }
 
         if($subdomains !=="" && $subdomains !=="www"){
 
-            if(
-                !empty($existingSubdomains[$errorData["violatedDirective"]]) && 
-                in_array($subdomains,$existingSubdomains[$errorData["violatedDirective"]])
-                ){
+            if(!empty($existingSubdomains[$errorData["violatedDirective"]]) && 
+                in_array($subdomains,$existingSubdomains[$errorData["violatedDirective"]])) {
+                    
                 continue;
             }
             $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_subdomain_log`(`site_id`,`report_epoch`,`violating_directive`,`domain`,`subdomain_name`,`approved`) values ';
