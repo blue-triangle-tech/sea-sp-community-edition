@@ -3,7 +3,7 @@
  * Plugin Name: Sea SP Community Edition 
  * Plugin URI: https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/
  * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
- * Version: 1.8.0
+ * Version: 1.8.1
  * Author: Blue Triangle
  * Author URI: http://www.bluetriangle.com
  */
@@ -14,7 +14,7 @@ define('SEASP_COMMUNITY_PLUGIN_DIR', \plugin_dir_path(__FILE__));
 require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 
-define("SEASP_COMMUNITY_PLUGIN_VER", '1.8.0');
+define("SEASP_COMMUNITY_PLUGIN_VER", '1.8.1');
 
 register_activation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_install' );
 function Blue_Triangle_Automated_Free_CSP_install() {
@@ -778,7 +778,16 @@ function Blue_Triangle_Automated_CSP_Free_Get_Approved_Domains($siteID,$approved
     }
     $approvedDomains = [];
     foreach($results as $recordNumber => $recordData){
-        if(isset($approvedDomains[$recordData["violating_directive"]])){
+        if ($approved == false) {
+            if (!isset($approvedDomains[$recordData["violating_directive"]])) {
+                $approvedDomains[$recordData["violating_directive"]] = [];
+            }
+            $approvedDomains[$recordData["violating_directive"]][] = $recordData["domain"];
+            if($recordData["subdomain"]=="true"){
+                $approvedDomains[$recordData["violating_directive"]][] = "*.".$recordData["domain"];
+            }
+        }
+        else if(isset($approvedDomains[$recordData["violating_directive"]])){
             if($recordData["approved"]=="true"){
                 $approvedDomains[$recordData["violating_directive"]] .= $recordData["domain"]." ";
             }
@@ -1080,7 +1089,7 @@ function Blue_Triangle_Automated_CSP_Free_update_db_check() {
         $pluginVersion = Blue_Triangle_Automated_CSP_Free_Get_Setting("plugin_version",$siteID);
     }
 
-    $pluginVersion += 0.0;
+    $pluginVersion = (float)$pluginVersion;
     if($pluginVersion < 1.5){
         Blue_Triangle_Automated_CSP_Free_Update_Setting("plugin_version","1.5",$siteID);
         

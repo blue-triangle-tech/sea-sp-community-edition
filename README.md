@@ -5,7 +5,7 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -120,6 +120,10 @@ The plugin installs a small javascript in the head of your site that defines a v
 * fixed a bug that would not let you set *.mydomain.com with out having mydomain.com
 * fixed a wordpress 5.7.1 jQuery load issue
 * improved error collection by placing the collection code in the footer
+
+# = 1.8.1 =
+* fixed a type conversion issue
+* fixed an issue with duplicate entries in the violations log
 
 ## == Upgrade Notice for 1.4==
 * When you install this version you will need to rebuild your CSP
