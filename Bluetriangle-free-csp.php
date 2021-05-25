@@ -3,7 +3,7 @@
  * Plugin Name: Sea SP Community Edition 
  * Plugin URI: https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/
  * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
- * Version: 1.8.1
+ * Version: 1.8.2
  * Author: Blue Triangle
  * Author URI: http://www.bluetriangle.com
  */
@@ -14,7 +14,7 @@ define('SEASP_COMMUNITY_PLUGIN_DIR', \plugin_dir_path(__FILE__));
 require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 
-define("SEASP_COMMUNITY_PLUGIN_VER", '1.8.1');
+define("SEASP_COMMUNITY_PLUGIN_VER", '1.8.2');
 
 register_activation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_install' );
 function Blue_Triangle_Automated_Free_CSP_install() {
@@ -513,30 +513,30 @@ function Blue_Triangle_Automated_CSP_Free_redirect( $plugin ) {
 }
 add_action( 'activated_plugin', 'Blue_Triangle_Automated_CSP_Free_redirect' );
 
-register_deactivation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
+register_uninstall_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_deactivate' );
 function Blue_Triangle_Automated_Free_CSP_deactivate() {
     //verified removal of these tables 
     global $wpdb;
     
 
-    $wpdb->query("DROP TABLE `seasp_violation_log`;");
-    $wpdb->query("DROP TABLE `seasp_directive_settings`;");
-    $wpdb->query("DROP TABLE `seasp_allowed_plugins`;");
-    $wpdb->query("DROP TABLE `seasp_csp`;");
-    $wpdb->query("DROP TABLE `seasp_directives`;");
-    $wpdb->query("DROP TABLE `seasp_directive_options`;");
-    $wpdb->query("DROP TABLE `seasp_site_settings`;");
-    $wpdb->query("DROP TABLE `seasp_sand_box_urls`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_violation_log`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_directive_settings`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_allowed_plugins`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_csp`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_directives`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_directive_options`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_site_settings`;");
+    $wpdb->query("DROP TABLE IF EXISTS `seasp_sand_box_urls`;");
 
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_violation_log`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_directive_settings`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_allowed_plugins`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_csp`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_directives`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_directive_options`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_site_settings`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_sand_box_urls`;");
-    $wpdb->query("DROP TABLE `".$wpdb->prefix."seasp_subdomain_log`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_violation_log`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_directive_settings`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_allowed_plugins`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_csp`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_directives`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_directive_options`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_site_settings`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_sand_box_urls`;");
+    $wpdb->query("DROP TABLE IF EXISTS `".$wpdb->prefix."seasp_subdomain_log`;");
 
     delete_option( 'Blue_Triangle_Automated_CSP_Free_Directives');
     delete_option( 'Blue_Triangle_Automated_CSP_Free_Directive_Options');

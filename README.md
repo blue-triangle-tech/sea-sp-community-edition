@@ -5,7 +5,7 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
@@ -69,9 +69,9 @@ The plugin installs a small javascript in the head of your site that defines a v
 * Users can set source settings for each of the directives of the CSP 
 
 # = 1.1 =
-* fixed a bug where we misnamed a folder and cause bootstrap and other UI files to break
-* added a navigation menu to the top of the plugin for ease of use 
-* after activation the plugin now directs to the landing page for more instructions 
+* Fixed a bug where we misnamed a folder and cause bootstrap and other UI files to break
+* Added a navigation menu to the top of the plugin for ease of use 
+* After activation the plugin now directs to the landing page for more instructions 
 
 # = 1.2 =
 * Fixed broken images
@@ -80,11 +80,11 @@ The plugin installs a small javascript in the head of your site that defines a v
 
 # = 1.3 =
 * Fixed problem with saving CSP data on a multi-site wordpress install
-* fixed incorrect version label on SeaSP plugin pages 
+* Fixed incorrect version label on SeaSP plugin pages 
 
 # = 1.4 =
 * We completely changed the way we save data to the word press database so that our solution is more stable
-* instead of using the options table provided by Wordpress we add the following tables
+* Instead of using the options table provided by Wordpress we add the following tables
 *   seasp_violation_log - holds all the csp violations
 *   seasp_directive_settings - holds all the csp directive settings 
 *   seasp_allowed_plugins - this is for future support of object-src 
@@ -107,23 +107,27 @@ The plugin installs a small javascript in the head of your site that defines a v
 # = 1.5.0 =
 * Added an admin notice to alert how many unapproved domains are left to approve 
 * Added admin notice to inform user that the CSP in in report only mode 
-* added admin notice to inform user SeaSP is collecting violation data 
-* fixed a bug where domains like  google.co.in were not getting added correctly 
-* began usage tracking to see how many people are using the plugin
-* fixed a bug were version number was not showing up on the plugin pages 
+* Added admin notice to inform user SeaSP is collecting violation data 
+* Fixed a bug where domains like  google.co.in were not getting added correctly 
+* Began usage tracking to see how many people are using the plugin
+* Fixed a bug were version number was not showing up on the plugin pages 
 
 # = 1.8.0 =
-* fix a bug were tables did not use user defined table prefix
-* implemented the build in php function parse_url to parse violation URL's for domains 
-* created a new table to manage subdomains 
-* made a subdomain manager so that users can choose which sub domains to add to a directive
-* fixed a bug that would not let you set *.mydomain.com with out having mydomain.com
-* fixed a wordpress 5.7.1 jQuery load issue
-* improved error collection by placing the collection code in the footer
+* Fix a bug were tables did not use user defined table prefix
+* Implemented the build in php function parse_url to parse violation URL's for domains 
+* Created a new table to manage subdomains 
+* Made a subdomain manager so that users can choose which sub domains to add to a directive
+* Fixed a bug that would not let you set *.mydomain.com with out having mydomain.com
+* Fixed a wordpress 5.7.1 jQuery load issue
+* Improved error collection by placing the collection code in the footer
 
 # = 1.8.1 =
-* fixed a type conversion issue
-* fixed an issue with duplicate entries in the violations log
+* Fixed a type conversion issue
+* Fixed an issue with duplicate entries in the violations log
+
+# = 1.8.2 =
+* Fixed issue where tables are dropped on deactivate instead of uninstall
+* Added a check to prevent a SQL error when dropping tables on uninstall
 
 ## == Upgrade Notice for 1.4==
 * When you install this version you will need to rebuild your CSP
@@ -148,8 +152,8 @@ https://youtu.be/XdJNh6LEKJw
 ## == Contributing ==
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 This project has been tested on WordPress up to version 5.6 on both single and multi-site instances.
-The project can be found on [github](https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/)
-This project is sponsored by [Blue Triangle](www.bluetriangle.com)
+The project can be found on [github](https://github.com/blue-triangle-tech/sea-sp-community-edition).
+This project is sponsored by [Blue Triangle](www.bluetriangle.com).
 
 ## Third Party Libraries 
 We use [Bootstrap](https://getbootstrap.com/) for the UI of our plugin to make the interface clean and simple.
