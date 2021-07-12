@@ -56,9 +56,12 @@ $adminURL= esc_url( admin_url( 'admin-ajax.php?nonce='.$nonce) );
       </div>
       <div class="col-xl-6 col-lg-6">
             <h3 class="mt-3">Current Violations</h3>
-            <p>Below you will find a list of domains that have violated directives in your content security policy. Review each domain carefully to make sure it A). belongs on your site B). it is allowed to serve up the type of content of the directive it has violated</p>
-            <p><b>Example:  </b><i>www.bogus.com violated script-src directive</i></p><p>Ask your self does www.bogus.com belong on my site and if so does it need to put javascript on my site if you answered yes the approve the domain.</p>
-            <p>The next question you must answer is does subdomain.bogus.com need to serve up javascript if yes toggle subdomain. </p>   
+            <p>This report lists domains that have violated directives in your content security policy. Review each domain carefully to make sure it 
+            a) belongs on your site and
+            b) is allowed to serve up the type of content of the directive it has violated.</p>
+            <p><b>Example:  </b><i>www.example.com violated script-src directive</i></p>
+            <p>Ask yourself: does www.example.com belong on my site? If so, do I need it to put JavaScript on my site? If yes, you may approve the domain.</p>
+            <p>The same method applies to the subdomains. You may treat the subdomains separately from the base domain and its other subdomains.</p>   
       </div>
       <div class="col-xl-3 col-md-12">
         <div style="background: #efefef; padding: 20px; height: 100%;" class="text-center">

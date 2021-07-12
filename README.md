@@ -3,7 +3,7 @@ Contributors: bluetriangle
 Donate link: https://www.patreon.com/bluetriangle
 Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.0
 Stable tag: 1.8.2
 License: GPLv3 
@@ -128,6 +128,14 @@ The plugin installs a small javascript in the head of your site that defines a v
 # = 1.8.2 =
 * Fixed issue where tables are dropped on deactivate instead of uninstall
 * Added a check to prevent a SQL error when dropping tables on uninstall
+
+# = 1.8.3 =
+* Compatibility check for WordPress version 5.8
+* Updated text contents
+* Fixed an issue where the directive details would get cut off after 55 characters
+* Fixed an issue where turning off directives doesn't update the directives table properly
+* Fixed an issue where toggling off https: directive doesn't change the switch
+* Fixed an issue where duplicate 'self' origins were showing up for default-src
 
 ## == Upgrade Notice for 1.4==
 * When you install this version you will need to rebuild your CSP

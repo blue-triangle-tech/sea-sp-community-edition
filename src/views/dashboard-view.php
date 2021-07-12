@@ -52,7 +52,7 @@
                 <h5 class="card-title">Thank you for securing your site with Blue Triangle's SeaSP Content Security Policy Manager. </h5>
                 <p class="card-subtitle mb-2 text-muted">This Content Security Policy or CSP protects your site from hackers by adding an additional layer of security.</h3>
                 <p class="card-text">This layer helps keep you and your customers safe by detecting and mitigating certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks.</p>
-                <p class="card-text">It is a tedious task to implement this Content Security Policy(CSP) manually so Blue Triangle automated the process and made it into three easy to follow steps</p>
+                <p class="card-text">Implementing a Content Security Policy (CSP) can be a tedius task, so Blue Triangle's SeaSP automates the process for you into three easy steps!</p>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
         <img style="width: 100px; height: auto; float: left; margin-right: 10px;" src="<?=$pluginDirectory?>img/starfish.png">
             <h5 class="text-left mt-2">We would love your feedback!</h5>
 
-            <p class="mt-5">We're working to grow SeaSP and we would love feedback.</p>
+            <p class="mt-5">We're working to grow SeaSP and we would love your feedback.</p>
             <p>Have a suggestion? <a target="_blank" href="https://wordpress.org/support/plugin/sea-sp-community-edition/" class="pink-text">We're all ears!</a></p>
               <p>If you like SeaSP, please leave us a review:</p><a target="_blank" href="https://wordpress.org/plugins/sea-sp-community-edition/#reviews" class="btn btn-warning">Leave a Review</a>
           </div>
@@ -76,12 +76,12 @@
                     <p class="card-title" style="float: left; display: inline;">Step 1: Capture</p>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">We use a report ony version of a CSP to capture violation data necessary to build your CSP</p>
+                    <p class="card-text">By using report-only mode, the plugin captures violation data necessary to build your CSP.</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Visit each page of your site to collect violations</li>
-                    <li class="list-group-item">Violations are automatically captured by a non blocking CSP</li>
-                    <li class="list-group-item">This means your site still works while we help you build up your security</li>
+                    <li class="list-group-item">1. Visit each page of your site to collect violations.</li>
+                    <li class="list-group-item">2. Violations are automatically captured and saved.</li>
+                    <li class="list-group-item">Report-only mode will keep your site working while you build your CSP. Use this for testing or initial setups.</li>
                 </ul>
             </div>
         </div>
@@ -92,13 +92,13 @@
                     <p class="card-title" style="float: left; display: inline;">Step 2: Create</p>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">We create easy to read reports with definitions to help you make decisions about what content you allow on your site</p>
-                    <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-csp-violations" class="card-link">View your violation report here.</a>
+                    <p class="card-text">We create a Current Violations report with the violations that appeared during the capture phase. The report will give you the details on each violation and allow you to decide what to allow or block.</p>
+                    <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-csp-violations" class="card-link">View your Current Violation report here.</a>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">After collecting policy violations each one is compiled into a report of domains to be approved</li>
-                    <li class="list-group-item">You can whitelist only the base domain or base domain and subdomains</li>
-                    <li class="list-group-item">Each domain is only approved for the directive it violated</li>
+                    <li class="list-group-item">1. Collected violations will be added to the report where it is available for review.</li>
+                    <li class="list-group-item">2. You can whitelist the base domain and/or its subdomains.</li>
+                    <li class="list-group-item">3. Each domain is only approved/blocked for the directive it violated. The same domains may appear but for different directives.</li>
                 </ul>
             </div>
         </div>
@@ -109,12 +109,12 @@
                     <p class="card-title" style="float: left; display: inline;">Step 3: Automate</p>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Blue Triangle's SeaSP automatically generates a CSP from these reports and continually updates itself to keep your site safe</p>
+                    <p class="card-text">SeaSP automatically generates the CSP from these reports and continually updates itself to keep your site safe.</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Your sites CSP is automatically generated each time you approve a domain or modify a directive</li>
-                    <li class="list-group-item">Once you are satisfied with your security policy  <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-general-settings" class="card-link">General Settings </a>turn on blocking mode and you are all set to be secure</li>
-                    <li class="list-group-item">SeaSP content security policy manager continuously watches your site for violations to your policy</li>
+                    <li class="list-group-item">1. Your site's CSP is automatically generated each time a new violation is collected, you approve a domain, or modify a directive.</li>
+                    <li class="list-group-item">2. Once you are satisfied with your security policy, you can change the mode from report-only to blocking in <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-general-settings" class="card-link">General Settings</a>.</li>
+                    <li class="list-group-item">3. Your site is now secure! You can switch back and forth between report-only and blocking at any time.</li>
                 </ul>
             </div>
         </div>

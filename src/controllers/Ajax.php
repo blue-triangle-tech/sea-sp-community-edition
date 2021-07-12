@@ -348,8 +348,26 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
         }
     }else{
         //remove from db
-        $delteStatement = $wpdb->prepare("  
-        DELETE FROM '.$wpdb->prefix.'seasp_directive_settings 
+        // $deleteStatement = $wpdb->prepare("
+        // DELETE FROM ".$wpdb->prefix."seasp_directive_settings 
+        // WHERE site_id = '.$siteID.' 
+        // AND directive_name = '.$BTT_CSP_FREE_DIRECTIVE.'
+        // AND option_value = %s;
+        // ",[
+        //     ,
+        //     ,
+        //     $BTT_CSP_FREE_VALUE
+        //     ]
+        // );
+        // $deleteStatement = 'delete from `'.$wpdb->prefix.'seasp_directive_settings` where (`site_id`, `directive_name`, `option_value`) values (%s, %s, %s)';
+
+        // $deleteStatement = $wpdb->prepare($deleteStatement,[
+        //     $siteID,
+        //     $BTT_CSP_FREE_DIRECTIVE,
+        //     $BTT_CSP_FREE_VALUE
+        // ]);
+        $deleteStatement = $wpdb->prepare("
+        DELETE FROM ".$wpdb->prefix."seasp_directive_settings 
         WHERE site_id = %s 
         AND directive_name = %s
         AND option_value = %s;
@@ -359,7 +377,7 @@ function Blue_Triangle_Automated_CSP_Free_Directive_Options(){
             $BTT_CSP_FREE_VALUE
             ]
         );
-        $wpdb->query($delteStatement);
+        $wpdb->query($deleteStatement);
         if($wpdb->last_error !== '') {
             $report = $wpdb->last_error .' failed to delete from `seasp_directive_settings`' ;
             wp_send_json(json_encode($report),500);

@@ -90,7 +90,7 @@ var postLoadDelay= "'.$postLoadDelay.'";
               data-size="large"
               >
               <label class="form-check-label" for="cspActivation" data-toggle="tooltip" data-placement="right" title="To Activate your CSP choose blocking mode. To collect more violation data choose report only.">
-                  Click This toggle when your ready to place your CSP in blocking mode or to change it back to report only 
+                  Click This toggle when your ready to place your CSP in blocking mode or to change it back to report only.
               </label>
           </div>
           <br>
@@ -106,7 +106,7 @@ var postLoadDelay= "'.$postLoadDelay.'";
               data-size="large"
               >
               <label class="form-check-label" for="cspActivation" data-toggle="tooltip" data-placement="right" title="To Activate your CSP choose blocking mode. To collect more violation data choose report only.">
-                  Click This toggle to turn on and off CSP Violation Collection
+                  Click This toggle to turn on and off CSP Violation Collection.
               </label>
           </div>
           <br>

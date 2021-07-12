@@ -141,7 +141,7 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             directive_name varchar(55) DEFAULT '' NOT NULL,
             file_type varchar(55) DEFAULT '' NOT NULL,
             directive_type varchar(55) DEFAULT '' NOT NULL,
-            directive_desc varchar(55) DEFAULT '' NOT NULL,
+            directive_desc varchar(255) DEFAULT '' NOT NULL,
             has_options varchar(55) DEFAULT '' NOT NULL,
             PRIMARY KEY  (id)
             ) $charset_collate;";
@@ -304,8 +304,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Directive_Data(){
         "child-src" =>[
             "fileType" =>"nested-webworker",
             "type"=>"Fetch",
-            "desc"=>"Defines the valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe.
-            Instead of child-src, if you want to regulate nested browsing contexts and workers, you should use the frame-src and worker-src directives, respectively.",
+            "desc"=>"Defines the valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe. Instead of child-src, if you want to regulate nested browsing contexts and workers, you should use the frame-src and worker-src directives, respectively.",
             "options"=>true,
         ],
         "connect-src"=>[
@@ -455,13 +454,13 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
     //verified insert into table 
     global $wpdb;
     
-    $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
-    $insertStatement .="(%s,'default-src','self',%s)";
-    $wpdb->query($wpdb->prepare($insertStatement, [$siteID,"'self'"]));
-    if($wpdb->last_error !== '') {
-        $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;
-        print_r($report);
-    }
+    // $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
+    // $insertStatement .="(%s,'default-src','self',%s)";
+    // $wpdb->query($wpdb->prepare($insertStatement, [$siteID,"'self'"]));
+    // if($wpdb->last_error !== '') {
+    //     $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;
+    //     print_r($report);
+    // }
     //verified insert into table 
     $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
     $insertStatement .="(%s,'error_collection','true')";
@@ -725,6 +724,7 @@ function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID,$asArra
         }
     }else{
         foreach($results as $recordNumber => $recordData){
+            var_dump($recordData);
             if(isset($directiveSettings[$recordData["directive_name"]])){
                 $directiveSettings[$recordData["directive_name"]].=$recordData["option_value"]." ";
             }else{
@@ -928,7 +928,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
 
     foreach($directives as $directive=>$directiveInfo){
         $hasOptions = ($directiveInfo["has_options"]=="1")?true:false;
-
+        var_dump($directiveSettings[$directive]);
         if(!isset($directiveSettings[$directive]) && !isset($approvedDomains[$directive]) && !isset($approvedSubdomains[$directive])){
             continue;
         }
