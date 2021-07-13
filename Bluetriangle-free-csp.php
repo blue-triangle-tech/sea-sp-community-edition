@@ -141,7 +141,7 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             directive_name varchar(55) DEFAULT '' NOT NULL,
             file_type varchar(55) DEFAULT '' NOT NULL,
             directive_type varchar(55) DEFAULT '' NOT NULL,
-            directive_desc varchar(255) DEFAULT '' NOT NULL,
+            directive_desc varchar(512) DEFAULT '' NOT NULL,
             has_options varchar(55) DEFAULT '' NOT NULL,
             PRIMARY KEY  (id)
             ) $charset_collate;";
@@ -724,7 +724,6 @@ function Blue_Triangle_Automated_CSP_Free_Get_Directive_Settings($siteID,$asArra
         }
     }else{
         foreach($results as $recordNumber => $recordData){
-            var_dump($recordData);
             if(isset($directiveSettings[$recordData["directive_name"]])){
                 $directiveSettings[$recordData["directive_name"]].=$recordData["option_value"]." ";
             }else{
@@ -928,7 +927,6 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
 
     foreach($directives as $directive=>$directiveInfo){
         $hasOptions = ($directiveInfo["has_options"]=="1")?true:false;
-        var_dump($directiveSettings[$directive]);
         if(!isset($directiveSettings[$directive]) && !isset($approvedDomains[$directive]) && !isset($approvedSubdomains[$directive])){
             continue;
         }
