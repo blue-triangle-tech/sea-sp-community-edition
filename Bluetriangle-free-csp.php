@@ -454,13 +454,13 @@ function Blue_Triangle_Automated_CSP_Free_Build_Site_Data($siteID){
     //verified insert into table 
     global $wpdb;
     
-    // $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
-    // $insertStatement .="(%s,'default-src','self',%s)";
-    // $wpdb->query($wpdb->prepare($insertStatement, [$siteID,"'self'"]));
-    // if($wpdb->last_error !== '') {
-    //     $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;
-    //     print_r($report);
-    // }
+    $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_directive_settings`(`site_id`,`directive_name`,`option_name`,`option_value`) values ';
+    $insertStatement .="(%s,'default-src','self',%s)";
+    $wpdb->query($wpdb->prepare($insertStatement, [$siteID,"'self'"]));
+    if($wpdb->last_error !== '') {
+        $report = $wpdb->last_error .' failed to insert into `seasp_directive_settings`' ;
+        print_r($report);
+    }
     //verified insert into table 
     $insertStatement = 'insert into `'.$wpdb->prefix.'seasp_site_settings`(`site_id`,`setting_name`,`setting_value`) values ';
     $insertStatement .="(%s,'error_collection','true')";
