@@ -5,56 +5,57 @@ Tags: csp, content security policy, security, http headers
 Requires at least: 5.1
 Tested up to: 5.8
 Requires PHP: 7.0
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv3 
 License URI: https://choosealicense.com/licenses/gpl-3.0/
  
 ## == Description ==
 
 
-SeaSP-Community Edition WordPress plugin is an automated **Content Security Policy Manager**. SeaSP allows you to create, configure, and deploy a Content Security Policy for your site.
+SeaSP-Community Edition is an automated **Content Security Policy Manager**. SeaSP allows you to create, configure, manage, and deploy a Content Security Policy for your site.
 
-The WordPress SeaSP-Community Edition plugin catalogs the domains your site is using. Categorize and filter out unwanted domains. Add a layer of WordPress security site from magecart and other cross-scripting hacks to keep your WordPress site safe.
+The WordPress SeaSP Community Edition plugin catalogs the domains that appear on your site. Categorize and filter out unwanted domains. Add a layer of WordPress security site from Magecart and other cross-site scripting attacks to keep your WordPress site safe.
 
 SeaSP installs a strict non-blocking CSP to collect violation data and provide a violation report. Violation data flows into the WordPress database as a PHP option within the plugin options schema. Violations can be approved by domains and categorized by directives (CSS, fonts, images, JS, etc.). You can also approve base domains and subdomains. The SeaSP UI helps users by explaining what each directive does, and how to use them to create a CSP.
 
-After configuring the domain and directive settings switch the CSP to blocking mode. Once the CSP goes into blocking mode, the site's protected from any unrecognized code. SeaSP-Community Edition helps secure your site.
-
+After configuring the domain and directive settings switch the CSP to blocking mode. Once the CSP goes into blocking mode, the site's protected from any unrecognized code. SeaSP Community Edition helps secure your site.
 
 ## == Installation ==
 
+You can install this plugin directly from the WordPress Plugins menu. Otherwise, follow the instructions below:
 1. Download and unzip the contents into the plugins folder of your WordPress instance.
-2. (IMPORTANT IF INSTALLING FROM GITHUB REPO) Rename the folder from SeaSP-Community-Edition to sea-sp-community-edition 
+2. Rename the folder from SeaSP-Community-Edition to sea-sp-community-edition if it is not already named so.
 3. In the Admin Dashboard of WordPress click on the Plugins menu item on the left side.
 4. Find SeaSP - Community Edition in the list of plugins and click activate. 
 5. After activation there will be a new admin menu item with a white triangle that says SeaSP
-6. Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
+
+Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
 
 ## == Frequently Asked Questions ==
 ### What  is a Content Security Policy? =
  
 A Content Security Policy (CSP) is a browser security standard that controls the domains, subdomains, and types of resources a browser can load on a given web page. CSPs go into a special Content Security Policy header, or it can go on a web page using a meta tag. CSPs are compatible with all modern desktop and mobile browsers, including Chrome, Firefox, Internet Explorer, Edge, and Safari. CSPs detect and prevent certain types of attacks including form jacking and cross-site scripting, browser hijacking and ad injection, as well as unauthorized piggyback tags. 
 
-SeaSP is an extra layer of security that protects your WordPress site from spammers by blocking unauthorized scripts.
+SeaSP is an extra layer of security that protects your WordPress site from malicious attacks by blocking unauthorized scripts and content.
 
 ### What's next after my WordPress installation?
 
-Once the plugins installed a strict non-blocking CSP is on your site. Visit each page of your site to collect CSP violations for individual pages. The Current Violations page of the plugin collects domains that violate CSP directives.
+Once the plugin is installed, a strict non-blocking CSP will be automatically added onto your site. Visit each page of your site to collect CSP violations. The Current Violations page of the plugin collects domains that violate CSP directives and see what content is loading on your site.
 
-Review domains and click the toggle to approve the domain and include it in the CSP. Check for misspellings of common domains like adobee.com instead of adobe.com. This is a common way hackers inject content into your site.
+Review the domains and click the toggle to approve and include it in the CSP. Check for misspellings of common domains like adobee.com instead of adobe.com. This is a common way hackers inject content into your site.
 
-To allow subdomains to serve content, click the include subdomains toggle. To learn more about the violated directives click the blue Directive button.
+To review the subdomains, click the Manage button.
 
 After this process, you might still see CSP violations for inline scripts, inline styles, blobs, or data. To allow this type of content navigate to the Directive Settings page and toggle the appropriate options (connect src, media src, child src, object src, frame ancestors, unsafe inline, etc.) Each option has a tooltip explaining what the directive allows in your CSP.
 
-User our CSP reports to see what content is loading on your site. 
+Once you are satisfied with your CSP, toggle the CSP to blocking mode under General Settings to secure your site.
 
 ### Is there a tutorial? =
 
 A walk though of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
 
 ### How does the plugin collect CSP violations? =
-The plugin installs a small javascript in the head of your site that defines a variable named _BTT_CSP_FREE_ERROR the violations are then collected in this variable made into a json string and send to the back end of the plugin via ajax using a nonce. These errors are then parsed for the domains and the directives they have violated. This data is then stored as a php object in a plugin option. This data never leaves your site. 
+The plugin inserts a small JavaScript code in the body of your site as a script tag. As the page loads, violations are collected and sent to the plugin via ajax using a nonce. These errors are parsed for the domains and directives they have violated. This data is stored in your WordPress database, prefixed. This data never leaves your site.
 
 ## == Screenshots ==
 
@@ -137,29 +138,28 @@ The plugin installs a small javascript in the head of your site that defines a v
 * Fixed an issue where toggling off https: directive doesn't change the switch
 * Fixed an issue where duplicate 'self' origins were showing up for default-src
 
-## == Upgrade Notice for 1.4==
+## == Upgrade Notice for 1.4 only==
 * When you install this version you will need to rebuild your CSP
 
 ## == Usage ==
 
-Once installed a strict non-blocking CSP is implemented on your site visit each page of your site to collect CSP violations for each of those pages.
+Once installed, a strict non-blocking report-only CSP is implemented on your site. Visit each page of your site to collect CSP violations.
 Visit the Current Violations page of the plugin to review domains that have violated a directive in the CSP.
 Review each of the domains carefully and check for misspellings of common domains like adobee.com instead of adobe.com as this is a common way hackers inject content into your site.
-If you feel confident that the domain belongs on your site and it should be serving the file type stated, click the toggle to approve the domain and include it in the CSP.
-If you want to allow subdomains of that domain to be able to serve that type of content, click the include subdomains toggle. 
-To learn more about the directive that was violated click the blue Directive button.
-After this process you might still see CSP violations regarding inline scripts, inline styles, blobs, or data.
-To allow these this type of content in the community version you must navigate to the Directive Settings page, find the offending directive and toggle the appropriate option.
-For convenience, each option has a tool tip explaining what it allows in your CSP.
+If you feel confident that the domain belongs on your site and it should be serving the file type stated, click the toggle to approve the domain to include it in the CSP.
+If you want to allow subdomains of that domain to be able to serve that type of content, click the Manage subdomains button to view the subdomains.
+After this process, you might still see CSP violations regarding inline scripts, inline styles, blobs, or data.
+To allow these this type of content in the community version you must navigate to the Directive Settings page, find the offending directive, then toggle the appropriate option.
+For convenience, each option has a tooltip explaining what it allows in your CSP.
 
 ## == Walk Through ==
-A walk through video can be found on You Tube [here](https://youtu.be/XdJNh6LEKJw)
+A walk through video can be found on YouTube [here](https://youtu.be/XdJNh6LEKJw).
 
 https://youtu.be/XdJNh6LEKJw
 
 ## == Contributing ==
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-This project has been tested on WordPress up to version 5.6 on both single and multi-site instances.
+This project has been tested on WordPress up to version 5.8 on both single and multi-site instances.
 The project can be found on [github](https://github.com/blue-triangle-tech/sea-sp-community-edition).
 This project is sponsored by [Blue Triangle](www.bluetriangle.com).
 
@@ -174,9 +174,9 @@ We use [bootstrap toggle](https://www.bootstraptoggle.com/) because simple check
 
 ## == Opt In usage data collection ==
 
-As of version 1.5 users will be able to opt in to data collection to help us determine how many people are using our plugin and what features we should be working on in future version this can be managed in the new usage data settings page. we collect 4 pieces of data.
+As of version 1.5 users will be able to opt-in for data collection to help us determine how many people are using our plugin and what features we should be working on in future version. This can be managed in the Usage Data Settings page. We collect and send the following data:
 1. wordpress version
 2. wordpress debug mode 
 3. wordpress multisite 
 4. the base url that the plugin is on ex; www.bluetriangle.com
-this data is only accessible to the Blue Triangle organization and will be used to determine our user base and feature design 
+This data is only accessible to the Blue Triangle organization and will be used to determine our user base and feature planning.
