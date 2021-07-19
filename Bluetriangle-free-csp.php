@@ -3,7 +3,7 @@
  * Plugin Name: Sea SP Community Edition 
  * Plugin URI: https://bluetrianglemarketing.github.io/SeaSP-Community-Edition/
  * Description: Sea SP is a Content Security Policy manager that automates manual processes of building a good CSP for your site.  
- * Version: 1.8.2
+ * Version: 1.8.3
  * Author: Blue Triangle
  * Author URI: http://www.bluetriangle.com
  */
@@ -14,7 +14,7 @@ define('SEASP_COMMUNITY_PLUGIN_DIR', \plugin_dir_path(__FILE__));
 require_once( 'src/controllers/ViewFunctions.php' );
 require_once( 'src/controllers/Ajax.php' );
 
-define("SEASP_COMMUNITY_PLUGIN_VER", '1.8.2');
+define("SEASP_COMMUNITY_PLUGIN_VER", '1.8.3');
 
 register_activation_hook( __FILE__, 'Blue_Triangle_Automated_Free_CSP_install' );
 function Blue_Triangle_Automated_Free_CSP_install() {
@@ -141,7 +141,7 @@ function Blue_Triangle_Automated_Free_CSP_install() {
             directive_name varchar(55) DEFAULT '' NOT NULL,
             file_type varchar(55) DEFAULT '' NOT NULL,
             directive_type varchar(55) DEFAULT '' NOT NULL,
-            directive_desc varchar(55) DEFAULT '' NOT NULL,
+            directive_desc varchar(512) DEFAULT '' NOT NULL,
             has_options varchar(55) DEFAULT '' NOT NULL,
             PRIMARY KEY  (id)
             ) $charset_collate;";
@@ -304,8 +304,7 @@ function Blue_Triangle_Automated_CSP_Free_Build_Directive_Data(){
         "child-src" =>[
             "fileType" =>"nested-webworker",
             "type"=>"Fetch",
-            "desc"=>"Defines the valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe.
-            Instead of child-src, if you want to regulate nested browsing contexts and workers, you should use the frame-src and worker-src directives, respectively.",
+            "desc"=>"Defines the valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe. Instead of child-src, if you want to regulate nested browsing contexts and workers, you should use the frame-src and worker-src directives, respectively.",
             "options"=>true,
         ],
         "connect-src"=>[
@@ -928,7 +927,6 @@ function Blue_Triangle_Automated_CSP_Free_Build_CSP($siteID,$url,$blocking,$nonc
 
     foreach($directives as $directive=>$directiveInfo){
         $hasOptions = ($directiveInfo["has_options"]=="1")?true:false;
-
         if(!isset($directiveSettings[$directive]) && !isset($approvedDomains[$directive]) && !isset($approvedSubdomains[$directive])){
             continue;
         }

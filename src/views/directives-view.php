@@ -75,8 +75,8 @@ var CSP_Directives = '.json_encode($directives).'
         <div class="col-xl-6 col-lg-6">
 
             <h3 class="mt-3">Directive Settings</h3>
-                    <h4>CSPs are made up of one or more directives.</h4>
-                    <p> Use the accordion below to select the diretives you want to use in your CSP.</p>
+            <h4>CSPs are made up of directives.</h4>
+            <p>You can configure the directives for your CSP here.</p>
         </div>
         <div class="col-xl-3 col-md-12">
             <div style="background: #efefef; padding: 20px; height: 100%;" class="text-center">

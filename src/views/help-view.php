@@ -45,12 +45,12 @@
           </div>
       </div>
       <div class="col-xl-6 col-lg-6">
-          <h3 class="mt-3">Sea SP-Community Edition </h3>
-            <p>SeaSP-Community Edition is an automated CSP manger that first installs a strict non-blocking CSP to collect violation data. Once violation data is collected it is stored in the WordPress database as a php object in the plugin options schema.</p>
-            <p>SeaSP-Community Edition then allows you to look through each of the violations and approve domains for each directive that has been violated. Choose to either approve the base domain or subdomains or both.</p>
+          <h3 class="mt-3">Sea SP Community Edition </h3>
+            <p>SeaSP Community Edition is an automated CSP manger that first installs a strict non-blocking CSP to collect violation data. Once violation data is collected it is stored in the WordPress database as a php object in the plugin options schema.</p>
+            <p>SeaSP Community Edition then allows you to review each of the violations and approve domains for each directive that has been violated. Choose to either approve the base domain or subdomains or both.</p>
             <p>Other features include the ability to set sources of content for each directive of the CSP such as only allowing HTTP or HTTPS domains, or allowing inline scripts only for style sources.</p>
             <p>The UI gives the user tips on what each directive does and how it should be used to protect their site.
-            Once domain and directive settings are done being configured the CSP can then be turned to blocking mode to protect the site 
+            Once domain and directive settings are done being configured, the CSP can switched to blocking mode to protect the site.
             </p>
       </div>
       <div class="col-xl-3 col-md-12">
