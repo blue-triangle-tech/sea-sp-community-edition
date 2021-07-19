@@ -12,7 +12,7 @@ License URI: https://choosealicense.com/licenses/gpl-3.0/
 ## == Description ==
 
 
-SeaSP-Community Edition is an automated **Content Security Policy Manager**. SeaSP allows you to create, configure, manage, and deploy a Content Security Policy for your site.
+SeaSP Community Edition is an automated **Content Security Policy Manager**. SeaSP allows you to create, configure, manage, and deploy a Content Security Policy for your site.
 
 The WordPress SeaSP Community Edition plugin catalogs the domains that appear on your site. Categorize and filter out unwanted domains. Add a layer of WordPress security site from Magecart and other cross-site scripting attacks to keep your WordPress site safe.
 
@@ -32,7 +32,7 @@ You can install this plugin directly from the WordPress Plugins menu. Otherwise,
 Watch the walk through video [here](https://youtu.be/XdJNh6LEKJw) for more directions. 
 
 ## == Frequently Asked Questions ==
-### What  is a Content Security Policy? =
+### What  is a Content Security Policy?
  
 A Content Security Policy (CSP) is a browser security standard that controls the domains, subdomains, and types of resources a browser can load on a given web page. CSPs go into a special Content Security Policy header, or it can go on a web page using a meta tag. CSPs are compatible with all modern desktop and mobile browsers, including Chrome, Firefox, Internet Explorer, Edge, and Safari. CSPs detect and prevent certain types of attacks including form jacking and cross-site scripting, browser hijacking and ad injection, as well as unauthorized piggyback tags. 
 
@@ -50,11 +50,11 @@ After this process, you might still see CSP violations for inline scripts, inlin
 
 Once you are satisfied with your CSP, toggle the CSP to blocking mode under General Settings to secure your site.
 
-### Is there a tutorial? =
+### Is there a tutorial?
 
-A walk though of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
+A walkthough of this plugin can be found [here](https://youtu.be/XdJNh6LEKJw)
 
-### How does the plugin collect CSP violations? =
+### How does the plugin collect CSP violations?
 The plugin inserts a small JavaScript code in the body of your site as a script tag. As the page loads, violations are collected and sent to the plugin via ajax using a nonce. These errors are parsed for the domains and directives they have violated. This data is stored in your WordPress database, prefixed. This data never leaves your site.
 
 ## == Screenshots ==

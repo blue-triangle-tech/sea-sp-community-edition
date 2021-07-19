@@ -99,7 +99,6 @@
                     <li class="list-group-item">1. Collected violations will be added to the report where it is available for review.</li>
                     <li class="list-group-item">2. You can whitelist the base domain and/or its subdomains.</li>
                     <li class="list-group-item">3. Each domain is only approved/blocked for the directive it violated. The same domains may appear but for different directives.</li>
-                    <li class="list-group-item">You may need to enable 'unsafe-inline' for 'script-src-elem' under <a href="<?=admin_url();?>admin.php?page=blue-triangle-free-csp-directive-settings" class="card-link">Directive Settings</a> to allow inline scripts (like this plugin's collector script) to run.</li>
                 </ul>
             </div>
         </div>
